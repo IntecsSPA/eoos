@@ -1,0 +1,22 @@
+#macro ( recursive $e)   
+#if( $e.getChildren().size() > 0 )
+#foreach ($child in $e.getChildren() ) 
+#recursive( $child )
+#end
+#else
+#if ($e.getName() == 'posList')
+  "vertexPositions" : { "cartographicDegrees": [$coordinates.adjustCoordinatesForCzml($e.getTextTrim())] },"polyline":{"color":{"rgba":[255,0,0,255]},"outlineWidth":0.0,"width":1.0,"show":true},"polygon":{"show":true,"material":{"solidColor":{"color":{"rgba":[255,0,0,77]}}}},
+#elseif ( $e.getName() == 'identifier' )
+  "id": "$e.getTextTrim()",
+#end
+#end
+#end
+[
+#foreach( $metadata in $metadataList )
+{
+#recursive( $metadata.metadataDocument.getRootElement())        
+  "source" : "EOpenCatalogue"
+},
+#end
+{}
+]

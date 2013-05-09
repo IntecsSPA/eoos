@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<atom:feed xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:atom="http://www.w3.org/2005/Atom" 
+xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/">
+    <opensearch:totalResults>$OPEN_SEARCH_NUMBER_OF_RESULTS</opensearch:totalResults> 
+    <opensearch:startIndex>$OPEN_SEARCH_START_INDEX</opensearch:startIndex> 
+    <opensearch:itemsPerPage>$OPEN_SEARCH_ITEMS_PER_PAGE</opensearch:itemsPerPage> 
+    <opensearch:Query role="request" searchTerms="" startPage="1"/> 
+    <atom:author> 
+        <atom:name>openCatalogue Server</atom:name> 
+    </atom:author> 
+    <atom:generator>openCatalogue Server</atom:generator> 
+    <atom:id>$OPEN_SEARCH_REQUEST</atom:id> 
+    <atom:title>openCatalogue Server - EO Product Search Response</atom:title> 
+    <atom:updated>$date.get('yyyy-M-d')T$date.get('H:m:s')Z</atom:updated> 
+#foreach( $metadata in $metadataList )
+    <atom:entry> 
+        <atom:id>$metadata.identifier</atom:id>
+        <atom:link href="$BASE_URL/eoproduct?id=$metadata.identifier" rel="alternate" type="application/atom+xml" title="“URL for retrieving full details of the product: $metadata.identifier"/> 
+        <atom:published>$date.get('yyyy-M-d')T$date.get('H:m:s')Z</atom:published> 
+        <atom:title>$metadata.identifier</atom:title> 
+        <atom:updated>$date.get('yyyy-M-d')T$date.get('H:m:s')Z</atom:updated> 
+        $metadata.metadata
+    </atom:entry> 
+</atom:feed>

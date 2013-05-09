@@ -1,0 +1,239 @@
+##-------------------------------------------------------------------getPolygon
+#macro ( getPolygon $e)
+#if( $e.getChildren().size() > 0 )
+#foreach ($child in $e.getChildren() ) 
+#getPolygon( $child $tag)
+#end
+#else
+#if ( $e.getName() == 'posList')$coordinates.adjustCoordinatesForGeoJson($e.getTextTrim())#end
+#end
+#end
+##-------------------------------------------------------------------getValue
+#macro ( getValue $e $tag)
+#if( $e.getChildren().size() > 0 )
+#foreach ($child in $e.getChildren() ) 
+#getValue( $child $tag)
+#end
+#else
+#if ( $e.getName() == $tag)$e.getTextTrim()#end
+#end
+#end
+##-------------------------------------------------------------------generate_earth_observation
+#macro ( generate_earth_observation $e)   
+#if( $e.getChildren().size() > 0 )
+#foreach ($child in $e.getChildren() ) 
+#generate_earth_observation( $child )
+#end
+#else
+#if ( $e.getName() == 'beginPosition' ||
+$e.getName() == 'timePosition' ||
+$e.getName() == 'endPosition')
+"gml_$e.getName()": "$e.getTextTrim()",
+##set($poly = "$poly ,#gml_$e.getName()#:#$e.getTextTrim()#")
+#end
+#end
+#end
+##-------------------------------------------------------------------generate_earth_observation_equipment
+#macro ( generate_earth_observation_equipment $e)   
+#if( $e.getChildren().size() > 0 )
+#if ($e.getName() == 'Platform')
+"eop_platformShortName": "$e.getChild('shortName',$e.getNamespace()).getTextTrim()",
+#if ($e.getChild('serialIdentifier',$e.getNamespace()))"eop_platformSerialIdentifier": "$e.getChild('serialIdentifier',$e.getNamespace()).getTextTrim()",#end
+#elseif ($e.getName() == 'Instrument')
+"eop_instrumentShortName": "$e.getChild('shortName',$e.getNamespace()).getTextTrim()",
+#else
+#foreach ($child in $e.getChildren() ) 
+#generate_earth_observation_equipment( $child )
+#end
+#end
+#else
+#if ($e.getName() == 'sensorType' ||
+$e.getName() == 'operationalMode' ||
+$e.getName() == 'swathIdentifier')
+"eop_$e.getName()": "$e.getTextTrim()",
+#end
+#end
+#end
+##-------------------------------------------------------------------generate_acquisition
+#macro ( generate_acquisition $e)   
+#if( $e.getChildren().size() > 0 )
+#foreach ($child in $e.getChildren() ) 
+#generate_acquisition( $child )
+#end
+#else
+#if ($e.getName() == 'orbitNumber' ||
+$e.getName() == 'orbitDirection' ||
+$e.getName() == 'wrsLongitudeGrid' ||
+$e.getName() == 'startTimeFromAscendingNode' ||
+$e.getName() == 'completionTimeFromAscendingNode' ||
+$e.getName() == 'illuminationAzimuthAngle' ||
+$e.getName() == 'illuminationZenithAngle' ||
+$e.getName() == 'illuminationElevationAngle')
+"eop_$e.getName()": "$e.getTextTrim()",
+#elseif ($e.getName() == 'multiViewAngles' ||
+$e.getName() == 'centreViewAngles')
+"atm_$e.getName()": "$e.getTextTrim()",
+#elseif ($e.getName() == 'polarisationMode' ||
+$e.getName() == 'polarisationChannels' ||
+$e.getName() == 'antennaLookDirection' ||
+$e.getName() == 'minimumIncidenceAngle' ||
+$e.getName() == 'maximumIncidenceAngle' ||
+$e.getName() == 'incidenceAngleVariation' ||
+$e.getName() == 'dopplerFrequency' )
+"sar_$e.getName()": "$e.getTextTrim()",
+#end
+#end
+#end
+##-------------------------------------------------------------------generate_eo_results
+#macro ( generate_eo_results $e)   
+#if( $e.getChildren().size() > 0 )
+#if ($e.getName() == 'BrowseInformation')
+#generate_browse_info( $child )
+#elseif($e.getName() == 'ProductInformation')
+#generate_product_info( $child )
+#else
+#foreach ($child in $e.getChildren() ) 
+#generate_eo_results( $child )
+#end
+#end
+#else
+#if ($e.getName() == 'cloudCoverPercentage' ||
+$e.getName() == 'snowCoverPercentage')
+"$e.getNamespacePrefix()_$e.getName()": "$e.getTextTrim()",
+#end
+#end
+#end
+##-------------------------------------------------------------------generate_browse_info
+#macro ( generate_browse_info $e)   
+#if( $e.getChildren().size() > 0 )
+#if ($e.getName() == 'fileName')
+#foreach ($child in $e.getChildren() ) 
+#foreach ($att in $e.getAttributes() ) 
+"eop_filename": "$att.getValue()",
+#end
+#end
+#else
+#if ($e.getName() == 'type' ||
+$e.getName() == 'referenceSystemIdentifier')
+"eop_$e.getName()": "$e.getTextTrim()",
+#end
+#end
+#end
+##-------------------------------------------------------------------generate_product_info
+#macro ( generate_product_info $e)   
+#if( $e.getChildren().size() > 0 )
+#if ($e.getName() == 'fileName')
+#foreach ($child in $e.getChildren() ) 
+#foreach ($att in $e.getAttributes() ) 
+"eop_filename": "$att.getValue()",
+#end
+#end
+#else
+#foreach ($child in $e.getChildren() ) 
+#generate_product_info( $child )
+#end
+#end
+#else
+#if($e.getName() == 'version' ||
+$e.getName() == 'size')
+"eop_$e.getName()": "$e.getTextTrim()",
+#end
+#end
+#end
+##-------------------------------------------------------------------generate_eo_metadata
+#macro ( generate_eo_metadata $e)   
+#if( $e.getChildren().size() > 0 )
+#if ($e.getName() == 'processing')
+"eop_processing": { 
+#generate_processing($child)
+},
+#foreach ($child in $e.getChildren() ) 
+#foreach ($att in $e.getAttributes() ) 
+"eop_filename": "$att.getValue()",
+#end
+#end
+#else
+#foreach ($child in $e.getChildren() ) 
+#generate_eo_metadata( $child )
+#end
+#end
+#else
+#if($e.getName() == 'identifier' ||
+$e.getName() == 'parentIdentifier' ||
+$e.getName() == 'acquisitionType' ||
+$e.getName() == 'acquisitionSubType' ||
+$e.getName() == 'productType' ||
+$e.getName() == 'status' ||
+$e.getName() == 'imageQualityDegradation' ||
+$e.getName() == 'imageQualityStatus' ||
+$e.getName() == 'imageQualityReportURL' ||
+$e.getName() == 'productGroupId')
+"eop_$e.getName()": "$e.getTextTrim()",
+#elseif($e.getName() == 'identifier')
+## TODO handle the multiplicity of this element
+"eop_$e.getName()": ["$e.getTextTrim()"],
+#end
+#end
+#end
+##-------------------------------------------------------------------generate_processing
+#macro ( generate_processing $e)   
+#if( $e.getChildren().size() > 0 )
+#foreach ($child in $e.getChildren() ) 
+#generate_processing($child)
+#end
+#else
+#if ( $e.getName() == 'processingMode')
+"eop_$e.getName()": "$e.getTextTrim()"
+#end
+#end
+#end
+##-------------------------------------------------------------------START TEMPLATE
+##
+##
+{ "type": "FeatureCollection",
+  "features":
+[
+#foreach( $metadata in $metadataList )
+{
+    "type": "Feature", 
+    "geometry": 
+        { "type": "Polygon", 
+          "coordinates": 
+          [ 
+            [#getPolygon( $metadata.metadataDocument.getRootElement())] 
+          ] 
+        }, 
+    "id": "#getValue( $metadata.metadataDocument.getRootElement() "identifier")",
+
+    "properties": {
+     "EarthObservation": {
+##set($poly = "")
+#generate_earth_observation( $metadata.metadataDocument.getRootElement())        
+            "EarthObservationEquipment": {
+#generate_earth_observation_equipment( $metadata.metadataDocument.getRootElement())        
+                "Acquisition": 
+                    {
+#generate_acquisition( $metadata.metadataDocument.getRootElement())
+"":""        
+                    }
+            },
+             "EarthObservationResult": 
+                { 
+#generate_eo_results( $metadata.metadataDocument.getRootElement())    
+"":""        
+                },
+             "EarthObservationMetaData":
+              {
+#generate_eo_metadata( $metadata.metadataDocument.getRootElement())    
+"":""        
+              }
+        }
+    }
+},
+#end
+{}
+]
+}
+##
+##$poly.substring(2).replace('#', '"')
+##
