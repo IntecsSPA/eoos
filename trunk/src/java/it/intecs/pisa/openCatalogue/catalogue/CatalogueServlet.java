@@ -33,7 +33,8 @@ public class CatalogueServlet extends HttpServlet {
 
     protected static final String METHOD_OPEN_SEARCH = "opensearch";
     protected static final String METHOD_HARVEST = "harvest";
-    protected static final String METHOD_INGEST = "ingest";
+    protected static final String RESOURCE_METADATA = "metadata";
+    protected static final String RESOURCE_METADATAS = "metadatas";
     protected static final String METHOD_CSW = "csw";
     protected static final String OS_ATOM = "atom";
     protected static final String OS_WKT = "wkt";
@@ -136,13 +137,61 @@ public class CatalogueServlet extends HttpServlet {
         String requestURI;
 
         requestURI = request.getRequestURI();
-        if (requestURI.contains(METHOD_INGEST)) {
-            handleIngest(request, response);
+        if (requestURI.contains(RESOURCE_METADATA)) {
+            handleUpdate(request, response);
         } else {
             response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
         }
     }
+    
+    
+    /**
+     * Handles the HTTP
+     * <code>PUT</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String requestURI;
 
+        requestURI = request.getRequestURI();
+        if (requestURI.contains(RESOURCE_METADATA)) {
+            handleIngest(request, response);
+        }
+        else
+        {
+            response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+        }
+    }
+
+    /**
+     * Handles the HTTP
+     * <code>DELETE</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String requestURI;
+
+        requestURI = request.getRequestURI();
+        if (requestURI.contains(RESOURCE_METADATA)) {
+            handleDelete(request, response);
+        } else {
+            response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+        }
+    }
+    
+    
     /**
      * Returns a short description of the servlet.
      *
@@ -223,7 +272,14 @@ public class CatalogueServlet extends HttpServlet {
 
         sendJsonBackToClient(outputJson, response);
     }
+        
+    private void handleDelete(HttpServletRequest request, HttpServletResponse response) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
 
+    private void handleUpdate(HttpServletRequest request, HttpServletResponse response) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
     private void handleCSW(HttpServletRequest request, HttpServletResponse response) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
@@ -234,4 +290,6 @@ public class CatalogueServlet extends HttpServlet {
         jsonStr = JsonUtil.getJsonAsString(outputJson);
         response.getWriter().print(jsonStr);
     }
+
+
 }

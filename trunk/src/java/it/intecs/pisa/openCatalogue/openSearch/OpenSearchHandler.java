@@ -108,9 +108,7 @@ public class OpenSearchHandler {
         if (id == null || id =="")
             throw new Exception("Missing id parameter");
         sendBackResponse(id, request, response);        
-    }
-
-    
+    }    
     
     public void processWktRequest(HttpServletRequest request, HttpServletResponse response) {
         throw new UnsupportedOperationException("Not yet implemented");
