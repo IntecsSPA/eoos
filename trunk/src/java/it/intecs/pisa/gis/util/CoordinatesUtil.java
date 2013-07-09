@@ -80,7 +80,7 @@ public class CoordinatesUtil {
         String out="";
 
         for (int i = 0; i< CA.length/2; i++){
-            out += ",["+CA[2*i] + "," + CA[2*i+1] + "]";
+            out += ",["+CA[2*i+1] + "," + CA[2*i] + "]";
         }
         return out.substring(1);
     }        
