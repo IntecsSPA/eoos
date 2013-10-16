@@ -12,7 +12,9 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <atom:feed xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 xmlns:atom="http://www.w3.org/2005/Atom" 
-xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/">
+xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/"
+xmlns:georss="http://www.georss.org/georss"
+xmlns:dc="http://purl.org/dc/elements/1.1/">
     <opensearch:totalResults>$OPEN_SEARCH_NUMBER_OF_RESULTS</opensearch:totalResults> 
     <opensearch:startIndex>$OPEN_SEARCH_START_INDEX</opensearch:startIndex> 
     <opensearch:itemsPerPage>$OPEN_SEARCH_ITEMS_PER_PAGE</opensearch:itemsPerPage> 
@@ -27,10 +29,21 @@ xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/">
 #foreach( $metadata in $metadataList )
     <atom:entry> 
         <atom:id>$metadata.identifier</atom:id>
-        <atom:link href="${BASE_URL}eoproduct?id=$metadata.identifier" rel="alternate" type="application/atom+xml" title="URL for retrieving full details of the product: $metadata.identifier"/> 
-        <atom:published>$date.get('yyyy-M-d')T$date.get('H:m:s')Z</atom:published> 
         <atom:title>$metadata.identifier</atom:title> 
+	<dc:identifier>$metadata.identifier</dc:identifier>
+        <atom:published>$date.get('yyyy-M-d')T$date.get('H:m:s')Z</atom:published> 
         <atom:updated>$date.get('yyyy-M-d')T$date.get('H:m:s')Z</atom:updated> 
+	<dc:date>$date.get('yyyy-M-d')T$date.get('H:m:s')Z</dc:date>
+        <atom:link href="${BASE_URL}eoproduct?id=$metadata.identifier" rel="alternate" type="application/atom+xml" title="URL for retrieving full details of the product: $metadata.identifier"/> 
+	<georss:where>
+		<gml:Polygon>
+			<gml:exterior>
+				<gml:LinearRing>
+					<gml:posList srsDimension="2">42.2879 128.7535 42.4897 127.4932 41.4254 127.1936 41.2326 128.3991 42.2879 128.7535</gml:posList>
+				</gml:LinearRing>
+			</gml:exterior>
+		</gml:Polygon>
+	</georss:where>
 #set($i = " ")#recursive( $metadata.metadataDocument.getRootElement() $i )        
     </atom:entry> 
 #end
