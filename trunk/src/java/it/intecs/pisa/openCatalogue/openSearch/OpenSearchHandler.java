@@ -59,12 +59,14 @@ public class OpenSearchHandler {
         private static final String OPEN_SEARCH_NUMBER_OF_RESULTS = "OPEN_SEARCH_NUMBER_OF_RESULTS";
         private static final String XPATH_NUMBER_OF_RESULTS = "count(//doc)";
         private static final String XPATH_IDENTIFIER = "//doc[$$]/str[@name='id']";
+        private static final String XPATH_POS_LIST = "//doc[$$]/str[@name='posList']";
         private static final String XPATH_COUNT_DOC = "count(//doc)";
         private static final String OPEN_SEARCH_START_INDEX = "OPEN_SEARCH_START_INDEX";
         private static final String OPEN_SEARCH_ITEMS_PER_PAGE = "OPEN_SEARCH_ITEMS_PER_PAGE";
         private static final String OPEN_SEARCH_REQUEST = "OPEN_SEARCH_REQUEST";
         private static final String BASE_URL = "BASE_URL";
         private static final String IDENTIFIER = "identifier";
+        private static final String GEORSS = "georss";
         private static final String METADATA_DOCUMENT = "metadataDocument";
         
         public OpenSearchHandler(AbstractFilesystem configDirectory, AbstractFilesystem repo,String solrEndPoint){

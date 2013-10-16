@@ -122,7 +122,7 @@ public class solrHandler {
             } else if (name.equals("bbox")) {
                 Log.debug("BBOX "+value);
                 fq += " AND posList:" + URLDecoder.decode(value, "ISO-8859-1");
-            } else if (name.equals("g")) {
+            } else if (name.equals("geometry")) {
                 fq += " AND posList :\"Intersects(" + (URLDecoder.decode(value, "ISO-8859-1")) + ")\"";
             } else if (name.equals("id")) {
                 fq += " AND id:\"" + URLDecoder.decode(value, "ISO-8859-1")+ "\"";
