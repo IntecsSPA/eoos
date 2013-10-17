@@ -1,3 +1,15 @@
+#macro ( getMetadata $e $indent )   
+  #if( $e.getChildren().size() > 0 )
+  $indent <$e.getQualifiedName()#foreach($namespace in $e.getNamespacesIntroduced()) xmlns:$namespace.getPrefix()="$namespace.getURI()"#end#foreach($attribute in $e.getAttributes()) #if($attribute.getNamespacePrefix()!='')$attribute.getNamespacePrefix():#end$attribute.getName()="$attribute.getValue()"#end> 
+  #foreach ($child in $e.getChildren() ) 
+  #getMetadata( $child "$indent  " )
+  #end
+  $indent </$e.getQualifiedName()>
+  #else
+  $indent <$e.getQualifiedName()#foreach($namespace in $e.getNamespacesIntroduced()) xmlns:$namespace.getPrefix()="$namespace.getURI()"#end#foreach($attribute in $e.getAttributes()) #if($attribute.getNamespacePrefix()!='')$attribute.getNamespacePrefix():#end$attribute.getName()="$attribute.getValue()"#end>$e.getTextTrim()</$e.getQualifiedName()>
+  #end
+#end
+
 #macro ( recursive $e)   
 #if( $e.getChildren().size() > 0 )
 #foreach ($child in $e.getChildren() ) 
@@ -6,6 +18,7 @@
 #else
 #if ($e.getName() == 'posList')
             <field name="$e.getName()">POLYGON(($coordinates.adjustCoordinatesForSolr($e.getTextTrim())))</field>
+            <field name="posListOrig">$e.getTextTrim()</field>
 #elseif ( $e.getName() == 'parentIdentifier' ||
       $e.getName() == 'multiExtentOf' || 
       $e.getName() == 'beginPosition' || 
@@ -43,5 +56,11 @@
     <doc>
         <field name="id">$KEY</field>
 #recursive( $metadataDocument.getRootElement() )        
+        <field name="metadataOrig">
+<![CDATA[
+#getMetadata( $metadataDocument.getRootElement() )
+]]>
+        </field>
+
     </doc>
 </add>
