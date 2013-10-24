@@ -8,6 +8,8 @@ import com.google.gson.JsonObject;
 import it.intecs.pisa.log.Log;
 import it.intecs.pisa.openCatalogue.filesystem.AbstractFilesystem;
 import it.intecs.pisa.openCatalogue.filesystem.FileFilesystem;
+import it.intecs.pisa.openCatalogue.filesystem.StreamFileSystem;
+import it.intecs.pisa.openCatalogue.harvester.Harvester;
 import it.intecs.pisa.openCatalogue.ingest.Ingester;
 import it.intecs.pisa.openCatalogue.openSearch.OpenSearchHandler;
 import it.intecs.pisa.openCatalogue.prefs.Prefs;
@@ -35,6 +37,7 @@ public class CatalogueServlet extends HttpServlet {
     protected static final String METHOD_HARVEST = "harvest";
     protected static final String RESOURCE_METADATA = "metadata";
     protected static final String RESOURCE_METADATAS = "metadatas";
+    protected static final String RESOURCE_CSV = "csv";
     protected static final String METHOD_CSW = "csw";
     protected static final String OS_ATOM = "atom";
     protected static final String OS_WKT = "wkt";
@@ -162,6 +165,8 @@ public class CatalogueServlet extends HttpServlet {
         requestURI = request.getRequestURI();
         if (requestURI.contains(RESOURCE_METADATA)) {
             handleIngest(request, response);
+        }else if (requestURI.contains(RESOURCE_CSV)) {
+            handleCSV(request, response);
         }
         else
         {
@@ -206,6 +211,7 @@ public class CatalogueServlet extends HttpServlet {
     public void init() throws ServletException {
         rootDirStr = getServletContext().getRealPath("/");
         rootDir = new File(rootDirStr);
+        workspaceDir = ServletVars.workspace;
         ServletVars.appFolder=rootDir;
         super.init();
         Prefs.install();  
@@ -272,7 +278,41 @@ public class CatalogueServlet extends HttpServlet {
 
         sendJsonBackToClient(outputJson, response);
     }
+
+    private void handleCSV(HttpServletRequest request, HttpServletResponse response) throws IOException  {
+        InputStream in;
+        String errorReason = null;
+        boolean success = false;
+        InputStream stream = request.getInputStream();
+        String requestURI = request.getRequestURI();
         
+        
+        AbstractFilesystem configuration = new FileFilesystem(new File (new File (this.workspaceDir,"config"),requestURI.substring(requestURI.indexOf("csv")+4)));
+        AbstractFilesystem toBeIngested = new StreamFileSystem(request.getInputStream());
+        String url = "http://ergo.pisa.intecs.it:8080/solr/ogc/";
+        try{
+        Harvester harv = new Harvester(configuration, configuration, url);
+        harv.harvestDataFromStream(toBeIngested);
+        
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
+        JsonObject outputJson;
+
+        outputJson = new JsonObject();
+        outputJson.addProperty("success", success);
+
+        if (errorReason != null) {
+            outputJson.addProperty("errorReason", errorReason);
+        }
+
+        sendJsonBackToClient(outputJson, response);
+    }
+    
+    
     private void handleDelete(HttpServletRequest request, HttpServletResponse response) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
