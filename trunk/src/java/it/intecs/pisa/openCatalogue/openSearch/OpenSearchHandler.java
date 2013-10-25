@@ -17,6 +17,7 @@ import it.intecs.pisa.util.IOUtil;
 import java.io.File;
 import java.io.IOException;
 import java.io.PipedInputStream;
+import java.io.StringReader;
 import java.io.Writer;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -59,20 +60,25 @@ public class OpenSearchHandler {
         private static final String OPEN_SEARCH_NUMBER_OF_RESULTS = "OPEN_SEARCH_NUMBER_OF_RESULTS";
         private static final String XPATH_NUMBER_OF_RESULTS = "count(//doc)";
         private static final String XPATH_IDENTIFIER = "//doc[$$]/str[@name='id']";
+        private static final String XPATH_POLYGON = "//doc[$$]/str[@name='posListOrig']";
         private static final String XPATH_POS_LIST = "//doc[$$]/str[@name='posList']";
+        private static final String XPATH_METADATA = "//doc[$$]/str[@name='metadataOrig']";
         private static final String XPATH_COUNT_DOC = "count(//doc)";
         private static final String OPEN_SEARCH_START_INDEX = "OPEN_SEARCH_START_INDEX";
         private static final String OPEN_SEARCH_ITEMS_PER_PAGE = "OPEN_SEARCH_ITEMS_PER_PAGE";
         private static final String OPEN_SEARCH_REQUEST = "OPEN_SEARCH_REQUEST";
         private static final String BASE_URL = "BASE_URL";
         private static final String IDENTIFIER = "identifier";
+        private static final String POLYGON = "polygon";
+        private static final String SHORT_NAME = "polygon";
+
         private static final String GEORSS = "georss";
         private static final String METADATA_DOCUMENT = "metadataDocument";
         
         public OpenSearchHandler(AbstractFilesystem configDirectory, AbstractFilesystem repo,String solrEndPoint){
 
             
-            this.ve = new VelocityEngine();
+        this.ve = new VelocityEngine();
         ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "file");
         ve.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, configDirectory.getAbsolutePath());
         ve.setProperty("runtime.log.logsystem.class", "org.apache.velocity.runtime.log.NullLogSystem");
@@ -237,14 +243,21 @@ public class OpenSearchHandler {
 
         //Loop on the solrResponse and load the metadata in the repository 
         int results = Integer.parseInt((String)solrResponse.evaluatePath(XPATH_COUNT_DOC, XPathConstants.STRING));
-        String id;
+        String id="";
+        String original_polygon="";
+        String original_metadata="";   
+        String cdata_field="";
         for (int i =1; i<=results; i++){
             Map metadata = new HashMap();
             id = (String)solrResponse.evaluatePath(XPATH_IDENTIFIER.replace("$$", String.valueOf(i)), XPathConstants.STRING);
+            original_polygon = (String)solrResponse.evaluatePath(XPATH_POLYGON.replace("$$", String.valueOf(i)), XPathConstants.STRING);
             builder = new SAXBuilder(); 
-            root = builder.build(this.repository.getAbsolutePath()+"/"+id+".xml");         
+            cdata_field = (String)solrResponse.evaluatePath(XPATH_METADATA.replace("$$", String.valueOf(i)), XPathConstants.STRING);
+            //root = builder.build(cdata_field.substring(cdata_field.indexOf("<![CDATA["), cdata_field.indexOf("]]>"))));        
+            root = builder.build(new StringReader(cdata_field));         
             metadata.put(METADATA_DOCUMENT, root);
             metadata.put(IDENTIFIER, id);
+            metadata.put(POLYGON, original_polygon);            
             // load the metadata and add it to the array
             metadataList.add(metadata);        
         }

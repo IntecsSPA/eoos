@@ -283,15 +283,17 @@ public class CatalogueServlet extends HttpServlet {
         InputStream in;
         String errorReason = null;
         boolean success = false;
+        boolean isTomcatCall= true;
+
         InputStream stream = request.getInputStream();
         String requestURI = request.getRequestURI();
         
         
         AbstractFilesystem configuration = new FileFilesystem(new File (new File (this.workspaceDir,"config"),requestURI.substring(requestURI.indexOf("csv")+4)));
         AbstractFilesystem toBeIngested = new StreamFileSystem(request.getInputStream());
-        String url = "http://ergo.pisa.intecs.it:8080/solr/ogc/";
+        String url = Prefs.getSolrUrl();
         try{
-        Harvester harv = new Harvester(configuration, configuration, url);
+        Harvester harv = new Harvester(configuration, configuration, url, isTomcatCall);
         harv.harvestDataFromStream(toBeIngested);
         
         } catch (Exception ex) {

@@ -136,14 +136,15 @@ public class Harvester {
         AbstractFilesystem configuration = new FileFilesystem("C:\\Users\\simone\\Documents\\NetBeansProjects\\openCatalogue\\web\\WEB-INF\\openSearch\\");
         AbstractFilesystem transformer = new FileFilesystem("C:\\Users\\simone\\Documents\\NetBeansProjects\\openCatalogue\\web\\WEB-INF\\config\\generateVelocityTemple.xsl");
         AbstractFilesystem model = new FileFilesystem("C:\\Users\\simone\\Documents\\NetBeansProjects\\openCatalogue\\web\\WEB-INF\\openSearch\\harvestConfiguration.xml");
-        AbstractFilesystem processing = new FileFilesystem("C:\\catalogue_workspace\\config");
-        AbstractFilesystem repository = new FileFilesystem("C:\\catalogue_workspace\\");
+        AbstractFilesystem processing = new FileFilesystem("D:\\catalogue_workspace\\config");
+        AbstractFilesystem repository = new FileFilesystem("D:\\catalogue_workspace\\");
         createVelocityTemplates(transformer, processing, model);
         AbstractFilesystem toBeHarvested = new FileFilesystem("C:\\Users\\simone\\Documents\\NetBeansProjects\\openCatalogue\\web\\WEB-INF\\openSearch\\19811206-201804_19811206-221804_20130116-230001.index");
         AbstractFilesystem[] fsa = new FileFilesystem[1];
         fsa[0] = toBeHarvested;
-        String url = "http://ergo.pisa.intecs.it:8080/solr/ogc/";
-        Harvester harv = new Harvester(repository, configuration, url);
+        String url = "http://ergo.pisa.intecs.it:8080/solr/ogc1/";
+        boolean isTomcatCall= false;
+        Harvester harv = new Harvester(repository, configuration, url, isTomcatCall);
         harv.harvestData(fsa);
     }
 
@@ -161,11 +162,16 @@ public class Harvester {
      * @throws SaxonApiException
      * @throws Exception
      */
-    public Harvester(AbstractFilesystem metadataRepository, AbstractFilesystem configDirectory, String solrURL) throws SAXException, IOException, SaxonApiException, Exception {
+    public Harvester(AbstractFilesystem metadataRepository, AbstractFilesystem configDirectory, String solrURL, boolean isTomcatCall) throws SAXException, IOException, SaxonApiException, Exception {
         this.metadataRepository = metadataRepository;
         this.ve = new VelocityEngine();
         ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "file");
         ve.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, configDirectory.getAbsolutePath());
+        
+        if (isTomcatCall) {
+            ve.setProperty("runtime.log.logsystem.class", "org.apache.velocity.runtime.log.NullLogSystem");
+        }    
+
         this.configuration = new SaxonDocument(configDirectory.get(DEFAULT_CONFIGURATION_FILE_NAME).getInputStream());
 
         this.sensorType = (!"".equals((String) configuration.evaluatePath(XPATH_SENSOR_TYPE + SLASH + TAG_INDEX_FIELD_NAME, XPathConstants.STRING))
@@ -389,18 +395,19 @@ public class Harvester {
     }
 
     private void uploadMetadataToSolr(org.jdom2.Document metadata, String key) throws IOException, SaxonApiException, Exception {
-        VelocityContext context = new VelocityContext();
-        context.put(VELOCITY_DATE, new DateTool());
-        context.put(VELOCITY_MATH, new MathTool());
-        context.put("coordinates", new CoordinatesUtil());
-        context.put("KEY", key);
-        context.put("metadataDocument", metadata);
-        StringWriter swOut = new StringWriter();
-        ve.getTemplate("generateSolrAddRequest.vm").merge(context, swOut);
-        solr.postDocument(swOut.toString());
-        // only for debug .... TODO - remove it
-        saveSolrfile(swOut.toString(), key);
-        swOut.close();
+            VelocityContext context = new VelocityContext();
+            context.put(VELOCITY_DATE, new DateTool());
+            context.put(VELOCITY_MATH, new MathTool());
+            context.put("coordinates",new CoordinatesUtil());
+//            context.put("KEY", key);
+            context.put("metadataDocument",metadata);            
+            StringWriter swOut = new StringWriter();
+            
+            ve.getTemplate("generateSolrAddRequest.vm").merge(context, swOut);
+            solr.postDocument(swOut.toString());
+            // only for debug .... TODO - remove it
+            saveSolrfile(swOut.toString(),key);
+            swOut.close();   
     }
 
     private void saveSolrfile(String swOut, String key) throws IOException {
@@ -410,17 +417,17 @@ public class Harvester {
 
     public static void createVelocityTemplates(AbstractFilesystem transformer, AbstractFilesystem outputFolder, AbstractFilesystem model) {
         try {
-            createTemplate2("RADAR", transformer, outputFolder, model);
-            createTemplate2("LIMB", transformer, outputFolder, model);
-            createTemplate2("ATMOSPHERIC", transformer, outputFolder, model);
-            createTemplate2("ALTIMETRIC", transformer, outputFolder, model);
-            createTemplate2("OPTICAL", transformer, outputFolder, model);
+            createTemplate("RADAR", transformer, outputFolder, model);
+            createTemplate("LIMB", transformer, outputFolder, model);
+            createTemplate("ATMOSPHERIC", transformer, outputFolder, model);
+            createTemplate("ALTIMETRIC", transformer, outputFolder, model);
+            createTemplate("OPTICAL", transformer, outputFolder, model);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    protected static void createTemplate2(String type, AbstractFilesystem stylesheet, AbstractFilesystem processing, AbstractFilesystem modelFile) throws Exception {
+    protected static void createTemplate(String type, AbstractFilesystem stylesheet, AbstractFilesystem processing, AbstractFilesystem modelFile) throws Exception {
         TransformerFactory tFactory = TransformerFactory.newInstance();
         try {
             Transformer transformer = tFactory.newTransformer(new StreamSource(new File(stylesheet.getAbsolutePath())));

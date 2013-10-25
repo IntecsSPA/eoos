@@ -101,7 +101,7 @@ public class solrHandler {
         String q = this.solrHost + "/select?q=*%3A*&wt=xml&indent=true";
         String name;
         String value;
-        if (request.getParameter("q")!="*.*"){
+        if (!request.getParameter("q").equals("*.*")){
             value = request.getParameter("q");
             q = this.solrHost + "/select?q=" + URLDecoder.decode(value, "ISO-8859-1") + "&wt=xml&indent=true";
         }
