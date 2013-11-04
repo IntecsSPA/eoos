@@ -130,16 +130,16 @@ public class Harvester {
     private solrHandler solr;
 
     /**
-     * @param args the command line arguments
+     * @param args the command line arguments D:\Projects\SVN_checkout\eoos\trunk\web\WEB-INF\openSearch
      */
     public static void main(String[] args) throws Exception {
-        AbstractFilesystem configuration = new FileFilesystem("C:\\Users\\simone\\Documents\\NetBeansProjects\\openCatalogue\\web\\WEB-INF\\openSearch\\");
-        AbstractFilesystem transformer = new FileFilesystem("C:\\Users\\simone\\Documents\\NetBeansProjects\\openCatalogue\\web\\WEB-INF\\config\\generateVelocityTemple.xsl");
-        AbstractFilesystem model = new FileFilesystem("C:\\Users\\simone\\Documents\\NetBeansProjects\\openCatalogue\\web\\WEB-INF\\openSearch\\harvestConfiguration.xml");
+        AbstractFilesystem configuration = new FileFilesystem("D:\\Projects\\SVN_checkout\\eoos\\trunk\\web\\WEB-INF\\openSearch\\");
+        AbstractFilesystem transformer = new FileFilesystem("D:\\Projects\\SVN_checkout\\eoos\\trunk\\web\\WEB-INF\\config\\generateVelocityTemple_1.xsl");
+        AbstractFilesystem model = new FileFilesystem("D:\\Projects\\SVN_checkout\\eoos\\trunk\\web\\WEB-INF\\openSearch\\harvestConfiguration_1.xml");
         AbstractFilesystem processing = new FileFilesystem("D:\\catalogue_workspace\\config");
         AbstractFilesystem repository = new FileFilesystem("D:\\catalogue_workspace\\");
         createVelocityTemplates(transformer, processing, model);
-        AbstractFilesystem toBeHarvested = new FileFilesystem("C:\\Users\\simone\\Documents\\NetBeansProjects\\openCatalogue\\web\\WEB-INF\\openSearch\\19811206-201804_19811206-221804_20130116-230001.index");
+        AbstractFilesystem toBeHarvested = new FileFilesystem("D:\\Projects\\SVN_checkout\\eoos\\trunk\\web\\WEB-INF\\openSearch\\19811206-201804_19811206-221804_20130116-230001.index");
         AbstractFilesystem[] fsa = new FileFilesystem[1];
         fsa[0] = toBeHarvested;
         String url = "http://ergo.pisa.intecs.it:8080/solr/ogc1/";

@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?><model>
+<dateTimeFormat>yyyy-MM-dd'T'HH:mm:ss'Z'</dateTimeFormat>
+<separator>;</separator>
+	<timeFilter>LAST_UPDATE</timeFilter>
+	<generalConstant name="urlRoot">http://root-path-to-landsat-products/</generalConstant>
+	<excludeDirs>
+		<filter>*/exclude*/*</filter>
+		<filter>*/browses/*</filter>	
+		<filter>*/metadata/*</filter>	
+		<filter>.*</filter>	
+	</excludeDirs>
+<!-- Dataset identification-->
+	<attribute id="platformShortName">
+		<indexFieldName>PLATFORM_ID</indexFieldName>
+	</attribute>
+	<attribute id="instrumentShortName">
+		<indexFieldName>SATELLITE_NO</indexFieldName>
+	</attribute>
+	<attribute id="operationalMode">
+		<defaultValue>NA</defaultValue>
+	</attribute>
+	<attribute id="productType">
+		<indexFieldName>PRODUCT_TYPE</indexFieldName>
+	</attribute>
+<!-- Product identification-->
+	<attribute id="productId">
+		<indexFieldName>PRODUCT_ID</indexFieldName>
+	</attribute>
+<!-- Product date-time-->
+	<attribute id="beginAcquisition">
+		<indexFieldName>BEGIN_DATE</indexFieldName>
+	</attribute>
+	<attribute id="endAcquisition">
+		<indexFieldName>END_DATE</indexFieldName>
+	</attribute>
+	<attribute id="availabilityTime">
+		<defaultValue>2012-12-06T10:20:41.960Z</defaultValue>
+	</attribute>
+<!-- Product footprint-->
+	<attribute id="footprint">
+		<formula>$metadata.BOUNDING_POLYGON.replaceAll(","," ")</formula>
+		<!--indexFieldName>BOUNDING_POLYGON</indexFieldName-->
+	</attribute>
+<!-- Product footprint-->
+	<attribute id="productURI">
+		<formula>$urlRoot${metadata.PRODUCT_ID}.zip</formula>
+	</attribute>
+	<attribute id="productVersion">
+		<defaultValue>1.0</defaultValue>
+	</attribute>
+	<!--attribute id="productSize">
+		<formula>200</formula>
+	</attribute-->
+<!-- Other product metadata-->
+	<attribute id="sensorType">
+		<defaultValue>RADAR</defaultValue>
+	</attribute>
+	<attribute id="processingMode">
+		<defaultValue>OTHER</defaultValue>
+	</attribute>
+	<attribute id="acquisitionType">
+		<defaultValue>NOMINAL</defaultValue>
+	</attribute>
+	<attribute id="acquisitionSubType">
+		<defaultValue>DEFAULT</defaultValue>
+	</attribute>
+	<!--attribute id="productType"> IS THIS REPEATED??
+		<defaultValue>DEFAULT</defaultValue>
+	</attribute-->
+	<attribute id="status">
+		<defaultValue>ARCHIVED</defaultValue>
+	</attribute>
+	<!--attribute id="imageQualityDegradation">
+		<defaultValue>12</defaultValue>
+	</attribute-->
+	<!--attribute id="imageQualityStatus">
+		<defaultValue>NOMINAL</defaultValue>
+	</attribute-->
+	<!--attribute id="imageQualityDegradationTag">
+		<defaultValue>DEFAULT</defaultValue>
+	</attribute-->
+	<!--attribute id="imageQualityReportURL">
+		<defaultValue>DEFAULT</defaultValue>
+	</attribute-->
+	<!--attribute id="productGroupId">
+		<defaultValue>DEFAULT</defaultValue>
+	</attribute-->
+	<attribute id="platformSerialIdentifier">
+		<indexFieldName>PLATFORM_ID</indexFieldName>
+	</attribute>
+	<attribute id="swathIdentifier">
+		<indexFieldName>SWATH_ID</indexFieldName>
+	</attribute>
+	<attribute id="orbitNumber">
+		<indexFieldName>ORBIT</indexFieldName>
+	</attribute>
+	<attribute id="lastOrbitNumber">
+		<indexFieldName>LAST_ORBIT</indexFieldName>
+	</attribute>
+	<attribute id="orbitDirection">
+		<formula>#if($metadata.ORBIT_DIRECTION ==0)ASCENDING#{else}DESCENDING#end</formula>
+	</attribute>
+	<!--attribute id="wrsLongitudeGrid">
+		<defaultValue>DEFAULT</defaultValue>
+	</attribute>
+	<attribute id="wrsLatitudeGrid">
+		<defaultValue>DEFAULT</defaultValue>
+	</attribute>
+	<attribute id="ascendingNodeDate">
+		<defaultValue>2012-12-06T10:20:41.960Z</defaultValue>
+	</attribute>
+	<attribute id="ascendingNodeLongitude">
+		<defaultValue>10</defaultValue>
+	</attribute>
+	<attribute id="startTimeFromAscendingNode">
+		<defaultValue>50</defaultValue>
+	</attribute>
+	<attribute id="completionTimeFromAscendingNode">
+		<defaultValue>200</defaultValue>
+	</attribute>
+	<attribute id="orbitDuration">
+		<defaultValue>60</defaultValue>
+	</attribute>
+	<attribute id="illuminationAzimuthAngle">
+		<defaultValue>20</defaultValue>
+	</attribute>
+	<attribute id="illuminationZenithAngle">
+		<defaultValue>30</defaultValue>
+	</attribute>
+	<attribute id="illuminationElevationAngle">
+		<defaultValue>10</defaultValue>
+	</attribute>	
+	<attribute id="incidenceAngle">
+		<defaultValue>10</defaultValue>
+	</attribute>
+	<attribute id="acrossTrackIncidenceAngle">
+		<defaultValue>10</defaultValue>
+	</attribute>
+	<attribute id="alongTrackIncidenceAngle">
+		<defaultValue>10</defaultValue>
+	</attribute>
+<attribute id="instrumentAzimuthAngle">
+		<defaultValue>10</defaultValue>
+	</attribute>
+<attribute id="instrumentZenithAngle">
+		<defaultValue>10</defaultValue>
+	</attribute>
+<attribute id="instrumentElevationAngle">
+		<defaultValue>10</defaultValue>
+	</attribute>
+<attribute id="pitch">
+		<defaultValue>10</defaultValue>
+	</attribute>
+<attribute id="roll">
+		<defaultValue>10</defaultValue>
+	</attribute>
+<attribute id="yaw">
+		<defaultValue>10</defaultValue>
+	</attribute-->
+	
+<!-- ?????metadata for OPTICAL or ATMOSPHERIC products -->	
+	<!--attribute id="cloudCoverPercentage">
+		<defaultValue>5</defaultValue>
+	</attribute>
+	<attribute id="snowCoverPercentage">
+		<defaultValue>2</defaultValue>
+	</attribute-->
+
+
+	
+<!-- metadata for RADAR products -->	
+	<attribute id="polarisationMode">
+		<defaultValue>S</defaultValue>
+	</attribute>
+	<attribute id="polarisationChannels">
+		<defaultValue>HH</defaultValue>
+	</attribute>
+		<!--attribute id="antennaLookDirection">
+		<defaultValue>LEFT</defaultValue>
+	</attribute>
+	<attribute id="minimumIncidenceAngle">
+		<defaultValue>34</defaultValue>
+	</attribute>
+		<attribute id="maximumIncidenceAngle">
+		<defaultValue>40</defaultValue>
+	</attribute>
+	<attribute id="incidenceAngleVariation">
+		<defaultValue>4</defaultValue>
+	</attribute>
+		<attribute id="dopplerFrequency">
+		<defaultValue>345</defaultValue>
+	</attribute-->
+	
+<!-- metadata for ATMOSPHERIC products -->	
+	<!--attribute id="multiViewAngles">
+		<defaultValue>10</defaultValue>
+	</attribute>
+	<attribute id="centreViewAngles">
+		<defaultValue>5</defaultValue>
+	</attribute-->	
+	
+<!-- metadata for ALTIMETRIC and LIMB products -->	
+	<!--attribute id="cycleNumber">
+		<defaultValue>DEFAULT</defaultValue>
+	</attribute-->
+	<!--attribute id="isSegment">
+		<defaultValue>DEFAULT</defaultValue>
+	</attribute-->
+	<!--attribute id="relativePassNumber">
+		<defaultValue>DEFAULT</defaultValue>
+	</attribute-->
+<!-- According to the MDGICD this field is of complex type. How can this be mapped?-->
+
+<!-- metadata for LIMB products-->	
+	<!--attribute id="occultationPoints">
+		<defaultValue>DEFAULT</defaultValue>
+	</attribute-->
+
+<!-- According to the MDGICD this field is of complex type. How can this be mapped?-->
+
+<!-- Additional product medata-->	
+	<!--attribute id="add-pippo">
+		<defaultValue>PIPPO</defaultValue>
+	</attribute>
+	<attribute id="add-pluto">
+		<defaultValue>PLUTO</defaultValue>
+	</attribute-->
+<!-- Browse metadata-->	
+	<!--attribute id="browseImageLocation">
+		<indexFieldName>BROWSE</indexFieldName>
+	</attribute>
+	<attribute id="browseMetadataLocation">
+		<indexFieldName>BROWSE_METADATA</indexFieldName>
+	</attribute-->
+<!-- NOT MAPPED IN THE DOCUMENT-->	
+	<attribute id="dateType">
+		<defaultValue>INGESTION_TIME</defaultValue>
+	</attribute>
+<attribute id="source">
+		<defaultValue>FEED</defaultValue>
+	</attribute>
+</model>

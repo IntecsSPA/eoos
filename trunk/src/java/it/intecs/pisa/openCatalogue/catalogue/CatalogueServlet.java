@@ -77,6 +77,8 @@ public class CatalogueServlet extends HttpServlet {
             out.println("<p/>");
             String url = request.getRequestURL()+"/opensearch/atom/?q=startIndex=1&amp;count=10&amp;bbox=[20,40 90,180]&amp";
             out.println("<a href=\""+url+"\">" + url +"</a><br/>");
+            url = request.getRequestURL()+"/opensearch/atom/?q=*.*&amp;startIndex=0&amp;count=0";            
+            out.println("<a href=\""+url+"\">" + url +"</a><br/>");
             url = request.getRequestURL()+"/opensearch/atom/?q=*.*&amp;startIndex=1&amp;count=10";            
             out.println("<a href=\""+url+"\">" + url +"</a><br/>");
             url = request.getRequestURL()+"/opensearch/atom/?q=*.*&amp;startIndex=1&amp;count=10&amp;st=RADAR&amp;startdate=2003-01-28T13:10:00.077Z&amp;stopdate=2003-01-28T13:40:00.077Z";            
