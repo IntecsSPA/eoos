@@ -659,6 +659,12 @@
 					<xsl:call-template name="fillPlat"/>
 				</ssp:platform>
 			</xsl:when>
+			<xsl:when test="$sType = 'ALTIMETRIC' ">
+				<!--TODO 0..n -->
+				<alt:platform>
+					<xsl:call-template name="fillPlat"/>
+				</alt:platform>
+			</xsl:when>
 			<xsl:otherwise>
 				<eop:platform>
 					<xsl:call-template name="fillPlat"/>
