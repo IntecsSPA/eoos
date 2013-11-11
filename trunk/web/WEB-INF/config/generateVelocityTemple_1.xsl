@@ -107,12 +107,7 @@
 		</om:featureOfInterest>
 		<om:result>
 			<xsl:choose>
-				<xsl:when test="$sType  = 'RADAR'">
-					<sar:EarthObservationResult gml:id="eor_$KEY">
-						<xsl:call-template name="fillEOR"/>
-					</sar:EarthObservationResult>
-				</xsl:when>
-				<xsl:when test="$sType  = 'OPTICAL'">
+			<xsl:when test="$sType  = 'OPTICAL'">
 					<opt:EarthObservationResult gml:id="eor_$KEY">
 						<xsl:call-template name="fillEOR"/>
 					</opt:EarthObservationResult>
@@ -121,17 +116,30 @@
 					<atm:EarthObservationResult gml:id="eor_$KEY">
 						<xsl:call-template name="fillEOR"/>
 					</atm:EarthObservationResult>
-				</xsl:when>
-				<xsl:when test="$sType  = 'ALTIMETRIC'">
+				</xsl:when>				
+				<xsl:when test="$sType  = 'SSP'">
+					<atm:EarthObservationResult gml:id="eor_$KEY">
+						<xsl:call-template name="fillEOR"/>
+					</atm:EarthObservationResult>
+				</xsl:when>			
+				<!-- no more required
+					<xsl:when test="$sType  = 'RADAR'">
+					<sar:EarthObservationResult gml:id="eor_$KEY">
+						<xsl:call-template name="fillEOR"/>
+					</sar:EarthObservationResult>
+				</xsl:when>-->				
+				<!-- no more required
+					<xsl:when test="$sType  = 'ALTIMETRIC'">
 					<alt:EarthObservationResult gml:id="eor_$KEY">
 						<xsl:call-template name="fillEOR"/>
 					</alt:EarthObservationResult>
-				</xsl:when>
-				<xsl:when test="$sType  = 'LIMB'">
+				</xsl:when>-->				
+				<!-- no more required
+					<xsl:when test="$sType  = 'LIMB'">
 					<lmb:EarthObservationResult gml:id="eor_$KEY">
 						<xsl:call-template name="fillEOR"/>
 					</lmb:EarthObservationResult>
-				</xsl:when>
+				</xsl:when>-->				
 				<xsl:otherwise>
 					<eop:EarthObservationResult gml:id="eor_$KEY">
 						<xsl:call-template name="fillEOR"/>
@@ -172,22 +180,22 @@
 			</eop:orbitDirection>
 		</xsl:if>
 		<xsl:if test="attribute[@id='wrsLongitudeGrid'] != ''">
-			<eop:wrsLongitudeGrid codeSpace="">
+			<eop:wrsLongitudeGrid codeSpace="EPSG">
 				<xsl:apply-templates select="attribute[@id='wrsLongitudeGrid']"/>
 			</eop:wrsLongitudeGrid>
 		</xsl:if>
 		<xsl:if test="attribute[@id='wrsLatitudeGrid'] != ''">
-			<eop:wrsLatitudeGrid codeSpace="">
+			<eop:wrsLatitudeGrid codeSpace="EPSG">
 				<xsl:apply-templates select="attribute[@id='wrsLatitudeGrid']"/>
 			</eop:wrsLatitudeGrid>
 		</xsl:if>
 		<xsl:if test="attribute[@id='ascendingNodeDate'] != ''">
-			<eop:ascendingNodeDate codeSpace="">
+			<eop:ascendingNodeDate>
 				<xsl:apply-templates select="attribute[@id='ascendingNodeDate']"/>
 			</eop:ascendingNodeDate>
 		</xsl:if>
 		<xsl:if test="attribute[@id='ascendingNodeLongitude'] != ''">
-			<eop:ascendingNodeLongitude codeSpace="">
+			<eop:ascendingNodeLongitude uom="ms">
 				<xsl:apply-templates select="attribute[@id='ascendingNodeLongitude']"/>
 			</eop:ascendingNodeLongitude>
 		</xsl:if>
@@ -303,18 +311,6 @@
 				</sar:dopplerFrequency>
 			</xsl:if>
 		</xsl:if>
-		<xsl:if test="$sType  = 'ATMOSPHERIC'">
-			<xsl:if test="attribute[@id='multiViewAngles'] != ''">
-				<atm:multiViewAngles>
-					<xsl:apply-templates select="attribute[@id='multiViewAngles']"/>
-				</atm:multiViewAngles>
-			</xsl:if>
-			<xsl:if test="attribute[@id='centreViewAngles'] != ''">
-				<atm:centreViewAngles>
-					<xsl:apply-templates select="attribute[@id='centreViewAngles']"/>
-				</atm:centreViewAngles>
-			</xsl:if>
-		</xsl:if>
 		<xsl:if test="$sType  = 'ALTIMETRIC'">
 			<xsl:if test="attribute[@id='cycleNumber'] != ''">
 				<alt:cycleNumber>
@@ -334,18 +330,42 @@
 		</xsl:if>
 	</xsl:template>
 	<xsl:template name="fillEOR">
+		<xsl:if test="attribute[@id='browseType'] != ''">
+			<eop:browse>
+				<!--TODO 0..n-->
+				<eop:BrowseInformation>
+					<eop:type>
+						<xsl:apply-templates select="attribute[@id='browseType']"/>
+					</eop:type>
+					<xsl:if test="attribute[@id='browseSubType'] != ''">
+						<eop:subType>
+							<xsl:apply-templates select="attribute[@id='browseSubType']"/>
+						</eop:subType>
+					</xsl:if>
+					<eop:referenceSystemIdentifier codeSpace="EPSG">
+						<xsl:apply-templates select="attribute[@id='browseReferenceSystemIdentifier']"/>
+					</eop:referenceSystemIdentifier>
+					<eop:fileName>
+						<ows:ServiceReference xmlns="http://www.opengis.net/ows/2.0">
+							<xsl:attribute name="xlink:href"><xsl:apply-templates select="attribute[@id='BrowseURI']"/></xsl:attribute>
+							<ows:RequestMessage/>
+						</ows:ServiceReference>
+					</eop:fileName>
+				</eop:BrowseInformation>
+			</eop:browse>
+		</xsl:if>
 		<xsl:if test="attribute[@id='productURI'] != ''">
 			<eop:product>
 				<!--TODO 0..n-->
 				<eop:ProductInformation>
-					<eop:filename>
+					<eop:fileName>
 						<ows:ServiceReference xlink:href="">
 							<xsl:attribute name="xlink:href"><xsl:apply-templates select="attribute[@id='productURI']"/></xsl:attribute>
 							<ows:RequestMessage/>
 						</ows:ServiceReference>
-					</eop:filename>
+					</eop:fileName>
 					<xsl:if test="attribute[@id='productReferenceSystemIdentifier'] != ''">
-						<eop:referenceSystemIdentifier>
+						<eop:referenceSystemIdentifier codeSpace="EPSG">
 							<xsl:apply-templates select="attribute[@id='productReferenceSystemIdentifier']"/>
 						</eop:referenceSystemIdentifier>
 					</xsl:if>
@@ -371,30 +391,6 @@
 				</eop:ProductInformation>
 			</eop:product>
 		</xsl:if>
-		<xsl:if test="attribute[@id='browseType'] != ''">
-			<eop:browse>
-				<!--TODO 0..n-->
-				<eop:BrowseInformation>
-					<eop:type>
-						<xsl:apply-templates select="attribute[@id='browseType']"/>
-					</eop:type>
-					<xsl:if test="attribute[@id='browseSubType'] != ''">
-						<eop:subtype>
-							<xsl:apply-templates select="attribute[@id='browseSubType']"/>
-						</eop:subtype>
-					</xsl:if>
-					<eop:referenceSystemIdentifier codeSpace="EPSG">
-						<xsl:apply-templates select="attribute[@id='browseReferenceSystemIdentifier']"/>
-					</eop:referenceSystemIdentifier>
-					<eop:filename>
-						<ows:ServiceReference xlink:href="">
-							<xsl:attribute name="xlink:href"><xsl:apply-templates select="attribute[@id='BrowseURI']"/></xsl:attribute>
-							<ows:RequestMessage/>
-						</ows:ServiceReference>
-					</eop:filename>
-				</eop:BrowseInformation>
-			</eop:browse>
-		</xsl:if>
 		<xsl:if test="attribute[@id='maskType'] != ''">
 			<eop:mask>
 				<eop:MaskInformation>
@@ -402,25 +398,25 @@
 						<xsl:apply-templates select="attribute[@id='maskType']"/>
 					</eop:type>
 					<xsl:if test="attribute[@id='maskSubType'] != ''">
-						<eop:subtype>
+						<eop:subType>
 							<xsl:apply-templates select="attribute[@id='maskSubType']"/>
-						</eop:subtype>
+						</eop:subType>
 					</xsl:if>
 					<eop:format>
 						<xsl:apply-templates select="attribute[@id='maskFormat']"/>
 					</eop:format>
 					<xsl:if test="attribute[@id='maskReferenceSystemIdentifier'] != ''">
-						<eop:referenceSystemIdentifier>
+						<eop:referenceSystemIdentifier codeSpace="EPSG">
 							<xsl:apply-templates select="attribute[@id='maskReferenceSystemIdentifier']"/>
 						</eop:referenceSystemIdentifier>
 					</xsl:if>
 					<xsl:if test="attribute[@id='MaskURI'] != ''">
-						<eop:filename>
+						<eop:fileName>
 							<ows:ServiceReference xlink:href="">
 								<xsl:attribute name="xlink:href"><xsl:apply-templates select="attribute[@id='MaskURI']"/></xsl:attribute>
 								<ows:RequestMessage/>
 							</ows:ServiceReference>
-						</eop:filename>
+						</eop:fileName>
 					</xsl:if>
 					<!--TBD Contains inline encoded mask polygon geometries using the gml:MultiSurface/gml:SurfaceMembers/gml:Polygon constructs.
 		0..1 (either fileName or multiExtentOf shall be provided)-->
@@ -440,10 +436,10 @@
 				<!--TODO 0..1 -->
 				<eop:ParameterInformation>
 					<xsl:if test="attribute[@id='unitOfMeasure'] != ''">
-						<eop:unitOfMeasure>
-							<!--TODO 0..n -->
-							<xsl:apply-templates select="attribute[@id='unitOfMeasure']"/>
-						</eop:unitOfMeasure>
+						<!--TODO 0..n -->
+						<eop:unitOfMeasure uom="">
+						<xsl:attribute name="uom"><xsl:apply-templates select="attribute[@id='unitOfMeasure']"/></xsl:attribute>
+						</eop:unitOfMeasure>							
 					</xsl:if>
 					<eop:phenomenon>
 						<!--TODO 0..n -->
@@ -457,10 +453,10 @@
 			</eop:parameter>
 		</xsl:if>
 		<xsl:if test="attribute[@id='coverageURI'] != ''">
-		<eop:coverage>		
-			<xsl:attribute name="xlink:href"><xsl:apply-templates select="attribute[@id='coverageURI']"/></xsl:attribute>			
-		</eop:coverage>
-		</xsl:if>	
+			<eop:coverage>
+				<xsl:attribute name="xlink:href"><xsl:apply-templates select="attribute[@id='coverageURI']"/></xsl:attribute>
+			</eop:coverage>
+		</xsl:if>
 		<xsl:if test="$sType  = 'OPTICAL'">
 			<xsl:if test="attribute[@id='cloudCoverPercentage'] != ''">
 				<opt:cloudCoverPercentage uom="%">
@@ -531,7 +527,7 @@
 				<atm:dataLayers>
 					<atm:DataLayer>
 						<xsl:if test="attribute[@id='speciesError'] != ''">
-							<atm:speciesError>
+							<atm:speciesError uom="%">
 								<xsl:apply-templates select="attribute[@id='speciesError']"/>
 							</atm:speciesError>
 						</xsl:if>
@@ -561,7 +557,7 @@
 							</atm:algorithmVersion>
 						</xsl:if>
 						<xsl:if test="attribute[@id='verticalResolution'] != ''">
-							<atm:verticalResolution>
+							<atm:verticalResolution uom="m">
 								<xsl:apply-templates select="attribute[@id='verticalResolution']"/>
 							</atm:verticalResolution>
 						</xsl:if>
@@ -603,6 +599,26 @@
 	<xsl:template name="fillEOE">
 		<!--test if platform has an element (shortName exists)-->
 		<!--shortName is not a unique id so it must be managed in a diffferent way-->
+		<!--platform-->
+		<xsl:choose>
+			<xsl:when test="$sType = 'SSP' ">
+				<!--TODO 0..n -->
+				<ssp:platform>
+					<xsl:call-template name="fillPlat"/>
+				</ssp:platform>
+			</xsl:when>
+			<xsl:when test="$sType = 'ALTIMETRIC' ">
+				<!--TODO 0..n -->
+				<alt:platform>
+					<xsl:call-template name="fillPlat"/>
+				</alt:platform>
+			</xsl:when>
+			<xsl:otherwise>
+				<eop:platform>
+					<xsl:call-template name="fillPlat"/>
+				</eop:platform>
+			</xsl:otherwise>
+		</xsl:choose>
 		<!--instrument-->
 		<xsl:choose>
 			<xsl:when test="$sType = 'SSP' ">
@@ -651,29 +667,9 @@
 				</alt:auxiliaryInstrument>
 			</xsl:if>
 		</xsl:if>
+		<!--sensor-->
 		<xsl:choose>
-			<!--platform-->
-			<xsl:when test="$sType = 'SSP' ">
-				<!--TODO 0..n -->
-				<ssp:platform>
-					<xsl:call-template name="fillPlat"/>
-				</ssp:platform>
-			</xsl:when>
-			<xsl:when test="$sType = 'ALTIMETRIC' ">
-				<!--TODO 0..n -->
-				<alt:platform>
-					<xsl:call-template name="fillPlat"/>
-				</alt:platform>
-			</xsl:when>
-			<xsl:otherwise>
-				<eop:platform>
-					<xsl:call-template name="fillPlat"/>
-				</eop:platform>
-			</xsl:otherwise>
-		</xsl:choose>
-		<xsl:choose>
-			<!--sensor-->
-			<xsl:when test="$sType  = 'LIMB'">
+					<xsl:when test="$sType  = 'LIMB'">
 				<lmb:sensor>
 					<lmb:Sensor>
 						<xsl:call-template name="fillSens"/>
@@ -694,8 +690,8 @@
 			</xsl:otherwise>
 		</xsl:choose>
 		<!-- we should include here an IF to check if at least one of the element is included in the config file-->
+		<!--acquisitionParameters-->
 		<xsl:choose>
-			<!--acquisitionParameters-->
 			<xsl:when test="$sType  = 'RADAR'">
 				<eop:acquisitionParameters>
 					<sar:Acquisition>
@@ -720,7 +716,7 @@
 							</lmb:observationMode>
 						</xsl:if>
 						<xsl:if test="attribute[@id='verticalResolution'] != ''">
-							<lmb:verticalResolution>
+							<lmb:verticalResolution uom="m">
 								<xsl:apply-templates select="attribute[@id='verticalResolution']"/>
 							</lmb:verticalResolution>
 						</xsl:if>
@@ -833,8 +829,8 @@
 					</xsl:if>
 				</eop:ArchivingInformation>
 			</eop:archivedIn>
-		</xsl:if>		
-	<!--	DEPRECATED		
+		</xsl:if>
+		<!--	DEPRECATED		
 				<xsl:if test="attribute[@id='imageQualityDegradation'] !=''">
 					<eop:imageQualityDegradation uom="%">
 						<xsl:apply-templates select="attribute[@id='imageQualityDegradation']"/>
@@ -856,11 +852,6 @@
 					</eop:imageQualityReportURL>
 				</xsl:if>
 				-->
-		<xsl:if test="attribute[@id='productQualityDegradation'] !=''">
-			<eop:productQualityDegradation uom="%">
-				<xsl:apply-templates select="attribute[@id='productQualityDegradation']"/>
-			</eop:productQualityDegradation>
-		</xsl:if>
 		<xsl:if test="attribute[@id='productQualityStatus'] !=''">
 			<eop:productQualityStatus>
 				<xsl:apply-templates select="attribute[@id='productQualityStatus']"/>
@@ -875,6 +866,11 @@
 			<eop:productQualityReportURL>
 				<xsl:apply-templates select="attribute[@id='productQualityReportURL']"/>
 			</eop:productQualityReportURL>
+		</xsl:if>
+		<xsl:if test="attribute[@id='productQualityDegradation'] !=''">
+			<eop:productQualityDegradation uom="%">
+				<xsl:apply-templates select="attribute[@id='productQualityDegradation']"/>
+			</eop:productQualityDegradation>
 		</xsl:if>
 		<xsl:if test="attribute[@id='productQualityDegradationQuotationMode'] !=''">
 			<eop:productQualityDegradationQuotationMode>
@@ -988,7 +984,6 @@
 									<xsl:apply-templates select="attribute[@id='auxiliaryDataSetFileName']"/>
 								</eop:auxiliaryDataSetFileName>
 							</xsl:if>
-							
 							<xsl:if test="attribute[@id='groundTrackUncertainty'] !=''">
 								<alt:groundTrackUncertainty uom="km">
 									<xsl:apply-templates select="attribute[@id='groundTrackUncertainty']"/>
@@ -1000,18 +995,14 @@
 								</alt:productContentsType>
 							</xsl:if>
 							<xsl:if test="attribute[@id='samplingRate'] !=''">
-								<alt:samplingRate>
-								<gml:Measure uom="kHz">
+								<alt:samplingRate  uom="kHz">
 									<xsl:apply-templates select="attribute[@id='samplingRate']"/>
-									</gml:Measure>
 								</alt:samplingRate>
 							</xsl:if>
 						</alt:ProcessingInformation>
 					</xsl:when>
 					<xsl:otherwise>
 						<eop:ProcessingInformation>
-							<eop:processingMode>
-								<xsl:apply-templates select="attribute[@id='processingMode']"/>
 								<xsl:if test="attribute[@id='processingCenter'] !=''">
 									<eop:processingCenter>
 										<xsl:apply-templates select="attribute[@id='processingCenter']"/>
@@ -1036,6 +1027,11 @@
 									<eop:methodVersion>
 										<xsl:apply-templates select="attribute[@id='methodVersion']"/>
 									</eop:methodVersion>
+								</xsl:if>
+								<xsl:if test="attribute[@id='processingMode'] !=''">
+									<eop:processingMode>
+										<xsl:apply-templates select="attribute[@id='processingMode']"/>
+									</eop:processingMode>
 								</xsl:if>
 								<xsl:if test="attribute[@id='processorName'] !=''">
 									<eop:processorName>
@@ -1062,7 +1058,6 @@
 										<xsl:apply-templates select="attribute[@id='auxiliaryDataSetFileName']"/>
 									</eop:auxiliaryDataSetFileName>
 								</xsl:if>
-							</eop:processingMode>
 						</eop:ProcessingInformation>
 					</xsl:otherwise>
 				</xsl:choose>
@@ -1107,9 +1102,13 @@
 				<xsl:apply-templates select="attribute[@id='orientation']"/>
 			</eop:orientation>
 		</xsl:if>
-		<xsl:if test="attribute[@id='centerOf'] !=''">
+		<xsl:if test="attribute[@id='footprintCenter'] !=''">
 			<eop:centerOf>
-				<xsl:apply-templates select="attribute[@id='centerOf']"/>
+				<gml:Point gml:id="pt_$KEY" srsName="EPSG:4326">
+					<gml:pos>
+						<xsl:apply-templates select="attribute[@id='footprintCenter']"/>
+					</gml:pos>
+				</gml:Point>
 			</eop:centerOf>
 		</xsl:if>
 		<xsl:if test="$sType  = 'ALTIMETRIC'">
@@ -1174,7 +1173,7 @@
 			<eop:shortName>
 				<xsl:apply-templates select="attribute[@id='platformShortName']"/>
 			</eop:shortName>
-			<xsl:if test="attribute[@id='serialIdentifier'] != ''">
+			<xsl:if test="attribute[@id='platformSerialIdentifier'] != ''">
 				<eop:serialIdentifier>
 					<xsl:apply-templates select="attribute[@id='platformSerialIdentifier']"/>
 				</eop:serialIdentifier>
@@ -1196,7 +1195,7 @@
 			<xsl:apply-templates select="attribute[@id='operationalMode']"/>
 		</eop:operationalMode>
 		<xsl:if test="attribute[@id='resolution'] != ''">
-			<eop:resolution>
+			<eop:resolution  uom="m">
 				<xsl:apply-templates select="attribute[@id='resolution']"/>
 			</eop:resolution>
 		</xsl:if>
@@ -1209,16 +1208,16 @@
 			<eop:wavelengthInformation>
 				<eop:WavelengthInformation>
 					<xsl:if test="attribute[@id='discreteWavelengths'] != ''">
-						<eop:discreteWavelengths>							
-						<gml:MeasureList uom="m">
-							<xsl:apply-templates select="attribute[@id='discreteWavelengths']"/>
-						</gml:MeasureList>
+						<eop:discreteWavelengths>
+							<gml:MeasureList uom="m">
+								<xsl:apply-templates select="attribute[@id='discreteWavelengths']"/>
+							</gml:MeasureList>
 						</eop:discreteWavelengths>
 					</xsl:if>
 					<xsl:if test="attribute[@id='endWavelength'] != ''">
 						<eop:endWavelength>
 							<gml:Measure uom="m">
-							<xsl:apply-templates select="attribute[@id='endWavelength']"/>
+								<xsl:apply-templates select="attribute[@id='endWavelength']"/>
 							</gml:Measure>
 						</eop:endWavelength>
 					</xsl:if>
@@ -1230,14 +1229,14 @@
 					<xsl:if test="attribute[@id='startWavelength'] != ''">
 						<eop:startWavelength>
 							<gml:Measure uom="m">
-							<xsl:apply-templates select="attribute[@id='startWavelength']"/>
+								<xsl:apply-templates select="attribute[@id='startWavelength']"/>
 							</gml:Measure>
 						</eop:startWavelength>
 					</xsl:if>
 					<xsl:if test="attribute[@id='wavelengthResolution'] != ''">
 						<eop:wavelengthResolution>
 							<gml:Measure uom="m">
-							<xsl:apply-templates select="attribute[@id='wavelengthResolution']"/>
+								<xsl:apply-templates select="attribute[@id='wavelengthResolution']"/>
 							</gml:Measure>
 						</eop:wavelengthResolution>
 					</xsl:if>
