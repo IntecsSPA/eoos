@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="UTF-8"?><model>
+	<dateTimeFormat>yyyy-MM-dd'T'HH:mm:ss'Z'</dateTimeFormat>
+	<separator>;</separator>
+	<timeFilter>LAST_UPDATE</timeFilter>
+	<generalConstant name="urlRoot">http://root-path-to-landsat-products/</generalConstant>
+	<generalConstant name="sensorValue">RADAR</generalConstant>
+	<excludeDirs>
+		<filter>*/exclude*/*</filter>
+		<filter>*/browses/*</filter>
+		<filter>*/metadata/*</filter>
+		<filter>.*</filter>
+	</excludeDirs>
+	<!-- Dataset identification-->
+	<attribute id="productType">
+		<indexFieldName>$metadata.productType</indexFieldName>
+	</attribute>
+	<!-- Product identification-->
+	<attribute id="productId">
+		<indexFieldName>$metadata.productId</indexFieldName>
+	</attribute>
+	<!-- Product date-time-->
+	<attribute id="beginAcquisition">
+		<indexFieldName>$metadata.beginAcquisition</indexFieldName>
+	</attribute>
+	<attribute id="endAcquisition">
+		<indexFieldName>$metadata.endAcquisition</indexFieldName>
+	</attribute>
+	<attribute id="availabilityTime">
+		<indexFieldName>$metadata.availabilityTime</indexFieldName>
+	</attribute>
+	<!-- Product footprint-->
+	<attribute id="footprint">
+		<!--formula>$metadata.BOUNDING_POLYGON.replaceAll(","," ")</formula-->
+		<indexFieldName>$metadata.footprint</indexFieldName>
+	</attribute>
+	<!-- Product footprint-->
+	<attribute id="productURI">
+		<!--formula>$urlRoot${metadata.PRODUCT_ID}.zip</formula-->
+		<indexFieldName>$metadata.productURI</indexFieldName>
+	</attribute>
+	<attribute id="productVersion">
+		<indexFieldName>$metadata.productVersion</indexFieldName>
+	</attribute>
+	<attribute id="productVersion">
+		<indexFieldName>$metadata.productVersion</indexFieldName>
+	</attribute>
+	<!-- Other product metadata-->
+	<attribute id="acquisitionType">
+		<indexFieldName>$metadata.acquisitionType</indexFieldName>
+	</attribute>
+	<attribute id="acquisitionSubType">
+		<indexFieldName>$metadata.acquisitionSubType</indexFieldName>
+	</attribute>
+	<attribute id="productType">
+		<indexFieldName>$metadata.productType</indexFieldName>
+	</attribute>
+	<attribute id="status">
+		<indexFieldName>$metadata.status</indexFieldName>
+	</attribute>
+	<attribute id="statusSubType">
+		<indexFieldName>$metadata.statusSubType</indexFieldName>
+	</attribute>
+	<attribute id="creationDate">
+		<indexFieldName>$metadata.creationDate</indexFieldName>
+	</attribute>
+	<attribute id="insertionDate">
+		<indexFieldName>$metadata.insertionDate</indexFieldName>
+	</attribute>
+	<!--reason of a failure, cancelation, rejection or degraded quality-->
+	<attribute id="statusDetail">
+		<indexFieldName>$metadata.statusDetail</indexFieldName>
+	</attribute>
+	<attribute id="doi">
+		<indexFieldName>$metadata.doi</indexFieldName>
+	</attribute>
+	<attribute id="parentIdentifier">
+		<indexFieldName>$metadata.parentIdentifier</indexFieldName>
+	</attribute>
+	<!--downlinkedTo-->
+	<attribute id="acquisitionStation">
+		<indexFieldName>$metadata.acquisitionStation</indexFieldName>
+	</attribute>
+	<attribute id="acquisitionDate">
+		<indexFieldName>$metadata.acquisitionDate</indexFieldName>
+	</attribute>
+	<!--archivedIn-->
+	<attribute id="archivingCenter">
+		<indexFieldName>$metadata.archivingCenter</indexFieldName>
+	</attribute>
+	<attribute id="archivingDate">
+		<indexFieldName>$metadata.archivingDate</indexFieldName>
+	</attribute>
+	<attribute id="archivingIdentifier">
+		<indexFieldName>$metadata.archivingIdentifier</indexFieldName>
+	</attribute>
+	
+	<!-- DEPRECATED
+	<attribute id="imageQualityDegradation">
+		<indexFieldName>$metadata.0</indexFieldName>
+	</attribute>	
+	<attribute id="imageQualityStatus">
+		<indexFieldName>$metadata.NOMINAL</indexFieldName>
+	</attribute>
+	<attribute id="imageQualityDegradationTag">
+		<indexFieldName>$metadata.RADIOMETRY</indexFieldName>
+	</attribute>
+	<attribute id="imageQualityReportURL">
+		<indexFieldName>$metadata.DEFAULT</indexFieldName>
+	</attribute>-->
+	
+	<attribute id="productGroupId">
+		<indexFieldName>$metadata.productGroupId</indexFieldName>
+	</attribute>
+	<attribute id="productQualityDegradation">
+		<indexFieldName>$metadata.productQualityDegradation</indexFieldName>
+	</attribute>
+	<attribute id="productQualityStatus">
+		<indexFieldName>$metadata.productQualityStatus</indexFieldName>
+	</attribute>
+	<attribute id="productQualityDegradationTag">
+		<indexFieldName>$metadata.productQualityDegradationTag</indexFieldName>
+	</attribute>
+	<attribute id="productQualityReportURL">
+		<indexFieldName>$metadata.productQualityReportURL</indexFieldName>
+	</attribute>
+	<attribute id="productQualityDegradationQuotationMode">
+		<indexFieldName>$metadata.productQualityDegradationQuotationMode</indexFieldName>
+	</attribute>
+	
+	<!--histogram-->
+<attribute id="bandId">
+		<indexFieldName>$metadata.bandId</indexFieldName>
+	</attribute>
+	<attribute id="min">
+		<indexFieldName>$metadata.min</indexFieldName>
+	</attribute>
+	<attribute id="max">
+		<indexFieldName>$metadata.max</indexFieldName>
+	</attribute>
+	<attribute id="mean">
+		<indexFieldName>$metadata.mean</indexFieldName>
+	</attribute>
+		<attribute id="stdDeviation">
+		<indexFieldName>$metadata.stdDeviation</indexFieldName>
+	</attribute>
+	
+	<!--Link to an EO product that is part of this EO product (e.g. a phr:DataStrip is composed of one or more phr:Scene)-->
+	<!--attribute id="composedOf">
+		<indexFieldName>$metadata.composedOf</indexFieldName>
+	</attribute-->
+	<!--Link to the “father” EO product (e.g. a phr:Scene is a subset of a phr:DataStrip)-->
+	<!--attribute id="subsetOf">
+		<indexFieldName>$metadata.subsetOf</indexFieldName>
+	</attribute-->
+	<!--Specify a link to another EO product (e.g. ERS1 and ERS2 interferometric pair) -->
+	<!--attribute id="linkedWith">
+		<indexFieldName>$metadata.linkedWith</indexFieldName>
+	</attribute-->
+	
+	
+	<!--processing-->
+	<attribute id="processingMode">
+		<indexFieldName>$metadata.processingMode</indexFieldName>
+	</attribute>
+	<attribute id="processingCenter">
+		<indexFieldName>$metadata.processingCenter</indexFieldName>
+	</attribute>
+	<attribute id="processingDate">
+		<indexFieldName>$metadata.processingDate</indexFieldName>
+	</attribute>
+	<attribute id="compositeType">
+		<indexFieldName>$metadata.compositeType</indexFieldName>
+	</attribute>
+	<attribute id="method">
+		<indexFieldName>$metadata.method</indexFieldName>
+	</attribute>
+	<attribute id="methodVersion">
+		<indexFieldName>$metadata.methodVersion</indexFieldName>
+	</attribute>
+	<attribute id="processorName">
+		<indexFieldName>$metadata.processorName</indexFieldName>
+	</attribute>
+	<attribute id="processorVersion">
+		<indexFieldName>$metadata.processorVersion</indexFieldName>
+	</attribute>
+	<attribute id="processingLevel">
+		<indexFieldName>$metadata.processingLevel</indexFieldName>
+	</attribute>
+	<attribute id="nativeProductFormat">
+		<indexFieldName>$metadata.nativeProductFormat</indexFieldName>
+	</attribute>
+	<attribute id="auxiliaryDataSetFileName">
+		<indexFieldName>$metadata.auxiliaryDataSetFileName</indexFieldName>
+	</attribute>
+	
+	<!--ALTIMETRIC-->
+	<!--<attribute id="groundTrackUncertainty">
+		<indexFieldName>$metadata.1</indexFieldName>
+	</attribute>
+	<attribute id="productContentsType">
+		<indexFieldName>$metadata.COASTAL</indexFieldName>
+	</attribute>
+	<attribute id="samplingRate">
+		<indexFieldName>$metadata.20</indexFieldName>
+	</attribute>-->
+	
+	<attribute id="productGroupId">
+		<indexFieldName>$metadata.productGroupId</indexFieldName>
+	</attribute>
+	<attribute id="orbitNumber">
+		<indexFieldName>$metadata.orbitNumber</indexFieldName>
+	</attribute>
+	<attribute id="lastOrbitNumber">
+		<indexFieldName>$metadata.lastOrbitNumber</indexFieldName>
+	</attribute>
+	<attribute id="orbitDirection">
+		<indexFieldName>$metadata.orbitDirection</indexFieldName>
+	</attribute>
+	<attribute id="wrsLongitudeGrid">
+		<indexFieldName>$metadata.wrsLongitudeGrid</indexFieldName>
+	</attribute>
+	<attribute id="wrsLatitudeGrid">
+		<indexFieldName>$metadata.wrsLatitudeGrid</indexFieldName>
+	</attribute>
+	<attribute id="ascendingNodeDate">
+		<indexFieldName>$metadata.ascendingNodeDate</indexFieldName>
+	</attribute>
+	<attribute id="ascendingNodeLongitude">
+		<indexFieldName>$metadata.ascendingNodeLongitude</indexFieldName>
+	</attribute>
+	<attribute id="startTimeFromAscendingNode">
+		<indexFieldName>$metadata.startTimeFromAscendingNode</indexFieldName>
+	</attribute>
+	<attribute id="completionTimeFromAscendingNode">
+		<indexFieldName>$metadata.completionTimeFromAscendingNode</indexFieldName>
+	</attribute>
+	<attribute id="orbitDuration">
+		<indexFieldName>$metadata.orbitDuration</indexFieldName>
+	</attribute>
+	<attribute id="illuminationAzimuthAngle">
+		<indexFieldName>$metadata.illuminationAzimuthAngle</indexFieldName>
+	</attribute>
+	<attribute id="illuminationZenithAngle">
+		<indexFieldName>$metadata.illuminationZenithAngle</indexFieldName>
+	</attribute>
+	<attribute id="illuminationElevationAngle">
+		<indexFieldName>$metadata.illuminationElevationAngle</indexFieldName>
+	</attribute>
+	<attribute id="incidenceAngle">
+		<indexFieldName>$metadata.incidenceAngle</indexFieldName>
+	</attribute>
+	<attribute id="acrossTrackIncidenceAngle">
+		<indexFieldName>$metadata.acrossTrackIncidenceAngle</indexFieldName>
+	</attribute>
+	<attribute id="alongTrackIncidenceAngle">
+		<indexFieldName>$metadata.alongTrackIncidenceAngle</indexFieldName>
+	</attribute>
+	<attribute id="instrumentAzimuthAngle">
+		<indexFieldName>$metadata.instrumentAzimuthAngle</indexFieldName>
+	</attribute>
+	<attribute id="instrumentZenithAngle">
+		<indexFieldName>$metadata.instrumentZenithAngle</indexFieldName>
+	</attribute>
+	<attribute id="instrumentElevationAngle">
+		<indexFieldName>$metadata.instrumentElevationAngle</indexFieldName>
+	</attribute>
+	<attribute id="pitch">
+		<indexFieldName>$metadata.pitch</indexFieldName>
+	</attribute>
+	<attribute id="roll">
+		<indexFieldName>$metadata.roll</indexFieldName>
+	</attribute>
+	<attribute id="yaw">
+		<indexFieldName>$metadata.yaw</indexFieldName>
+	</attribute>
+	
+	<!-- metadata for RADAR products -->	
+	<attribute id="polarisationMode">
+		<indexFieldName>$metadata.polarisationMode</indexFieldName>
+	</attribute>
+	<attribute id="polarisationChannels">
+		<indexFieldName>$metadata.polarisationChannels</indexFieldName>
+	</attribute>
+	<attribute id="antennaLookDirection">
+		<indexFieldName>$metadata.antennaLookDirection</indexFieldName>
+	</attribute>
+	<attribute id="minimumIncidenceAngle">
+		<indexFieldName>$metadata.minimumIncidenceAngle</indexFieldName>
+	</attribute>
+		<attribute id="maximumIncidenceAngle">
+		<indexFieldName>$metadata.maximumIncidenceAngle</indexFieldName>
+	</attribute>
+	<attribute id="incidenceAngleVariation">
+		<indexFieldName>$metadata.incidenceAngleVariation</indexFieldName>
+	</attribute>
+		<attribute id="dopplerFrequency">
+		<indexFieldName>$metadata.dopplerFrequency</indexFieldName>
+	</attribute>	
+	
+	<!-- metadata for ATMOSFERIC products -->	
+	<!--<attribute id="multiViewAngles">
+		<indexFieldName>$metadata.multiViewAngles</indexFieldName>
+	</attribute>	
+	<attribute id="centreViewAngles">
+		<indexFieldName>$metadata.centreViewAngles</indexFieldName>
+	</attribute>	-->	
+
+	<!-- metadata for ALTIMETRIC and LIMB products -->
+	<!--<attribute id="cycleNumber">
+		<indexFieldName>$metadata.cycleNumber</indexFieldName>
+	</attribute>
+	<attribute id="isSegment">
+		<indexFieldName>$metadata.isSegment</indexFieldName>
+	</attribute>
+	<attribute id="relativePassNumber">
+		<indexFieldName>$metadata.relativePassNumber</indexFieldName>
+	</attribute>-->
+
+    <!-- metadata for LIMB products -->
+	<!--<attribute id="observationMode">
+		<indexFieldName>$metadata.observationMode</indexFieldName>
+	</attribute>
+	<attribute id="verticalResolution">
+		<indexFieldName>$metadata.verticalResolution</indexFieldName>
+	</attribute>-->
+
+	<!-- ProductInformation-->
+	<attribute id="productURI">
+		<indexFieldName>$metadata.productURI</indexFieldName>
+	</attribute>
+	<attribute id="productReferenceSystemIdentifier">
+		<indexFieldName>$metadata.productReferenceSystemIdentifier</indexFieldName>
+	</attribute>
+	<attribute id="ProductVersion">
+		<indexFieldName>$metadata.ProductVersion</indexFieldName>
+	</attribute>
+	<attribute id="productSize">
+		<indexFieldName>$metadata.productSize</indexFieldName>
+	</attribute>
+	<attribute id="productTimeliness">
+		<indexFieldName>$metadata.productTimeliness</indexFieldName>
+	</attribute>
+	
+	<!-- BrowseInformation-->
+	<attribute id="browseType">
+		<indexFieldName>$metadata.browseType</indexFieldName>
+	</attribute>
+	<attribute id="browseSubType">
+		<indexFieldName>$metadata.browseSubType</indexFieldName>
+	</attribute>
+	<attribute id="browseReferenceSystemIdentifier">
+		<indexFieldName>$metadata.browseReferenceSystemIdentifier</indexFieldName>
+	</attribute>
+	<attribute id="BrowseURI">
+		<indexFieldName>$metadata.BrowseURI</indexFieldName>
+	</attribute>
+	
+	<!-- MaskInformation-->
+	<attribute id="maskType">
+		<indexFieldName>$metadata.maskType</indexFieldName>
+	</attribute>
+	<attribute id="maskSubType">
+		<indexFieldName>$metadata.maskSubType</indexFieldName>
+	</attribute>
+	<attribute id="maskFormat">
+		<indexFieldName>$metadata.maskFormat</indexFieldName>
+	</attribute>
+	<attribute id="maskReferenceSystemIdentifier">
+		<indexFieldName>$metadata.maskReferenceSystemIdentifier</indexFieldName>
+	</attribute>
+	<attribute id="MaskURI">
+		<indexFieldName>$metadata.MaskURI</indexFieldName>
+	</attribute>
+	
+	<!-- Parameter-->
+	<attribute id="unitOfMeasure">
+		<indexFieldName>$metadata.unitOfMeasure</indexFieldName>
+	</attribute>
+	<attribute id="phenomenonName">
+		<indexFieldName>$metadata.phenomenonName</indexFieldName>
+	</attribute>
+	
+	<!--coverage-->
+	<attribute id="CoverageURI">
+		<indexFieldName>$metadata.CoverageURI</indexFieldName>
+	</attribute>
+	<!-- metadata for OPTICAL or SSP or  ATMOSPHERIC products -->	
+	<!--<attribute id="cloudCoverPercentage">
+		<indexFieldName>$metadata.cloudCoverPercentage</indexFieldName>
+	</attribute>
+	<attribute id="cloudCoverPercentageAssessmentConfidence">
+		<indexFieldName>$metadata.cloudCoverPercentageAssessmentConfidence</indexFieldName>
+	</attribute>
+	<attribute id="cloudCoverPercentageQuotationMode">
+		<indexFieldName>$metadata.cloudCoverPercentageQuotationMode</indexFieldName>
+	</attribute>
+	<attribute id="snowCoverPercentage">
+		<indexFieldName>$metadata.snowCoverPercentage</indexFieldName>
+	</attribute>
+	<attribute id="snowCoverPercentageAssessmentConfidence">
+		<indexFieldName>$metadata.snowCoverPercentageAssessmentConfidence</indexFieldName>
+	</attribute>
+	<attribute id="snowCoverPercentageQuotationMode">
+		<indexFieldName>$metadata.snowCoverPercentageQuotationMode</indexFieldName>
+	</attribute>-->
+		<!-- metadata for ATMOSPHERIC  products -->	
+	<!--<attribute id="speciesError">
+		<indexFieldName>$metadata.speciesError</indexFieldName>
+	</attribute>
+	<attribute id="species">
+		<indexFieldName>$metadata.species</indexFieldName>
+	</attribute>
+	<attribute id="unit">
+		<indexFieldName>$metadata.unit</indexFieldName>
+	</attribute>
+	<attribute id="verticalRange">
+		<indexFieldName>$metadata.verticalRange</indexFieldName>
+	</attribute>
+	<attribute id="algorithmName">
+		<indexFieldName>$metadata.algorithmName</indexFieldName>
+	</attribute>
+	<attribute id="algorithmVersion">
+		<indexFieldName>$metadata.algorithmVersion</indexFieldName>
+	</attribute>
+	<attribute id="verticalResolution">
+		<indexFieldName>$metadata.verticalResolution</indexFieldName>
+	</attribute>-->
+	
+	<!--Instrument-->
+	<attribute id="instrumentShortName">
+		<indexFieldName>$metadata.instrumentShortName</indexFieldName>
+	</attribute>
+	<attribute id="instrumentDescription">
+		<indexFieldName>$metadata.instrumentDescription</indexFieldName>
+	</attribute>
+	<attribute id="instrumentType">
+		<indexFieldName>$metadata.instrumentType</indexFieldName>
+	</attribute>
+	<!-- ALTIMETRIC auxiliaryInstrument-->
+	<!--<attribute id="auxInstrument">
+		<indexFieldName>$metadata.auxInstrument</indexFieldName>
+	</attribute>
+	<attribute id="auxInstrumentType">
+		<indexFieldName>$metadata.auxInstrumentType</indexFieldName>
+	</attribute>-->
+	
+	<!--Platform-->
+	<attribute id="platformShortName">
+		<indexFieldName>$metadata.platformShortName</indexFieldName>
+	</attribute>
+	<attribute id="platformSerialIdentifier">
+		<indexFieldName>$metadata.platformSerialIdentifier</indexFieldName>
+	</attribute>
+	<attribute id="orbitType">
+		<indexFieldName>$metadata.orbitType</indexFieldName>
+	</attribute>
+	
+	<!--Sensor-->
+	<attribute id="sensorType">
+		<indexFieldName>$sensorValue</indexFieldName>
+	</attribute>	
+	<attribute id="operationalMode">
+		<indexFieldName>$metadata.operationalMode</indexFieldName>
+	</attribute>
+	<attribute id="resolution" >
+		<indexFieldName>$metadata.resolution</indexFieldName>
+	</attribute>
+	<attribute id="swathIdentifier">
+		<indexFieldName>$metadata.swathIdentifier</indexFieldName>
+	</attribute>
+	<!--wavelengthInformation-->
+	<!--attribute id="discreteWavelengths">
+		<indexFieldName>$metadata.?gml:MeasureList?</indexFieldName>
+	</attribute-->
+	<!--attribute id="endWavelength">
+		<indexFieldName>$metadata.?gml:Measure?</indexFieldName>
+	</attribute-->
+	<!--attribute id="spectralRange">
+		<indexFieldName>$metadata.spectralRange</indexFieldName>
+	</attribute-->
+	<!--attribute id="startWavelength">
+		<indexFieldName>$metadata.?gml:Measure?</indexFieldName>
+	</attribute-->
+	<!--attribute id="wavelengthResolution">
+		<indexFieldName>$metadata.?gml:Measure?</indexFieldName>
+	</attribute-->
+   	<!-- LIMB -->
+	<!--<attribute id="measurementType">
+		<indexFieldName>$metadata.measurementType</indexFieldName>
+	</attribute>-->
+	
+	
+	
+	<!-- According to the MDGICD this field is of complex type. How can this be mapped?-->
+	<!-- metadata for LIMB products-->
+	<!--attribute id="occultationPoints">
+		<indexFieldName>$metadata.occultationPoints</indexFieldName>
+	</attribute-->
+	<!-- According to the MDGICD this field is of complex type. How can this be mapped?-->
+	<!-- Additional product medata-->
+	<!--attribute id="add-pippo">
+		<indexFieldName>$metadata.PIPPO</indexFieldName>
+	</attribute>
+	<attribute id="add-pluto">
+		<indexFieldName>$metadata.PLUTO</indexFieldName>
+	</attribute-->
+	<!-- Browse metadata-->
+	<!--attribute id="browseImageLocation">
+		<indexFieldName>$metadata.BROWSE</indexFieldName>
+	</attribute>
+	<attribute id="browseMetadataLocation">
+		<indexFieldName>$metadata.BROWSE_METADATA</indexFieldName>
+	</attribute-->
+	<!-- NOT MAPPED IN THE DOCUMENT-->
+	<attribute id="dateType">
+		<indexFieldName>$metadata.INGESTION_TIME</indexFieldName>
+	</attribute>
+	<attribute id="source">
+		<indexFieldName>$metadata.FEED</indexFieldName>
+	</attribute>
+</model>
