@@ -165,9 +165,15 @@
 	<xsl:template name="fillAcq">
 		<!--TODO with eop:acquisitions 0..1 -->
 		<xsl:if test="attribute[@id='orbitNumber'] != ''">
-			<eop:orbitNumber>
+		<xsl:if test="attribute[@id='orbitNumber']/indexFieldName != ''">
+                    #if( $metadata.<xsl:value-of select="attribute[@id='orbitNumber']/indexFieldName"/> != '' )   
+                </xsl:if>
+                        <eop:orbitNumber>
 				<xsl:apply-templates select="attribute[@id='orbitNumber']"/>
 			</eop:orbitNumber>
+		<xsl:if test="attribute[@id='orbitNumber']/indexFieldName != ''">
+                    #end
+                </xsl:if>
 		</xsl:if>
 		<xsl:if test="attribute[@id='lastOrbitNumber'] != ''">
 			<eop:lastOrbitNumber>
@@ -175,10 +181,12 @@
 			</eop:lastOrbitNumber>
 		</xsl:if>
 		<xsl:if test="attribute[@id='orbitDirection'] != ''">
-			<eop:orbitDirection>
+		<xsl:if test="attribute[@id='orbitDirection']/indexFieldName != ''">#if( $metadata.<xsl:value-of select="attribute[@id='orbitDirection']/indexFieldName"/> != '' )</xsl:if>
+                        <eop:orbitDirection>
 				<xsl:apply-templates select="attribute[@id='orbitDirection']"/>
 			</eop:orbitDirection>
-		</xsl:if>
+		<xsl:if test="attribute[@id='orbitDirection']/indexFieldName != ''">#end</xsl:if>
+                </xsl:if>
 		<xsl:if test="attribute[@id='wrsLongitudeGrid'] != ''">
 			<eop:wrsLongitudeGrid codeSpace="EPSG">
 				<xsl:apply-templates select="attribute[@id='wrsLongitudeGrid']"/>
@@ -281,9 +289,11 @@
 				</sar:polarisationMode>
 			</xsl:if>
 			<xsl:if test="attribute[@id='polarisationChannels'] != ''">
+                            <xsl:if test="attribute[@id='polarisationChannels']/indexFieldName != ''">#if( $metadata.<xsl:value-of select="attribute[@id='polarisationChannels']/indexFieldName"/> != '' )</xsl:if>
 				<sar:polarisationChannels>
 					<xsl:apply-templates select="attribute[@id='polarisationChannels']"/>
 				</sar:polarisationChannels>
+                            <xsl:if test="attribute[@id='polarisationChannels']/indexFieldName != ''">#end</xsl:if>    
 			</xsl:if>
 			<xsl:if test="attribute[@id='antennaLookDirection'] != ''">
 				<sar:antennaLookDirection>
@@ -1200,9 +1210,11 @@
 			</eop:resolution>
 		</xsl:if>
 		<xsl:if test="attribute[@id='swathIdentifier'] != ''">
-			<eop:swathIdentifier>
+                     <xsl:if test="attribute[@id='swathIdentifier']/indexFieldName != ''">#if( $metadata.<xsl:value-of select="attribute[@id='swathIdentifier']/indexFieldName"/> != '' )</xsl:if>
+                        <eop:swathIdentifier>
 				<xsl:apply-templates select="attribute[@id='swathIdentifier']"/>
 			</eop:swathIdentifier>
+                     <xsl:if test="attribute[@id='swathIdentifier']/indexFieldName != ''">#end</xsl:if>
 		</xsl:if>
 		<xsl:if test="attribute[@id='discreteWavelengths'] != '' or attribute[@id='endWavelength'] != '' or attribute[@id='spectralRange'] != '' or attribute[@id='startWavelength'] != '' or attribute[@id='wavelengthResolution'] != ''">
 			<eop:wavelengthInformation>
