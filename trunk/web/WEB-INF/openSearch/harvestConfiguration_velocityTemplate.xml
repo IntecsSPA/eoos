@@ -10,6 +10,12 @@
 		<filter>*/metadata/*</filter>
 		<filter>.*</filter>
 	</excludeDirs>
+	<attribute id="observedProperty">
+		<indexFieldName>$metadata.observedProperty</indexFieldName>
+	</attribute>
+	<attribute id="observedPropertyNilReason">
+		<indexFieldName>$metadata.observedPropertyNilReason</indexFieldName>
+	</attribute>
 	<!-- Dataset identification-->
 	<attribute id="productType">
 		<indexFieldName>$metadata.productType</indexFieldName>

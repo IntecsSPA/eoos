@@ -9,6 +9,12 @@
 		<filter>*/metadata/*</filter>
 		<filter>.*</filter>
 	</excludeDirs>
+	<!--<attribute id="observedProperty">
+		<defaultValue>http://dummy.url</defaultValue>
+	</attribute>-->
+	<attribute id="observedPropertyNilReason">
+		<defaultValue>inapplicable</defaultValue>
+	</attribute>
 	<!-- Dataset identification-->
 	<attribute id="productType">
 		<defaultValue>DummyAltimeter</defaultValue>
