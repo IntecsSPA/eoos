@@ -85,7 +85,22 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</om:procedure>
-		<om:observedProperty xlink:href="#params1"/>
+		<xsl:choose> 
+		<xsl:when test="attribute[@id='observedProperty'] != ''">
+			<xsl:if test="attribute[@id='observedProperty']/indexFieldName != ''">#if( $metadata.<xsl:value-of select="attribute[@id='observedProperty']/indexFieldName"/> != '' )</xsl:if>
+					<om:observedProperty xlink:href="">
+							<xsl:attribute name="xlink:href"><xsl:apply-templates select="attribute[@id='observedProperty']"/></xsl:attribute>
+					</om:observedProperty>
+			<xsl:if test="attribute[@id='observedProperty']/indexFieldName != ''">#end</xsl:if>	
+		</xsl:when>
+		 <xsl:otherwise>
+			<xsl:if test="attribute[@id='observedPropertyNilReason']/indexFieldName != ''">#if( $metadata.<xsl:value-of select="attribute[@id='observedPropertyNilReason']/indexFieldName"/> != '' )</xsl:if>
+					<om:observedProperty nilReason="">
+							<xsl:attribute name="nilReason"><xsl:apply-templates select="attribute[@id='observedPropertyNilReason']"/></xsl:attribute>
+					</om:observedProperty>
+			<xsl:if test="attribute[@id='observedPropertyNilReason']/indexFieldName != ''">#end</xsl:if>
+		 </xsl:otherwise>			
+		</xsl:choose>		
 		<om:featureOfInterest>
 			<xsl:choose>
 				<xsl:when test="$sType  = 'ALTIMETRIC'">
