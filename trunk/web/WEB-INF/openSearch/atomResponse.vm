@@ -45,7 +45,8 @@ xmlns:gml="http://www.opengis.net/gml">
 			</gml:exterior>
 		</gml:Polygon>
 	</georss:where>
-#set($i = " ")#recursive( $metadata.metadataDocument.getRootElement() $i )        
+        <link href="${BASE_URL}eoproduct?id=$metadata.identifier&amp;recordSchema=om" rel="alternate" type="application/gml+xml" title="URL for retrieving metadata of the product: $metadata.identifier"/>
+##set($i = " ")#recursive( $metadata.metadataDocument.getRootElement() $i )        
     </atom:entry> 
 #end
 </atom:feed>
