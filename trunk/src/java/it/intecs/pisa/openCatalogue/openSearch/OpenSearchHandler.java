@@ -69,6 +69,8 @@ public class OpenSearchHandler {
         private static final String OPEN_SEARCH_REQUEST = "OPEN_SEARCH_REQUEST";
         private static final String BASE_URL = "BASE_URL";
         private static final String IDENTIFIER = "identifier";
+        private static final String PROD_HREF = "PROD_HREF";
+
         private static final String POLYGON = "polygon";
         private static final String SHORT_NAME = "polygon";
 
@@ -109,7 +111,6 @@ public class OpenSearchHandler {
         SaxonDocument solrResponse = sendRequestToSolr(request);
         sendBackJSONResponse(solrResponse, request, response);        
     }
-    
     
     public void processProductRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
         String id = (String)request.getParameter("id");
@@ -257,7 +258,8 @@ public class OpenSearchHandler {
             root = builder.build(new StringReader(cdata_field));         
             metadata.put(METADATA_DOCUMENT, root);
             metadata.put(IDENTIFIER, id);
-            metadata.put(POLYGON, original_polygon);            
+            metadata.put(POLYGON, original_polygon);  
+            //metadata.put(PROD_HREF, id);
             // load the metadata and add it to the array
             metadataList.add(metadata);        
         }
