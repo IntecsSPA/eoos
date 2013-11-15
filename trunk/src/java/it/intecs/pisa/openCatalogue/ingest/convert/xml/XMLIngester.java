@@ -2,30 +2,20 @@
  * This code is licensed under the GPL 3.0 license, available at the root
  * application directory.
  */
-package it.intecs.pisa.openCatalogue.harvester;
+package it.intecs.pisa.openCatalogue.ingest.convert.xml;
 
 import it.intecs.pisa.gis.util.CoordinatesUtil;
 import it.intecs.pisa.openCatalogue.filesystem.AbstractFilesystem;
 import it.intecs.pisa.openCatalogue.filesystem.FileFilesystem;
 import it.intecs.pisa.openCatalogue.saxon.SaxonDocument;
 import it.intecs.pisa.openCatalogue.solr.solrHandler;
-import it.intecs.pisa.util.DOMUtil;
-import it.intecs.pisa.util.XSLT;
-import it.intecs.pisa.util.xml.XMLUtils;
 import java.io.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
+import java.util.*;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMResult;
-import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.xpath.XPathConstants;
@@ -37,10 +27,14 @@ import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.tools.generic.DateTool;
 import org.apache.velocity.tools.generic.MathTool;
+import org.jdom2.Document;
+import org.jdom2.Element;
 import org.jdom2.JDOMException;
+import org.jdom2.filter.Filters;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.XMLOutputter;
-import org.w3c.dom.Document;
+import org.jdom2.xpath.XPathExpression;
+import org.jdom2.xpath.XPathFactory;
 import org.xml.sax.SAXException;
 
 /**
@@ -86,7 +80,7 @@ import org.xml.sax.SAXException;
  *
  * @author simone
  */
-public class Harvester {
+public class XMLIngester {
 
     public static final String HARVEST_FILE_NAME = "*.index";
     public static final String DOLLAR = "$";
@@ -125,27 +119,67 @@ public class Harvester {
     private SaxonDocument configuration;
     private VelocityEngine ve;
     private String sensorType;
-    private AbstractFilesystem metadataRepository;
+    private AbstractFilesystem metadataRepository = null;
     private String dateTimeFormat;
-    private solrHandler solr;
+    private solrHandler solr = null;
 
     /**
-     * @param args the command line arguments D:\Projects\SVN_checkout\eoos\trunk\web\WEB-INF\openSearch
+     * Displays startup command syntax.
+     *
+     * @param cmd Name of the startup command (i.e. test.bat or test.sh)
+     */
+    static void syntax() {
+        System.out.println();
+        System.out.println("Metadata Converter:");
+        System.out.println("  converter -source=dir -conf=configDirectory -confFile=configurationFileName -tmplGen=templateGenerator [-solr=solrUrl] [-repo=metadata_repository]  ");
+        System.out.println("where:");
+        System.out.println("  -source=dir directory containing the metadata to be harvested");
+        System.out.println("  -conf=configDirectory directory which should contain the configuration file (i.e. confFile). The directory is also used to store the metadata template generated.");
+        System.out.println("  -confFile=configurationFileName name of the file containing the mapping between the original metadata and the metadata to be generated");
+        System.out.println("  -tmplGen=templateGenerator xslt file used to generate the metadata template starting from the mapping file");
+        System.out.println("  -solr=solrUrl optional parameter. URL of a solar instance containing the ogc schema");
+        System.out.println("  -repo=metadata_repository optional parameter. Path to the folder where the result metadata have to be stored.  ");
+    }
+
+    /**
+     * @param args the command line arguments
+     * D:\Projects\SVN_checkout\eoos\trunk\web\WEB-INF\openSearch
      */
     public static void main(String[] args) throws Exception {
-        AbstractFilesystem configuration = new FileFilesystem("D:\\Projects\\SVN_checkout\\eoos\\trunk\\web\\WEB-INF\\openSearch\\");
-        AbstractFilesystem transformer = new FileFilesystem("D:\\Projects\\SVN_checkout\\eoos\\trunk\\web\\WEB-INF\\config\\generateVelocityTemple_1.xsl");
-        AbstractFilesystem model = new FileFilesystem("D:\\Projects\\SVN_checkout\\eoos\\trunk\\web\\WEB-INF\\openSearch\\harvestConfiguration_1.xml");
-        AbstractFilesystem processing = new FileFilesystem("D:\\catalogue_workspace\\config");
-        AbstractFilesystem repository = new FileFilesystem("D:\\catalogue_workspace\\");
-        createVelocityTemplates(transformer, processing, model);
-        AbstractFilesystem toBeHarvested = new FileFilesystem("D:\\Projects\\SVN_checkout\\eoos\\trunk\\web\\WEB-INF\\openSearch\\19811206-201804_19811206-221804_20130116-230001.index");
-        AbstractFilesystem[] fsa = new FileFilesystem[1];
-        fsa[0] = toBeHarvested;
-        String url = "http://ergo.pisa.intecs.it:8080/solr/ogc1/";
-        boolean isTomcatCall= false;
-        Harvester harv = new Harvester(repository, configuration, url, isTomcatCall);
-        harv.harvestData(fsa);
+
+
+        if (args.length < 4) {
+            syntax();
+            return;
+        }
+        AbstractFilesystem toBeHarvested = null;
+        AbstractFilesystem transformer = null;
+        AbstractFilesystem model = null;
+        AbstractFilesystem configuration = null;
+        AbstractFilesystem repository = null;
+        createVelocityTemplates(transformer, configuration, model);
+        String url = null;
+
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].startsWith("-source=")) {
+                toBeHarvested = new FileFilesystem(args[i].substring(8));
+            }else if (args[i].startsWith("-tmplGen=")) {
+                transformer = new FileFilesystem(args[i].substring(9));
+            }else if (args[i].startsWith("-conf=")) {
+                configuration = new FileFilesystem(args[i].substring(6));
+            }else if (args[i].startsWith("-confFile=")) {
+                model = new FileFilesystem(args[i].substring(10));
+            }else if (args[i].startsWith("-solr=")) {
+                url = args[i].substring(6);
+            }else if (args[i].startsWith("-repo=")) {
+                repository = new FileFilesystem(args[i].substring(6));
+            }
+        }
+
+
+        //RdfIngester harv = new XMLIngester(repository, configuration, url, isTomcatCall);
+        XMLIngester harv = new XMLIngester(repository, configuration, "ingestConfiguration_rdf.xml", url, false);
+        harv.ingestDataFromDir(toBeHarvested);
     }
 
     /**
@@ -162,17 +196,21 @@ public class Harvester {
      * @throws SaxonApiException
      * @throws Exception
      */
-    public Harvester(AbstractFilesystem metadataRepository, AbstractFilesystem configDirectory, String solrURL, boolean isTomcatCall) throws SAXException, IOException, SaxonApiException, Exception {
-        this.metadataRepository = metadataRepository;
+    public XMLIngester(AbstractFilesystem metadataRepository, AbstractFilesystem configDirectory, String configFileName, String solrURL, boolean runsOnTomcat) throws SAXException, IOException, SaxonApiException, Exception {
+        if (metadataRepository != null) {
+            this.metadataRepository = metadataRepository;
+            this.metadataRepository.mkdirs();
+        }
+
         this.ve = new VelocityEngine();
         ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "file");
         ve.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, configDirectory.getAbsolutePath());
-        
-        if (isTomcatCall) {
-            ve.setProperty("runtime.log.logsystem.class", "org.apache.velocity.runtime.log.NullLogSystem");
-        }    
 
-        this.configuration = new SaxonDocument(configDirectory.get(DEFAULT_CONFIGURATION_FILE_NAME).getInputStream());
+        if (runsOnTomcat) {
+            ve.setProperty("runtime.log.logsystem.class", "org.apache.velocity.runtime.log.NullLogSystem");
+        }
+
+        this.configuration = new SaxonDocument(configDirectory.get(configFileName).getInputStream());
 
         this.sensorType = (!"".equals((String) configuration.evaluatePath(XPATH_SENSOR_TYPE + SLASH + TAG_INDEX_FIELD_NAME, XPathConstants.STRING))
                 ? (DOLLAR + (String) configuration.evaluatePath(XPATH_SENSOR_TYPE + SLASH + TAG_INDEX_FIELD_NAME, XPathConstants.STRING))
@@ -183,7 +221,9 @@ public class Harvester {
                 : DEFAULT_DATE_TIME_FORMAT;
 
         this.ELEMENTS_SEPARATOR = (String) configuration.evaluatePath(XPATH_SEPARATOR, XPathConstants.STRING);
-        solr = new solrHandler(solrURL);
+        if (solrURL != null && !solrURL.equals("")) {
+            solr = new solrHandler(solrURL);
+        }
     }
 
     /**
@@ -198,7 +238,8 @@ public class Harvester {
      * @return the data of the last (represented as long) harvested metadata
      * @throws Exception
      */
-    public void harvestData(AbstractFilesystem[] files) throws Exception {
+    public void ingestDataFromDir(AbstractFilesystem dir) throws Exception {
+        AbstractFilesystem[] files = dir.list(false, null);
         for (AbstractFilesystem file : files) {
             if (file.isFile()) {
                 String fileName = file.getName();
@@ -209,20 +250,19 @@ public class Harvester {
         }
     }
 
-    public void harvestData(AbstractFilesystem file) throws Exception {
-            if (file.isFile()) {
-                String fileName = file.getName();
-                String uri = file.getUri();
-                //setStartStopTime(fileName);
-                parse(file);
-            }
+    public void ingestData(AbstractFilesystem file) throws Exception {
+        if (file.isFile()) {
+            String fileName = file.getName();
+            String uri = file.getUri();
+            //setStartStopTime(fileName);
+            parse(file);
+        }
     }
 
-        public void harvestDataFromStream(AbstractFilesystem streamFile) throws Exception {
-                parse(streamFile);
+    public void ingestDataFromStream(AbstractFilesystem streamFile) throws Exception {
+        parse(streamFile);
     }
 
-    
     /**
      * This class generates the ouput files (one for each dataset identified in
      * the index file) via a velocity template (a different template for each
@@ -254,6 +294,13 @@ public class Harvester {
         return metadata;
     }
 
+    //Get JDOM document from SAX Parser
+    private static org.jdom2.Document useSAXParser(InputStream stream) throws JDOMException,
+            IOException {
+        SAXBuilder saxBuilder = new SAXBuilder();
+        return saxBuilder.build(stream);
+    }
+
     /**
      * This function parses the indexFile passed as input and for each line:
      * <ul> <li>In the case of a "period record": Period is retrieved and stored
@@ -272,39 +319,48 @@ public class Harvester {
      * @throws Exception
      */
     public void parse(AbstractFilesystem indexFile) throws FileNotFoundException, IOException, Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(indexFile.getInputStream()));
-        String strLine;
+        // open XML
+        // navigate XML and store the value of the leaf in an HASH MAP using as key the PATH created using the local names separated by an _
 
-        // this should parse the first line that should include the KEYs to be used for the file creation
-        String keysLine = br.readLine();
-        String[] keys = stringtoArray(keysLine, ELEMENTS_SEPARATOR);
 
-        //Now we have to check if we have all the info to generate the metadata
-        int lineCounter = 1;
-
-        String uri = indexFile.getUri();
-        //String folderURI = uri.substring(0, uri.lastIndexOf("/"));
-        org.jdom2.Document metadata;
+        Document metadata;
+        InputStream stream = indexFile.getInputStream();
         // set the start and stop period        
         String key = "";
-        while ((strLine = br.readLine()) != null) {
-            String[] values = stringtoArray(strLine, ELEMENTS_SEPARATOR);
-            if (values.length == keys.length) {
-                Map map = new HashMap();
-                for (int i = 0; i < keys.length; i++) {
-                    map.put(keys[i], values[i]);
-                }
-                key = UUID.randomUUID().toString();
-                metadata = generateMetadata(map, key);
-                storeMetadata(metadata, key);
-                uploadMetadataToSolr(metadata, key);
-            } else {
-                System.out.println("Line " + lineCounter + " is corrupted we skip it : (expected=" + keys.length + " read=" + values.length + ") TEXT = " + strLine);
-            }
-            lineCounter++;
+        org.jdom2.Document doc = useSAXParser(stream);
+
+        //Get list of Employee element
+        Element rootElement = doc.getRootElement();
+        Map map = new HashMap();
+        String path = "";
+        generateMap(rootElement, map, path);
+
+        key = UUID.randomUUID().toString();
+        metadata = generateMetadata(map, key);
+        if (metadataRepository != null) {
+            storeMetadata(metadata);
+        }
+        if (solr != null) {
+            uploadMetadataToSolr(metadata);
         }
     }
 
+    private static void generateMap(Element el, Map map, String path) {
+        String value = el.getTextTrim();
+        List<Element> listEmpElement = el.getChildren();
+        if (listEmpElement.isEmpty() && value != null) {
+//                System.out.println("PATH:"+path.substring(1));
+            map.put(path.substring(1), value);
+        } else {
+            for (Element empElement : listEmpElement) {
+                generateMap(empElement, map, path + "_" + empElement.getName());
+            }
+        }
+    }
+
+    ;
+    
+    
     /**
      * This function convert a string s into an array of strings using sep as
      * separator
@@ -364,15 +420,6 @@ public class Harvester {
     }
 
     /**
-     * TO BE IMPLEMENTED
-     *
-     * @param keys
-     */
-    private void checkFeasibility(String[] keys) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
-    /**
      * @param metadataBasket the metadataBasket to set
      */
     private void setStartStopTime(String relativePath) throws ParseException {
@@ -386,7 +433,10 @@ public class Harvester {
         this.PERIOD_END = ddf.format(date);
     }
 
-    private void storeMetadata(org.jdom2.Document metadata, String key) throws IOException {
+    private void storeMetadata(org.jdom2.Document metadata) throws IOException {
+        XPathExpression<Element> xpath = XPathFactory.instance().compile("//*[local-name() = 'identifier']", Filters.element());
+        String key = xpath.evaluateFirst(metadata.getRootElement()).getTextTrim();
+
         FileFilesystem fs = new FileFilesystem(metadataRepository.getAbsolutePath() + "/" + key + ".xml");
         XMLOutputter outputter = new XMLOutputter();
         String metadataString = outputter.outputString(metadata);
@@ -394,20 +444,22 @@ public class Harvester {
         fs.getOutputStream().write(b);
     }
 
-    private void uploadMetadataToSolr(org.jdom2.Document metadata, String key) throws IOException, SaxonApiException, Exception {
-            VelocityContext context = new VelocityContext();
-            context.put(VELOCITY_DATE, new DateTool());
-            context.put(VELOCITY_MATH, new MathTool());
-            context.put("coordinates",new CoordinatesUtil());
-//            context.put("KEY", key);
-            context.put("metadataDocument",metadata);            
-            StringWriter swOut = new StringWriter();
-            
-            ve.getTemplate("generateSolrAddRequest.vm").merge(context, swOut);
-            solr.postDocument(swOut.toString());
-            // only for debug .... TODO - remove it
-            saveSolrfile(swOut.toString(),key);
-            swOut.close();   
+    private void uploadMetadataToSolr(org.jdom2.Document metadata) throws IOException, SaxonApiException, Exception {
+        VelocityContext context = new VelocityContext();
+        context.put(VELOCITY_DATE, new DateTool());
+        context.put(VELOCITY_MATH, new MathTool());
+        context.put("coordinates", new CoordinatesUtil());
+        context.put("metadataDocument", metadata);
+        StringWriter swOut = new StringWriter();
+
+        ve.getTemplate("generateSolrAddRequest.vm").merge(context, swOut);
+        solr.postDocument(swOut.toString());
+        // only for debug .... TODO - remove it
+        XPathExpression<Element> xpath = XPathFactory.instance().compile("//*[local-name() = 'identifier']", Filters.element());
+        String key = xpath.evaluateFirst(metadata.getRootElement()).getTextTrim();
+        saveSolrfile(swOut.toString(), key);
+        // only for debug .... TODO - remove it
+        swOut.close();
     }
 
     private void saveSolrfile(String swOut, String key) throws IOException {

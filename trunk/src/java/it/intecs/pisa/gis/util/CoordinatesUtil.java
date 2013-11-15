@@ -42,7 +42,7 @@ public class CoordinatesUtil {
             solr += CA[0] + " " + CA[1];        
         }else{
             // remove the ","
-            solr.subSequence(0, solr.length()-1);
+            solr = solr.substring(0, solr.length()-1);
         }
         
         return solr;

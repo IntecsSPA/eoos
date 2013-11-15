@@ -4,12 +4,13 @@
 */
 package it.intecs.pisa.openCatalogue.catalogue;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import it.intecs.pisa.log.Log;
 import it.intecs.pisa.openCatalogue.filesystem.AbstractFilesystem;
 import it.intecs.pisa.openCatalogue.filesystem.FileFilesystem;
 import it.intecs.pisa.openCatalogue.filesystem.StreamFileSystem;
-import it.intecs.pisa.openCatalogue.harvester.Harvester;
+import it.intecs.pisa.openCatalogue.ingest.convert.csv.CSVIngester;
 import it.intecs.pisa.openCatalogue.ingest.Ingester;
 import it.intecs.pisa.openCatalogue.openSearch.OpenSearchHandler;
 import it.intecs.pisa.openCatalogue.prefs.Prefs;
@@ -35,10 +36,11 @@ public class CatalogueServlet extends HttpServlet {
 
     protected static final String METHOD_OPEN_SEARCH = "opensearch";
     protected static final String METHOD_HARVEST = "harvest";
+    protected static final String METHOD_CSW = "csw";
+    protected static final String METHOD_GUI = "gui";    
     protected static final String RESOURCE_METADATA = "metadata";
     protected static final String RESOURCE_METADATAS = "metadatas";
     protected static final String RESOURCE_CSV = "csv";
-    protected static final String METHOD_CSW = "csw";
     protected static final String OS_ATOM = "atom";
     protected static final String OS_WKT = "wkt";
     protected static final String OS_CZML = "czml";
@@ -120,6 +122,8 @@ public class CatalogueServlet extends HttpServlet {
             }
         } else if (requestURI.contains(METHOD_HARVEST)) {
             handleHarvest(request, response);
+        } else if (requestURI.contains(METHOD_GUI)) {
+            handleGuiRequest(request, response);
         } else if (requestURI.contains(METHOD_CSW)) {
             handleCSW(request, response);
         } else {
@@ -281,6 +285,43 @@ public class CatalogueServlet extends HttpServlet {
         sendJsonBackToClient(outputJson, response);
     }
 
+    
+    private void handleGuiRequest(HttpServletRequest request, HttpServletResponse response) throws IOException  {
+        String solrEndPoint = Prefs.getSolrUrl();            
+        JsonObject outputJson = new JsonObject();
+        JsonArray rows = new JsonArray();
+        
+        JsonObject tmpJson = new JsonObject();
+        tmpJson.addProperty("title", "Simple search with no specific query parameters. The results are returned in ATOM format.");
+        tmpJson.addProperty("value", request.getRequestURL()+"/opensearch/atom/?q=*.*&amp;startIndex=1&amp;count=10");
+        rows.add(tmpJson);
+
+        tmpJson = new JsonObject();
+        tmpJson.addProperty("title", "Simple search on a geographical area identified vua a Bounding Box. The results are returned in ATOM format.");
+        tmpJson.addProperty("value", request.getRequestURL()+"/opensearch/atom/?q=*.*&amp;startIndex=1&amp;count=10&amp;bbox=[20,40 90,180]");
+        rows.add(tmpJson);
+        
+        tmpJson = new JsonObject();
+        tmpJson.addProperty("title", "More complex search on RADAR products over a specific time window. The results are returned in ATOM format.");
+        tmpJson.addProperty("value", request.getRequestURL()+"/opensearch/atom/?q=*.*&amp;startIndex=1&amp;count=10&amp;st=RADAR&amp;startdate=2003-01-28T13:10:00.077Z&amp;stopdate=2003-01-28T13:40:00.077Z");
+        rows.add(tmpJson);        
+
+        tmpJson = new JsonObject();
+        tmpJson.addProperty("title", "Simple search on a geographical area identified via a circle. The results are returned in ATOM format.");
+        tmpJson.addProperty("value", request.getRequestURL()+"/opensearch/atom/?q=*.*&amp;startIndex=1&amp;count=10&amp;lat=54.75152&amp;lon=-25&amp;radius=1&amp");
+        rows.add(tmpJson);
+
+        tmpJson = new JsonObject();
+        tmpJson.addProperty("title", "Simple search on a geographical area identified via a circle. The results are returned in ATOM format.");
+        tmpJson.addProperty("value", request.getRequestURL()+"/opensearch/json/?q=*ASAR*&amp;startIndex=0&amp;count=10&amp;lat=54.75152&amp;lon=-25&amp;radius=1&amp");
+        rows.add(tmpJson);
+
+        outputJson.add("rows", rows);
+        
+        sendJsonBackToClient(outputJson, response);
+    }
+    
+    
     private void handleCSV(HttpServletRequest request, HttpServletResponse response) throws IOException  {
         InputStream in;
         String errorReason = null;
@@ -295,7 +336,7 @@ public class CatalogueServlet extends HttpServlet {
         AbstractFilesystem toBeIngested = new StreamFileSystem(request.getInputStream());
         String url = Prefs.getSolrUrl();
         try{
-        Harvester harv = new Harvester(configuration, configuration, url, isTomcatCall);
+        CSVIngester harv = new CSVIngester(configuration, configuration, url, isTomcatCall);
         harv.harvestDataFromStream(toBeIngested);
         
         } catch (Exception ex) {

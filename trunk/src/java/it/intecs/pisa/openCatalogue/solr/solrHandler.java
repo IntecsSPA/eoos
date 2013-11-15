@@ -101,7 +101,7 @@ public class solrHandler {
         String q = this.solrHost + "/select?q=*%3A*&wt=xml&indent=true";
         String name;
         String value;
-        if (!request.getParameter("q").equals("*.*")){
+        if (null != request.getParameter("q") && !request.getParameter("q").equals("*.*")){
             value = request.getParameter("q");
             q = this.solrHost + "/select?q=" + URLDecoder.decode(value, "ISO-8859-1") + "&wt=xml&indent=true";
         }
@@ -117,7 +117,7 @@ public class solrHandler {
                 q += "&rows=" + value;                
             } else if (name.equals("startPage")) {
             } else if (name.equals("startIndex")) {
-                q += "&start=" + value;
+                q += "&start=" + (Integer.parseInt(value)-1);
             } else if (name.equals("uid")) {
             } else if (name.equals("bbox")) {
                 Log.debug("BBOX "+value);

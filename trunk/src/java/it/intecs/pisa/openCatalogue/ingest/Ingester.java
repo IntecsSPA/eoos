@@ -101,7 +101,7 @@ public class Ingester {
             try {
                 if (empElement.getName().equals("EarthObservation")) {
                     toBeInserted++;
-                    identfier = xpath.evaluateFirst(empElement).getName();                                                              
+                    identfier = xpath.evaluateFirst(empElement).getTextTrim();                                                              
                     result = new HashMap();
                     //empElement.detach();
                     metadata = new Document(empElement.clone());

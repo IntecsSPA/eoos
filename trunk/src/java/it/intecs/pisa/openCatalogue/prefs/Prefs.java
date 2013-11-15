@@ -65,6 +65,8 @@ public class Prefs {
     private static final String CONFIG_PROPERTIES_FILE_PATH="misc/config.properties";
     public static final String PREFS_LOGLEVEL = "log.level";
     public static final String PREFS_SOLR_URL = "solr.url";
+    public static final String PREFS_PRODUCT_URL_BASE = "product.base.url";
+    public static final String PREFS_BROWSE_URL_BASE = "browse.base.url";
    
  
     public static void install()
@@ -153,6 +155,18 @@ public class Prefs {
             Properties props;
             props = Prefs.load();
             return props.getProperty(PREFS_SOLR_URL);
+    }
+
+    public static String getProductURLBase() throws FileNotFoundException, IOException {
+            Properties props;
+            props = Prefs.load();
+            return props.getProperty(PREFS_PRODUCT_URL_BASE);
+    }
+    
+    public static String getBrowseURLBase() throws FileNotFoundException, IOException {
+            Properties props;
+            props = Prefs.load();
+            return props.getProperty(PREFS_BROWSE_URL_BASE);
     }
     
     
