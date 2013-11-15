@@ -1,0 +1,15 @@
+#macro ( recursive $e $indent )   
+  #if( $e.getChildren().size() > 0 )
+  $indent <$e.getQualifiedName()#foreach($namespace in $e.getNamespacesIntroduced()) xmlns:$namespace.getPrefix()="$namespace.getURI()"#end#foreach($attribute in $e.getAttributes()) #if($attribute.getNamespacePrefix()!='')$attribute.getNamespacePrefix():#end$attribute.getName()="$attribute.getValue()"#end> 
+  #foreach ($child in $e.getChildren() ) 
+  #recursive( $child "$indent  " )
+  #end
+  $indent </$e.getQualifiedName()>
+  #else
+  $indent <$e.getQualifiedName()#foreach($namespace in $e.getNamespacesIntroduced()) xmlns:$namespace.getPrefix()="$namespace.getURI()"#end#foreach($attribute in $e.getAttributes()) #if($attribute.getNamespacePrefix()!='')$attribute.getNamespacePrefix():#end$attribute.getName()="$attribute.getValue()"#end>$e.getTextTrim()</$e.getQualifiedName()>
+  #end
+#end
+<?xml version="1.0" encoding="UTF-8"?> 
+#foreach( $metadata in $metadataList )
+#set($i = " ")#recursive( $metadata.metadataDocument.getRootElement() $i )        
+#end

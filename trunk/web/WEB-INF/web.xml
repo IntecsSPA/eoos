@@ -6,7 +6,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>CatalogueServlet</servlet-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/service/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

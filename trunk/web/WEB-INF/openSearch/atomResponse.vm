@@ -27,6 +27,12 @@ xmlns:gml="http://www.opengis.net/gml">
     <atom:id>$OPEN_SEARCH_REQUEST</atom:id> 
     <atom:title>openCatalogue Server - EO Product Search Response</atom:title> 
     <atom:updated>$date.get('yyyy-M-d')T$date.get('H:m:s')Z</atom:updated> 
+
+    <link href="${BASE_URL}/opensearch/service/$selfQuery" rel="self" type="application/atom+xml"/>
+    <link href="${BASE_URL}/opensearch/service/$firstQuery" rel="first" type="application/atom+xml"/>
+    <link href="${BASE_URL}/opensearch/service/$nextQuery" rel="next" type="application/atom+xml"/>
+    <link href="${BASE_URL}/opensearch/service/$lastQuery" rel="last" type="application/atom+xml"/>
+    <link href="${BASE_URL}/opensearch/description.xml" rel="search" type="application/opensearchdescription+xml"/>
 #foreach( $metadata in $metadataList )
     <atom:entry> 
         <atom:id>$metadata.identifier</atom:id>
@@ -35,7 +41,7 @@ xmlns:gml="http://www.opengis.net/gml">
         <atom:published>$date.get('yyyy-M-d')T$date.get('H:m:s')Z</atom:published> 
         <atom:updated>$date.get('yyyy-M-d')T$date.get('H:m:s')Z</atom:updated> 
 	<dc:date>$date.get('yyyy-M-d')T$date.get('H:m:s')Z</dc:date>
-        <atom:link href="${BASE_URL}eoproduct?id=$metadata.identifier" rel="alternate" type="application/atom+xml" title="URL for retrieving full details of the product: $metadata.identifier"/> 	
+        <atom:link href="${BASE_URL}/opensearch/atom?id=$metadata.identifier" rel="alternate" type="application/atom+xml" title="URL for retrieving the ATOM of the product: $metadata.identifier"/> 	
         <georss:where>
 		<gml:Polygon>
 			<gml:exterior>
@@ -45,7 +51,7 @@ xmlns:gml="http://www.opengis.net/gml">
 			</gml:exterior>
 		</gml:Polygon>
 	</georss:where>
-        <link href="${BASE_URL}eoproduct?id=$metadata.identifier&amp;recordSchema=om" rel="alternate" type="application/gml+xml" title="URL for retrieving metadata of the product: $metadata.identifier"/>
+        <link href="${BASE_URL}eoproduct?id=$metadata.identifier" rel="alternate" type="application/gml+xml" title="URL for retrieving metadata of the product: $metadata.identifier"/>
 ##set($i = " ")#recursive( $metadata.metadataDocument.getRootElement() $i )        
     </atom:entry> 
 #end
