@@ -65,6 +65,7 @@ public class OpenSearchHandler {
     private static final String VELOCITY_METADATA_LIST = "metadataList";
     private static final String OPEN_SEARCH_NUMBER_OF_RESULTS = "OPEN_SEARCH_NUMBER_OF_RESULTS";
     private static final String XPATH_NUMBER_OF_RESULTS = "count(//doc)";
+    private static final String XPATH_NUM_FOUNDS = "//result/@numFound";    
     private static final String XPATH_IDENTIFIER = "//doc[$$]/str[@name='id']";
     private static final String XPATH_POLYGON = "//doc[$$]/str[@name='posListOrig']";
     private static final String XPATH_POS_LIST = "//doc[$$]/str[@name='posList']";
@@ -116,11 +117,13 @@ public class OpenSearchHandler {
     }
 
     public void processProductRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
+        Log.info("New O&M request received");
         String id = (String) request.getParameter("id");
         if (id == null || id == "") {
             throw new Exception("Missing id parameter");
         }
-        sendBackProductResponse(id, request, response);
+        SaxonDocument solrResponse = sendRequestToSolr(request);
+        sendBackProductResponse(solrResponse, request, response);
     }
 
     public void processWktRequest(HttpServletRequest request, HttpServletResponse response) {
@@ -164,13 +167,24 @@ public class OpenSearchHandler {
         }
         context.put(VELOCITY_DATE, new DateTool());
         context.put(VELOCITY_METADATA_LIST, metadataList);
-        context.put(OPEN_SEARCH_NUMBER_OF_RESULTS, (String) solrResponse.evaluatePath(XPATH_NUMBER_OF_RESULTS, XPathConstants.STRING));
+        context.put(OPEN_SEARCH_NUMBER_OF_RESULTS, (String) solrResponse.evaluatePath(XPATH_NUM_FOUNDS, XPathConstants.STRING));
         String requestURL = request.getRequestURL().toString();
         context.put(BASE_URL, requestURL.subSequence(0, requestURL.indexOf("atom")));
         // we have to extract this from the request ...check also if solr returns this info in the response. 
         // If not we have to handle this in the prepareDataForVelocity
-        context.put(OPEN_SEARCH_START_INDEX, 1);
-        context.put(OPEN_SEARCH_ITEMS_PER_PAGE, 10);
+        String startIndex = request.getParameter("startIndex");
+        String startPage = request.getParameter("startPage");
+        
+        if (startIndex != null || !startIndex.equals("")){
+            context.put(OPEN_SEARCH_START_INDEX, request.getParameter("startIndex"));        
+        } else {
+            int itemsPerPage = Integer.parseInt(request.getParameter("count"));
+            int pageNumber = Integer.parseInt(request.getParameter("startPage"));
+            int startAt = itemsPerPage * pageNumber;
+            context.put(OPEN_SEARCH_START_INDEX, startAt);                
+        }            
+        
+        context.put(OPEN_SEARCH_ITEMS_PER_PAGE, request.getParameter("count"));
         context.put(OPEN_SEARCH_REQUEST, request.getRequestURL());
 
         response.setContentType("application/xml");
@@ -251,8 +265,8 @@ public class OpenSearchHandler {
         swOut.close();
     }
 
-    private void sendBackProductResponse(String ID, HttpServletRequest request, HttpServletResponse response) throws IOException, XPathFactoryConfigurationException, XPathException, XPathExpressionException, SAXException, JDOMException {
-        ArrayList metadataList = prepareDataForVelocity(ID);
+    private void sendBackProductResponse(SaxonDocument solrResponse, HttpServletRequest request, HttpServletResponse response) throws IOException, XPathFactoryConfigurationException, XPathException, XPathExpressionException, SAXException, JDOMException {
+        ArrayList metadataList = prepareDataForVelocity(solrResponse);
         VelocityContext context = new VelocityContext();
         String productUrl = Prefs.getProductURLBase();
         if (null != productUrl && !productUrl.equals("")) {
@@ -289,8 +303,8 @@ public class OpenSearchHandler {
             builder = new SAXBuilder();
             cdata_field = (String) solrResponse.evaluatePath(XPATH_METADATA.replace("$$", String.valueOf(i)), XPathConstants.STRING);
             //root = builder.build(cdata_field.substring(cdata_field.indexOf("<![CDATA["), cdata_field.indexOf("]]>"))));        
-            root = builder.build(new StringReader(cdata_field));
-            metadata.put(METADATA_DOCUMENT, root);
+            //root = builder.build(new StringReader(cdata_field));
+            //metadata.put(METADATA_DOCUMENT, root);
             metadata.put(IDENTIFIER, id);
             metadata.put(POLYGON, original_polygon);
             // load the metadata and add it to the array

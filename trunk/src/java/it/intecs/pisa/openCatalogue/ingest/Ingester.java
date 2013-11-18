@@ -156,7 +156,7 @@ public class Ingester {
         StringWriter swOut = new StringWriter();
         ve.getTemplate("generateSolrAddRequest.vm").merge(context, swOut);
         // TO DO .... UNCOMMENT TO MAKE IT WORK :-)
-        //solr.postDocument(swOut.toString());
+        solr.postDocument(swOut.toString());
         // only for debug .... TODO - remove it
         saveSolrfile(swOut.toString(), key);
         swOut.close();

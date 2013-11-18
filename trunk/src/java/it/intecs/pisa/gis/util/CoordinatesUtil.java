@@ -31,6 +31,25 @@ public class CoordinatesUtil {
     }
 
     
+    public String wkt2oem(final String coordinates) {
+        //MULTIPOLYGON(((25.1663 53.0465,20.7661 53.5979,19.9131 50.6252,24.0371 50.0855,25.1663 53.0465)))
+        String cleanCoordinates = coordinates.substring(coordinates.indexOf("("));
+        cleanCoordinates = cleanCoordinates.replaceAll("\\(", "");
+        cleanCoordinates = cleanCoordinates.replaceAll("\\)", "");
+        cleanCoordinates = cleanCoordinates.replaceAll(",", " ");
+        
+        String[] CA = stringtoArray(cleanCoordinates, " ");
+        String solr="";
+        for (int i = 0; i< CA.length/2; i++){
+            solr += CA[2*i+1] + " " + CA[2*i] + " ";
+        }
+
+        solr = solr.substring(0, solr.length()-1);
+        
+        return solr;
+    }
+    
+    
     public String adjustCoordinatesForSolr(final String coordinates) {
         String[] CA = stringtoArray(coordinates, " ");
         String solr="";

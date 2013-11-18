@@ -151,6 +151,8 @@ public class solrHandler {
                 fq += " AND sensorOperationalMode=" + value;
             } else if (name.equals("si")) {
                 fq += " AND swathIdentifier=" + value;
+            } else if (name.equals("pid")) {
+                fq += " AND parentIdentifier=" + value;
             } else {
             }
         }
@@ -161,14 +163,14 @@ public class solrHandler {
         
         String url = q;
         if (fq.length() > 1)
-                url += "&fq="+URLEncoder.encode(fq.substring(5), "ISO-8859-1");        
+                url += "&fq:"+URLEncoder.encode(fq.substring(5), "ISO-8859-1");        
         return url;
     }
 
     public int postDocument(String body) throws IOException, SaxonApiException, Exception {
         HttpClient client = new HttpClient();
         HttpMethod method;
-        String urlStr = solrHost + "update?commit=true";
+        String urlStr = solrHost + "/update?commit=true";
         Log.debug("Ingesting a new document to: " + urlStr);        
         Log.debug(body);        
         method = new PostMethod(urlStr);
