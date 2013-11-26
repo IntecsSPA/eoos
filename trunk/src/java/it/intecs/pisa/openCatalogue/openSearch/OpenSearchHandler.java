@@ -19,7 +19,6 @@ import it.intecs.pisa.util.IOUtil;
 import java.io.File;
 import java.io.IOException;
 import java.io.PipedInputStream;
-import java.io.StringReader;
 import java.io.Writer;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -65,7 +64,7 @@ public class OpenSearchHandler {
     private static final String VELOCITY_METADATA_LIST = "metadataList";
     private static final String OPEN_SEARCH_NUMBER_OF_RESULTS = "OPEN_SEARCH_NUMBER_OF_RESULTS";
     private static final String XPATH_NUMBER_OF_RESULTS = "count(//doc)";
-    private static final String XPATH_NUM_FOUNDS = "//result/@numFound";    
+    private static final String XPATH_NUM_FOUNDS = "//result/@numFound";
     private static final String XPATH_IDENTIFIER = "//doc[$$]/str[@name='id']";
     private static final String XPATH_POLYGON = "//doc[$$]/str[@name='posListOrig']";
     private static final String XPATH_POS_LIST = "//doc[$$]/str[@name='posList']";
@@ -80,6 +79,8 @@ public class OpenSearchHandler {
     private static final String SHORT_NAME = "polygon";
     private static final String GEORSS = "georss";
     private static final String METADATA_DOCUMENT = "metadataDocument";
+    private static final String BROWSE_URL_KEY = "$browseUrlBasePath";
+    private static final String PRODUCT_URL_KEY = "$productUrlBasePath";
 
     public OpenSearchHandler(AbstractFilesystem configDirectory, AbstractFilesystem repo, String solrEndPoint) {
 
@@ -150,21 +151,12 @@ public class OpenSearchHandler {
 
     private SaxonDocument sendRequestToSolr(HttpServletRequest request) throws SaxonApiException, IOException, Exception {
         // this is a simutation for the moment
-
         return solr.exchange(request);
     }
 
     private void sendBackAtomResponse(SaxonDocument solrResponse, HttpServletRequest request, HttpServletResponse response) throws IOException, XPathFactoryConfigurationException, XPathException, XPathExpressionException, SAXException, JDOMException {
         ArrayList metadataList = prepareDataForVelocity(solrResponse);
         VelocityContext context = new VelocityContext();
-        String productUrl = Prefs.getProductURLBase();
-        if (null != productUrl && !productUrl.equals("")) {
-            context.put(VELOCITY_PRODUCT_URL, productUrl);
-        }
-        String browseUrl = Prefs.getBrowseURLBase();
-        if (null != productUrl && !productUrl.equals("")) {
-            context.put(VELOCITY_BROWSE_URL, browseUrl);
-        }
         context.put(VELOCITY_DATE, new DateTool());
         context.put(VELOCITY_METADATA_LIST, metadataList);
         context.put(OPEN_SEARCH_NUMBER_OF_RESULTS, (String) solrResponse.evaluatePath(XPATH_NUM_FOUNDS, XPathConstants.STRING));
@@ -174,16 +166,16 @@ public class OpenSearchHandler {
         // If not we have to handle this in the prepareDataForVelocity
         String startIndex = request.getParameter("startIndex");
         String startPage = request.getParameter("startPage");
-        
-        if (startIndex != null || !startIndex.equals("")){
-            context.put(OPEN_SEARCH_START_INDEX, request.getParameter("startIndex"));        
+
+        if (startIndex != null && !startIndex.equals("")) {
+            context.put(OPEN_SEARCH_START_INDEX, request.getParameter("startIndex"));
         } else {
             int itemsPerPage = Integer.parseInt(request.getParameter("count"));
             int pageNumber = Integer.parseInt(request.getParameter("startPage"));
             int startAt = itemsPerPage * pageNumber;
-            context.put(OPEN_SEARCH_START_INDEX, startAt);                
-        }            
-        
+            context.put(OPEN_SEARCH_START_INDEX, startAt);
+        }
+
         context.put(OPEN_SEARCH_ITEMS_PER_PAGE, request.getParameter("count"));
         context.put(OPEN_SEARCH_REQUEST, request.getRequestURL());
 
@@ -199,15 +191,6 @@ public class OpenSearchHandler {
         context.put(VELOCITY_DATE, new DateTool());
         context.put("coordinates", new CoordinatesUtil());
         context.put(VELOCITY_METADATA_LIST, metadataList);
-
-        String productUrl = Prefs.getProductURLBase();
-        if (null != productUrl && !productUrl.equals("")) {
-            context.put(VELOCITY_PRODUCT_URL, productUrl);
-        }
-        String browseUrl = Prefs.getBrowseURLBase();
-        if (null != productUrl && !productUrl.equals("")) {
-            context.put(VELOCITY_BROWSE_URL, browseUrl);
-        }
 
         response.setContentType("application/json");
         Writer swOut = response.getWriter();
@@ -240,14 +223,6 @@ public class OpenSearchHandler {
     private void sendBackResponse(String ID, HttpServletRequest request, HttpServletResponse response) throws IOException, XPathFactoryConfigurationException, XPathException, XPathExpressionException, SAXException, JDOMException {
         ArrayList metadataList = prepareDataForVelocity(ID);
         VelocityContext context = new VelocityContext();
-        String productUrl = Prefs.getProductURLBase();
-        if (null != productUrl && !productUrl.equals("")) {
-            context.put(VELOCITY_PRODUCT_URL, productUrl);
-        }
-        String browseUrl = Prefs.getBrowseURLBase();
-        if (null != productUrl && !productUrl.equals("")) {
-            context.put(VELOCITY_BROWSE_URL, browseUrl);
-        }
         context.put(VELOCITY_DATE, new DateTool());
         context.put(VELOCITY_METADATA_LIST, metadataList);
         context.put(OPEN_SEARCH_NUMBER_OF_RESULTS, 1);
@@ -266,41 +241,44 @@ public class OpenSearchHandler {
     }
 
     private void sendBackProductResponse(SaxonDocument solrResponse, HttpServletRequest request, HttpServletResponse response) throws IOException, XPathFactoryConfigurationException, XPathException, XPathExpressionException, SAXException, JDOMException {
-        ArrayList metadataList = prepareDataForVelocity(solrResponse);
-        VelocityContext context = new VelocityContext();
+        String originalMetadata = this.getOriginalMetadata(solrResponse);
         String productUrl = Prefs.getProductURLBase();
         if (null != productUrl && !productUrl.equals("")) {
-            context.put(VELOCITY_PRODUCT_URL, productUrl);
+            // replace the string in the metadata        
+            originalMetadata = originalMetadata.replace(PRODUCT_URL_KEY, productUrl);
         }
         String browseUrl = Prefs.getBrowseURLBase();
-        if (null != productUrl && !productUrl.equals("")) {
-            context.put(VELOCITY_BROWSE_URL, browseUrl);
-        }    
-        context.put(VELOCITY_METADATA_LIST, metadataList);
+        if (null != browseUrl && !browseUrl.equals("")) {
+            // replace the string in the metadata      
+            originalMetadata = originalMetadata.replace(BROWSE_URL_KEY, browseUrl);
+        }
         response.setContentType("application/xml");
         Writer swOut = response.getWriter();
-        ve.getTemplate(PRODUCT_TEMPLATE).merge(context, swOut);
+        if (!originalMetadata.contains("<?xml")) {
+            swOut.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + originalMetadata);
+        } else {
+            swOut.write(originalMetadata);
+        }
         swOut.close();
     }
-    
-    
+
     private ArrayList prepareDataForVelocity(SaxonDocument solrResponse) throws XPathFactoryConfigurationException, XPathException, XPathExpressionException, IOException, SAXException, JDOMException {
 
         ArrayList metadataList = new ArrayList();
-        SAXBuilder builder;
-        org.jdom2.Document root = null;
+//        SAXBuilder builder;
+//        org.jdom2.Document root = null;
 
         //Loop on the solrResponse and load the metadata in the repository 
         int results = Integer.parseInt((String) solrResponse.evaluatePath(XPATH_COUNT_DOC, XPathConstants.STRING));
         String id = "";
         String original_polygon = "";
-        String original_metadata = "";
+//        String original_metadata = "";
         String cdata_field = "";
         for (int i = 1; i <= results; i++) {
             Map metadata = new HashMap();
             id = (String) solrResponse.evaluatePath(XPATH_IDENTIFIER.replace("$$", String.valueOf(i)), XPathConstants.STRING);
             original_polygon = (String) solrResponse.evaluatePath(XPATH_POLYGON.replace("$$", String.valueOf(i)), XPathConstants.STRING);
-            builder = new SAXBuilder();
+            //builder = new SAXBuilder();
             cdata_field = (String) solrResponse.evaluatePath(XPATH_METADATA.replace("$$", String.valueOf(i)), XPathConstants.STRING);
             //root = builder.build(cdata_field.substring(cdata_field.indexOf("<![CDATA["), cdata_field.indexOf("]]>"))));        
             //root = builder.build(new StringReader(cdata_field));
@@ -313,11 +291,19 @@ public class OpenSearchHandler {
         return metadataList;
     }
 
+    private String getOriginalMetadata(SaxonDocument solrResponse) throws XPathFactoryConfigurationException, XPathException, XPathExpressionException, IOException, SAXException, JDOMException {
+        String cdata_field = (String) solrResponse.evaluatePath(XPATH_METADATA.replace("$$", "1"), XPathConstants.STRING);
+        String toReturn = cdata_field;
+        if (cdata_field.startsWith("<![CDATA[")) {
+            toReturn = cdata_field.substring(cdata_field.indexOf("<![CDATA["), cdata_field.indexOf("]]>"));
+        };
+        return toReturn;
+    }
+
     private ArrayList prepareDataForVelocity(String id) throws XPathFactoryConfigurationException, XPathException, XPathExpressionException, IOException, SAXException, JDOMException {
         ArrayList metadataList = new ArrayList();
         SAXBuilder builder;
         org.jdom2.Document root = null;
-
         Map metadata = new HashMap();
         builder = new SAXBuilder();
         root = builder.build(this.repository.getAbsolutePath() + "/" + id + ".xml");

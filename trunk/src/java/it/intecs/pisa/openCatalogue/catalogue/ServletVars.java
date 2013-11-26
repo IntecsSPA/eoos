@@ -14,6 +14,7 @@ public class ServletVars {
     public static final ServletVars instance=new ServletVars();
     public static File appFolder;
 //    public static File workspace=new File("c://catalogue_workspace");
+//    public static File workspace=new File("/home/ergo/catalogue_workspace");
     public static File workspace=new File("C://catalogue_workspace");
     public static ServletVars getInstance()
     {

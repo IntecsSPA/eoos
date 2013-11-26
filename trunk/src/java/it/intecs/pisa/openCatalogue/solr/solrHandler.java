@@ -120,12 +120,14 @@ public class solrHandler {
                 q += "&start=" + (Integer.parseInt(value)-1);
             } else if (name.equals("uid")) {
             } else if (name.equals("bbox")) {
+                String[] values = value.split(",");
+                value="["+values[1]+","+values[0]+" "+values[3]+","+values[2]+"]";
                 Log.debug("BBOX "+value);
                 fq += " AND posList:" + URLDecoder.decode(value, "ISO-8859-1");
-            } else if (name.equals("geometry")) {
+            } else if (name.equals("geom")) {
                 fq += " AND posList :\"Intersects(" + (URLDecoder.decode(value, "ISO-8859-1")) + ")\"";
             } else if (name.equals("id")) {
-                fq += " AND id:\"" + URLDecoder.decode(value, "ISO-8859-1")+ "\"";
+                fq += " AND id:\"" + URLDecoder.decode(value, "ISO-8859-1")+"\"";
             } else if (name.equals("lat")) {
                 lat = URLDecoder.decode(value, "ISO-8859-1");
             } else if (name.equals("lon")) {
@@ -133,8 +135,10 @@ public class solrHandler {
             } else if (name.equals("radius")) {
                 radius = URLDecoder.decode(value, "ISO-8859-1");
             } else if (name.equals("startdate")) {
+                value=value.endsWith("Z")?value:value+"Z";
                 fq += " AND beginPosition:[" + URLDecoder.decode(value, "ISO-8859-1") + " TO *]";
             } else if (name.equals("stopdate")) {
+                value=value.endsWith("Z")?value:value+"Z";
                 fq += " AND endPosition:[* TO " + URLDecoder.decode(value, "ISO-8859-1") + "]";
             } else if (name.equals("tp")) {
             } else if (name.equals("psn")) {
@@ -163,7 +167,7 @@ public class solrHandler {
         
         String url = q;
         if (fq.length() > 1)
-                url += "&fq:"+URLEncoder.encode(fq.substring(5), "ISO-8859-1");        
+                url += "&fq="+URLEncoder.encode(fq.substring(5), "ISO-8859-1");        
         return url;
     }
 

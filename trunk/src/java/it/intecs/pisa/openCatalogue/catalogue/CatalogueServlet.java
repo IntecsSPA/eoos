@@ -38,9 +38,9 @@ public class CatalogueServlet extends HttpServlet {
     protected static final String METHOD_HARVEST = "harvest";
     protected static final String METHOD_CSW = "csw";
     protected static final String METHOD_GUI = "gui";    
-    protected static final String RESOURCE_METADATA = "metadata";
-    protected static final String RESOURCE_METADATAS = "metadatas";
+    protected static final String RESOURCE_OEM = "oem";
     protected static final String RESOURCE_CSV = "csv";
+    protected static final String RESOURCE_XML = "xml";
     protected static final String OS_ATOM = "atom";
     protected static final String OS_WKT = "wkt";
     protected static final String OS_CZML = "czml";
@@ -146,7 +146,7 @@ public class CatalogueServlet extends HttpServlet {
         String requestURI;
 
         requestURI = request.getRequestURI();
-        if (requestURI.contains(RESOURCE_METADATA)) {
+        if (requestURI.contains(RESOURCE_OEM)) {
             handleUpdate(request, response);
         } else {
             response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
@@ -169,10 +169,12 @@ public class CatalogueServlet extends HttpServlet {
         String requestURI;
 
         requestURI = request.getRequestURI();
-        if (requestURI.contains(RESOURCE_METADATA)) {
+        if (requestURI.contains(RESOURCE_OEM)) {
             handleIngest(request, response);
         }else if (requestURI.contains(RESOURCE_CSV)) {
             handleCSV(request, response);
+        }else if (requestURI.contains(RESOURCE_XML)) {
+            handleXML(request, response);
         }
         else
         {
@@ -195,7 +197,7 @@ public class CatalogueServlet extends HttpServlet {
         String requestURI;
 
         requestURI = request.getRequestURI();
-        if (requestURI.contains(RESOURCE_METADATA)) {
+        if (requestURI.contains(RESOURCE_OEM)) {
             handleDelete(request, response);
         } else {
             response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
@@ -303,19 +305,19 @@ public class CatalogueServlet extends HttpServlet {
         
         tmpJson = new JsonObject();
         tmpJson.addProperty("title", "More complex search on RADAR products over a specific time window. The results are returned in ATOM format.");
-        tmpJson.addProperty("value", request.getRequestURL()+"/opensearch/atom/?q=*.*&amp;startIndex=1&amp;count=10&amp;st=RADAR&amp;startdate=2003-01-28T13:10:00.077Z&amp;stopdate=2003-01-28T13:40:00.077Z");
+        tmpJson.addProperty("value", request.getRequestURL()+"/opensearch/atom/?q=*.*&amp;startIndex=1&amp;count=10&amp;st=RADAR&amp;startdate=2009-04-06T00:00:00.077Z&amp;stopdate=2009-04-06T23:00:00.077Z");
         rows.add(tmpJson);        
 
         tmpJson = new JsonObject();
         tmpJson.addProperty("title", "Simple search on a geographical area identified via a circle. The results are returned in ATOM format.");
-        tmpJson.addProperty("value", request.getRequestURL()+"/opensearch/atom/?q=*.*&amp;startIndex=1&amp;count=10&amp;lat=54.75152&amp;lon=-25&amp;radius=1&amp");
+        tmpJson.addProperty("value", request.getRequestURL()+"/opensearch/atom/?q=*.*&amp;startIndex=1&amp;count=10&amp;lat=54.75152&amp;lon=-25&amp;radius=50");
         rows.add(tmpJson);
-
+/*
         tmpJson = new JsonObject();
-        tmpJson.addProperty("title", "Simple search on a geographical area identified via a circle. The results are returned in ATOM format.");
-        tmpJson.addProperty("value", request.getRequestURL()+"/opensearch/json/?q=*ASAR*&amp;startIndex=0&amp;count=10&amp;lat=54.75152&amp;lon=-25&amp;radius=1&amp");
+        tmpJson.addProperty("title", "Simple search on a geographical area identified via a circle. The results are returned in JSON format.");
+        tmpJson.addProperty("value", request.getRequestURL()+"/opensearch/json/?q=*ASAR*&amp;startIndex=0&amp;count=10&amp;lat=54.75152&amp;lon=-25&amp;radius=50");
         rows.add(tmpJson);
-
+*/
         outputJson.add("rows", rows);
         
         sendJsonBackToClient(outputJson, response);
@@ -356,6 +358,40 @@ public class CatalogueServlet extends HttpServlet {
 
         sendJsonBackToClient(outputJson, response);
     }
+
+    private void handleXML(HttpServletRequest request, HttpServletResponse response) throws IOException  {
+        InputStream in;
+        String errorReason = null;
+        boolean success = false;
+        boolean isTomcatCall= true;
+
+        InputStream stream = request.getInputStream();
+        String requestURI = request.getRequestURI();
+        AbstractFilesystem configuration = new FileFilesystem(new File (new File (this.workspaceDir,"config"),requestURI.substring(requestURI.indexOf("csv")+4)));
+        AbstractFilesystem toBeIngested = new StreamFileSystem(request.getInputStream());
+        String url = Prefs.getSolrUrl();
+        try{
+        CSVIngester harv = new CSVIngester(configuration, configuration, url, isTomcatCall);
+        harv.harvestDataFromStream(toBeIngested);
+        
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
+        JsonObject outputJson;
+
+        outputJson = new JsonObject();
+        outputJson.addProperty("success", success);
+
+        if (errorReason != null) {
+            outputJson.addProperty("errorReason", errorReason);
+        }
+
+        sendJsonBackToClient(outputJson, response);
+    }
+    
     
     
     private void handleDelete(HttpServletRequest request, HttpServletResponse response) {
