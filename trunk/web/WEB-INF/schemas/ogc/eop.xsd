@@ -1,43 +1,16 @@
-<schema xmlns:gml="http://www.opengis.net/gml/3.2" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:eop="http://www.opengis.net/eop/2.0" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:om="http://www.opengis.net/om/2.0" xmlns:ows="http://www.opengis.net/ows/2.0" xmlns:wcs="http://www.opengis.net/wcs/1.0" xmlns:swe="http://www.opengis.net/swe/1.0" targetNamespace="http://www.opengis.net/eop/2.0" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0.0">
+<schema xmlns:gml="http://www.opengis.net/gml/3.2" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:eop="http://www.opengis.net/eop/2.1" xmlns:om="http://www.opengis.net/om/2.0" xmlns:ows="http://www.opengis.net/ows/2.0" xmlns:swe="http://www.opengis.net/swe/1.0" xmlns:wcs="http://www.opengis.net/wcs/1.0" targetNamespace="http://www.opengis.net/eop/2.1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.1.0">
 	<annotation>
-		<documentation>Earth Observation Products application schema, also the base schema which other products, OPT, ATM etc., extend.</documentation>
+		<documentation>Earth Observation Products application schema, also the base schema which other products, OPT, ATM etc., extend.
+		
+        Earth Observation Metadata profile of Observations and Measurements is an OGC Standard.
+        Copyright (c) 2013 Open Geospatial Consortium. 
+        To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .		
+		</documentation>
 	</annotation>
-	<import namespace="http://www.opengis.net/om/2.0" schemaLocation="ogc/om/2.0/observation.xsd"/>
-	<import namespace="http://www.isotc211.org/2005/gmd" schemaLocation="iso/19139/20070417/gmd/gmd.xsd"/>
 	<import namespace="http://www.opengis.net/gml/3.2" schemaLocation="gml/3.2.1/gml.xsd"/>
 	<import namespace="http://www.opengis.net/ows/2.0" schemaLocation="ows/2.0/owsAll.xsd"/>
+	<import namespace="http://www.opengis.net/om/2.0" schemaLocation="ogc/om/2.0/observation.xsd"/>
 	<import namespace="http://www.opengis.net/swe/1.0" schemaLocation="sweCommon/1.0.0/phenomenon.xsd"/>
-	<element name="Mask" type="eop:MaskType" substitutionGroup="gml:AbstractFeature">
-		<annotation>
-			<documentation>Mask defined as a feature collection (in the GML 3.2 sense : a feature collection is a feature having a property derived by extension from gml:AbstractFeatureMemberType). Incorporates the following optional gml properties inherited from gml:AbstractFeature :
-        - gml:id attribute
-        - gml:name
-        - gml:boundedBy</documentation>
-		</annotation>
-	</element>
-	<complexType name="MaskType">
-		<complexContent>
-			<extension base="gml:AbstractFeatureType">
-				<sequence>
-					<element name="maskMembers" type="eop:MaskFeaturePropertyType" minOccurs="0" maxOccurs="unbounded">
-						<annotation>
-							<documentation>Mask member : . Mandates the following optional gml properties inherited from gml:_Feature :
-        - gml:id attribute
-        - gml:name
-        - gml:boundedBy</documentation>
-						</annotation>
-					</element>
-				</sequence>
-			</extension>
-		</complexContent>
-	</complexType>
-	<complexType name="MaskPropertyType">
-		<sequence minOccurs="0">
-			<element ref="eop:Mask"/>
-		</sequence>
-		<attributeGroup ref="gml:AssociationAttributeGroup"/>
-		<attributeGroup ref="gml:OwnershipAttributeGroup"/>
-	</complexType>
 	<element name="EarthObservation" type="eop:EarthObservationType" substitutionGroup="om:OM_Observation">
 		<annotation>
 			<documentation>The Observations and Measurements (ISO 19156) observedProperty may be a reference to any type. A useful model is the SWE Phenomenon from SWE Common 1.0
@@ -111,39 +84,6 @@ The ParameterInformation class is used to allow grouping of units of measure wit
 		<attributeGroup ref="gml:AssociationAttributeGroup"/>
 		<attributeGroup ref="gml:OwnershipAttributeGroup"/>
 	</complexType>
-	<element name="MaskFeature" type="eop:MaskFeatureType" substitutionGroup="gml:AbstractFeature">
-		<annotation>
-			<documentation>Mask member : Incorporates the following optional gml properties inherited from gml:_Feature :
-        - gml:id attribute
-        - gml:name
-        - gml:boundedBy</documentation>
-		</annotation>
-	</element>
-	<complexType name="MaskFeatureType">
-		<complexContent>
-			<extension base="gml:AbstractFeatureType">
-				<sequence>
-					<element name="maskType" type="gml:CodeWithAuthorityType">
-						<annotation>
-							<documentation>Mask type. Value list can be retrieved with codeSpace</documentation>
-						</annotation>
-					</element>
-					<element name="extentOf" type="gml:SurfacePropertyType">
-						<annotation>
-							<documentation>Mask member extent. Expected structure is gml:Polygon/gml:exterior/gml:LinearRing/gml:posList with 0 to n gml:Polygon/gml:interior/gml:LinearRing/gml:posList elements representing the holes.</documentation>
-						</annotation>
-					</element>
-				</sequence>
-			</extension>
-		</complexContent>
-	</complexType>
-	<complexType name="MaskFeaturePropertyType">
-		<sequence minOccurs="0">
-			<element ref="eop:MaskFeature"/>
-		</sequence>
-		<attributeGroup ref="gml:AssociationAttributeGroup"/>
-		<attributeGroup ref="gml:OwnershipAttributeGroup"/>
-	</complexType>
 	<element name="EarthObservationEquipment" type="eop:EarthObservationEquipmentType" substitutionGroup="gml:AbstractFeature">
 		<annotation>
 			<documentation>Information about the equipment used in the data acquisition</documentation>
@@ -177,7 +117,11 @@ The ParameterInformation class is used to allow grouping of units of measure wit
 		<complexContent>
 			<extension base="gml:AbstractFeatureType">
 				<sequence>
-					<element ref="eop:multiExtentOf"/>
+					<element ref="eop:multiExtentOf">
+						<annotation>
+							<documentation>Acquisition footprint coordinates, described by a closed polygon (last point=first point), using CRS:WGS84, Latitude,Longitude pairs (per-WGS84 definition of point ordering, not necessarily per all WFS implementations). Expected structure is gml:Polygon/gml:exterior/gml:LinearRing/gml:posList.</documentation>
+						</annotation>
+					</element>
 					<element name="centerOf" type="gml:PointPropertyType" minOccurs="0">
 						<annotation>
 							<documentation>Acquisition center coordinates.  Expected structure is gml:Point/gml:pos.</documentation>
@@ -271,12 +215,7 @@ The ParameterInformation class is used to allow grouping of units of measure wit
 					<documentation>Method version (e.g. 1.0)</documentation>
 				</annotation>
 			</element>
-			<element name="processingMode" type="eop:ProcessingModeValueType" minOccurs="0">
-				<annotation>
-					<documentation>Processing mode. Often referred to as Real Time, Near Real Time etc. Should be a value from ProcessingModeValue. As the precise definitions of these terms vary, this enumeration uses more generic terms.</documentation>
-				</annotation>
-			</element>
-			<element name="processorName" type="string" minOccurs="0">
+                        <element name="processorName" type="string" minOccurs="0">
 				<annotation>
 					<documentation>Processor sofware name (e.g. FastROSE)</documentation>
 				</annotation>
@@ -297,6 +236,11 @@ The ParameterInformation class is used to allow grouping of units of measure wit
 				</annotation>
 			</element>
 			<element name="auxiliaryDataSetFileName" type="string" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="processingMode" type="gml:CodeListType" minOccurs="0">
+				<annotation>
+					<documentation>Processing mode taken from mission specific code list. Examples of values are: NRT, NOMINAL, BACKLOGGED, REPROCESSED, VALIDATE</documentation>
+				</annotation>
+			</element>
 		</sequence>
 	</complexType>
 	<complexType name="ProcessingInformationPropertyType">
@@ -678,7 +622,11 @@ This service could be any kind of URL  -  e.g. direct link to the image or WMS/W
 					<documentation>Mask type. Possible values are : SNOW, CLOUD and QUALITY.</documentation>
 				</annotation>
 			</element>
-			<element name="subType" type="string" minOccurs="0"/>
+			<element name="subType" type="string" minOccurs="0">
+				<annotation>
+					<documentation>Allows to further specify the type of mask.</documentation>
+				</annotation>
+			</element>
 			<element name="format" type="eop:FormatValueType">
 				<annotation>
 					<documentation>Mask format. Possible values are : RASTER or VECTOR.</documentation>
@@ -750,7 +698,7 @@ This service could be any kind of URL  -  e.g. direct link to the image or WMS/W
 			<element name="timeliness" type="gml:CodeListType" minOccurs="0">
 				<annotation>
 					<documentation>Timeliness of the product, such as "near real time", "rush". Possible values are mission specific and shall refer to mission/ground segment dedicated codeSpace. 
-Example of values could be "NRT" or "NOMINAL"</documentation>
+Example of values could be "NRT", "NOMINAL", "NTC" or "STC"</documentation>
 				</annotation>
 			</element>
 		</sequence>
@@ -798,6 +746,16 @@ Example of values could be "NRT" or "NOMINAL"</documentation>
 					<documentation>Identifier for metadata item, includes ground segment namespace to guarantee uniqueness within EOP.</documentation>
 				</annotation>
 			</element>
+			<element name="creationDate" type="dateTime" minOccurs="0">
+				<annotation>
+					<documentation>creation date for the metadata item. When retrieved from a metadata catalogue, the creationDate is the date when the metadata  item was ingested for the first time (i.e. inserted) in the catalogue. </documentation>
+				</annotation>
+			</element>
+			<element name="modificationDate" type="dateTime" minOccurs="0">
+				<annotation>
+					<documentation>Date of the last modification to the metadata item. When retrieved from a metadata catalogue, the modificationDate is the date when the metadata item was last modified (i.e. updated) in the catalogue.</documentation>
+				</annotation>
+			</element>
 			<element name="doi" type="string" minOccurs="0">
 				<annotation>
 					<documentation>Digital Object Identifier identifying the product (see http://www.doi.org).</documentation>
@@ -810,11 +768,8 @@ Example of values could be "NRT" or "NOMINAL"</documentation>
 			</element>
 			<element name="acquisitionType" type="eop:AcquisitionTypeValueType">
 				<annotation>
-					<documentation>Used to distinguish at a high level the appropriateness of the acquisition for "general" use, whether the product is a nominal acquisition, special calibration product or other.
-Values:
-      - NOMINAL
-      - CALIBRATION
-      - OTHER</documentation>
+					<documentation>Used to distinguish at a high level the appropriateness of the acquisition for "general" use, whether the product is a nominal acquisition, special calibration product or other. 
+Values: NOMINAL, CALIBRATION, OTHER</documentation>
 				</annotation>
 			</element>
 			<element name="acquisitionSubType" type="gml:CodeListType" minOccurs="0">
@@ -830,19 +785,12 @@ Values:
 			<element name="status" type="eop:StatusValueType">
 				<annotation>
 					<documentation>Refers to product status.
-Values :
-      - ARCHIVED
-      - ACQUIRED
-      - CANCELLED
-      - FAILED 
-      - PLANNED
-      - POTENTIAL
-      - REJECTED</documentation>
+Values : ARCHIVED, ACQUIRED, CANCELLED, FAILED, PLANNED, POTENTIAL, REJECTED</documentation>
 				</annotation>
 			</element>
 			<element name="statusSubType" type="eop:StatusSubTypeValueEnumerationType" minOccurs="0">
 				<annotation>
-					<documentation>Refines the status of a product, when the value of status is ARCHIVED</documentation>
+					<documentation>Refines the status of a product, when the value of status is ARCHIVED. It can assume two values: ON-LINE / OFF-LINE.</documentation>
 				</annotation>
 			</element>
 			<element name="statusDetail" type="string" minOccurs="0">
@@ -859,7 +807,7 @@ Values :
 			<element name="imageQualityDegradation" type="gml:MeasureType" minOccurs="0">
 				<annotation>
 					<documentation>Quality degradation percentage (i.e. uom='%'). 
-Deprecated.</documentation>
+This element is deprecated. Please use the equivalent element productQualityDegradation instead.</documentation>
 				</annotation>
 			</element>
 			<element name="productQualityDegradation" type="gml:MeasureType" minOccurs="0">
@@ -870,7 +818,7 @@ Deprecated.</documentation>
 			<element name="imageQualityDegradationQuotationMode" type="eop:DegradationQuotationModeValueType" minOccurs="0">
 				<annotation>
 					<documentation>Indicator to know how the quality degradation percentage has been calculated.
-Deprecated.
+This element is deprecated. Please use the equivalent element productQualityDegradationQuotationMode instead.
 
 Value : AUTOMATIC, MANUAL</documentation>
 				</annotation>
@@ -884,25 +832,41 @@ Value : AUTOMATIC, MANUAL</documentation>
 			</element>
 			<element name="imageQualityStatus" type="eop:ImageQualityStatusValueType" minOccurs="0">
 				<annotation>
-					<documentation>Deprecated.</documentation>
-				</annotation>
-			</element>
-			<element name="productQualityStatus" type="eop:ProductQualityStatusValueType" minOccurs="0"/>
-			<element name="imageQualityDegradationTag" type="string" minOccurs="0" maxOccurs="unbounded">
-				<annotation>
-					<documentation>Contains further textual information concerning the quality degradation.  It shall be provided if eop:imageQualityStatus value is DEGRADED. Possible values are mission specific and should refer to mission/ground segment dedicated codeSpace. 
-Example of values could be "RADIOMETRY" or "GEOLOCATION".
+					<documentation>Indicator that specifies whether the product quality is degraded or not.  This optional field shall be provided if the product has passed a quality check.
+Values: DEGRADED, NOMINAL
 
-Deprecated.</documentation>
+This element is deprecated.  Please use the equivalent productQualityStatus element instead.</documentation>
 				</annotation>
 			</element>
-			<element name="productQualityDegradationTag" type="string" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="productQualityStatus" type="eop:ProductQualityStatusValueType" minOccurs="0">
+				<annotation>
+					<documentation>Indicator that specifies whether the product quality is degraded or not.  This optional field shall be provided if the product has passed a quality check.
+Values: DEGRADED, NOMINAL</documentation>
+				</annotation>
+			</element>
+			<element name="imageQualityDegradationTag" type="gml:CodeListType" minOccurs="0" maxOccurs="unbounded">
+				<annotation>
+					<documentation>Contains further textual information concerning the quality degradation.  It shall be provided if eop:imageQualityStatus value is DEGRADED. Possible values are mission specific and should refer to mission/ground segment dedicated codeSpace.  
+Example of values could be "RADIOMETRY" or "GEOLOCATION".
+This element is deprecated.  Please use the equivalent productQualityDegradationTag element instead.</documentation>
+				</annotation>
+			</element>
+			<element name="productQualityDegradationTag" type="gml:CodeListType" minOccurs="0" maxOccurs="unbounded">
+				<annotation>
+					<documentation>Contains further textual information concerning the quality degradation.  It shall be provided if eop:productQualityStatus value is DEGRADED. Possible values are mission specific and should refer to mission/ground segment dedicated codeSpace. 
+Example of values could be "RADIOMETRY" or "GEOLOCATION".</documentation>
+				</annotation>
+			</element>
 			<element name="imageQualityReportURL" type="anyURI" minOccurs="0">
 				<annotation>
-					<documentation>Deprecated.</documentation>
+					<documentation>URL reference to an external quality report file.  This element is deprecated.  Please use the equivalent productQualityReportURL element instead.</documentation>
 				</annotation>
 			</element>
-			<element name="productQualityReportURL" type="anyURI" minOccurs="0"/>
+			<element name="productQualityReportURL" type="anyURI" minOccurs="0">
+				<annotation>
+					<documentation>URL reference to an external quality report file.</documentation>
+				</annotation>
+			</element>
 			<element name="histograms" type="eop:HistogramPropertyType" minOccurs="0" maxOccurs="unbounded"/>
 			<element name="composedOf" type="eop:EarthObservationPropertyType" minOccurs="0" maxOccurs="unbounded">
 				<annotation>
@@ -931,7 +895,6 @@ Deprecated.</documentation>
 					<documentation>Vendor specific information</documentation>
 				</annotation>
 			</element>
-			<element name="creationDate" type="dateTime" minOccurs="0"/>
 		</sequence>
 	</complexType>
 	<complexType name="EarthObservationMetaDataPropertyType">
@@ -968,77 +931,29 @@ Note that for a multi-faceted Constrained or Composite Phenomenon multiple unitO
 	</complexType>
 	<simpleType name="OrbitDirectionValueType">
 		<restriction base="string">
-			<enumeration value="DESCENDING"/>
 			<enumeration value="ASCENDING"/>
-		</restriction>
-	</simpleType>
-	<simpleType name="ProcessingModeValueType">
-		<restriction base="string">
-			<enumeration value="DATA_DRIVEN_PER_ACQUISITION">
-				<annotation>
-					<documentation>Processed each pass or acquisition</documentation>
-				</annotation>
-			</enumeration>
-			<enumeration value="DATA_DRIVEN_DAILY">
-				<annotation>
-					<documentation>Processed daily</documentation>
-				</annotation>
-			</enumeration>
-			<enumeration value="OFFLINE">
-				<annotation>
-					<documentation>Processed offline</documentation>
-				</annotation>
-			</enumeration>
-			<enumeration value="NOMINAL">
-				<annotation>
-					<documentation>Nominal</documentation>
-				</annotation>
-			</enumeration>
-			<enumeration value="OTHER">
-				<annotation>
-					<documentation>Other type of processing mode</documentation>
-				</annotation>
-			</enumeration>
-			<enumeration value="MULTI_MISSION">
-				<annotation>
-					<documentation>Composite data from multiple missions</documentation>
-				</annotation>
-			</enumeration>
-		</restriction>
-	</simpleType>
-	<simpleType name="StatusSubTypeValueEnumerationType">
-		<restriction base="string">
-			<enumeration value="OFF-LINE">
-				<annotation>
-					<documentation>Product not available ON-LINE</documentation>
-				</annotation>
-			</enumeration>
-			<enumeration value="ON-LINE">
-				<annotation>
-					<documentation>Product available ON-LINE</documentation>
-				</annotation>
-			</enumeration>
+			<enumeration value="DESCENDING"/>
 		</restriction>
 	</simpleType>
 	<simpleType name="OrbitTypeValueType">
 		<restriction base="string">
-			<enumeration value="GEO">
-				<annotation>
-					<documentation>Geosynchronous Earth Orbit</documentation>
-				</annotation>
-			</enumeration>
 			<enumeration value="LEO">
 				<annotation>
 					<documentation>Low Earth Orbit</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="GEO">
+				<annotation>
+					<documentation>Geosynchronous Earth Orbit</documentation>
 				</annotation>
 			</enumeration>
 		</restriction>
 	</simpleType>
 	<simpleType name="AcquisitionTypeValueType">
 		<restriction base="string">
-			<enumeration value="NOMINAL">
+			<enumeration value="OTHER">
 				<annotation>
-					<documentation>Indicates the acquisition is a nominal acquisition</documentation>
+					<documentation>Indicates some other type of acquisition</documentation>
 				</annotation>
 			</enumeration>
 			<enumeration value="CALIBRATION">
@@ -1046,18 +961,18 @@ Note that for a multi-faceted Constrained or Composite Phenomenon multiple unitO
 					<documentation>Indicates the acquisition is a calibration product</documentation>
 				</annotation>
 			</enumeration>
-			<enumeration value="OTHER">
+			<enumeration value="NOMINAL">
 				<annotation>
-					<documentation>Indicates some other type of acquisition</documentation>
+					<documentation>Indicates the acquisition is a nominal acquisition</documentation>
 				</annotation>
 			</enumeration>
 		</restriction>
 	</simpleType>
 	<simpleType name="PolygonOrientationValueType">
 		<restriction base="string">
-			<enumeration value="CCW">
+			<enumeration value="OTHER">
 				<annotation>
-					<documentation>CounterClockwise</documentation>
+					<documentation>Other, or unspecified orientation.</documentation>
 				</annotation>
 			</enumeration>
 			<enumeration value="CW">
@@ -1065,9 +980,9 @@ Note that for a multi-faceted Constrained or Composite Phenomenon multiple unitO
 					<documentation>Clockwise</documentation>
 				</annotation>
 			</enumeration>
-			<enumeration value="OTHER">
+			<enumeration value="CCW">
 				<annotation>
-					<documentation>Other, or unspecified orientation.</documentation>
+					<documentation>CounterClockwise</documentation>
 				</annotation>
 			</enumeration>
 		</restriction>
@@ -1077,19 +992,9 @@ Note that for a multi-faceted Constrained or Composite Phenomenon multiple unitO
 	</simpleType>
 	<simpleType name="SensorTypeValueEnumerationType">
 		<restriction base="string">
-			<enumeration value="ATMOSPHERIC">
+			<enumeration value="LIMB">
 				<annotation>
-					<documentation>Atmospheric Sensor</documentation>
-				</annotation>
-			</enumeration>
-			<enumeration value="ALTIMETRIC">
-				<annotation>
-					<documentation>Altimetric Sensor</documentation>
-				</annotation>
-			</enumeration>
-			<enumeration value="OPTICAL">
-				<annotation>
-					<documentation>Optical Sensor</documentation>
+					<documentation>Limb Looking/Sounding Sensor</documentation>
 				</annotation>
 			</enumeration>
 			<enumeration value="RADAR">
@@ -1097,9 +1002,19 @@ Note that for a multi-faceted Constrained or Composite Phenomenon multiple unitO
 					<documentation>Radar Sensor</documentation>
 				</annotation>
 			</enumeration>
-			<enumeration value="LIMB">
+			<enumeration value="OPTICAL">
 				<annotation>
-					<documentation>Limb Looking/Sounding Sensor</documentation>
+					<documentation>Optical Sensor</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="ALTIMETRIC">
+				<annotation>
+					<documentation>Altimetric Sensor</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="ATMOSPHERIC">
+				<annotation>
+					<documentation>Atmospheric Sensor</documentation>
 				</annotation>
 			</enumeration>
 		</restriction>
@@ -1114,19 +1029,9 @@ Note that for a multi-faceted Constrained or Composite Phenomenon multiple unitO
 	</simpleType>
 	<simpleType name="SpectralRangeValueEnumerationType">
 		<restriction base="string">
-			<enumeration value="NEAR-INFRARED">
+			<enumeration value="OTHER">
 				<annotation>
-					<documentation>Near infrared Range</documentation>
-				</annotation>
-			</enumeration>
-			<enumeration value="INFRARED">
-				<annotation>
-					<documentation>Infrared range</documentation>
-				</annotation>
-			</enumeration>
-			<enumeration value="UV">
-				<annotation>
-					<documentation>Ultra Violet Range</documentation>
+					<documentation>Other spectral range</documentation>
 				</annotation>
 			</enumeration>
 			<enumeration value="VISIBLE">
@@ -1134,9 +1039,19 @@ Note that for a multi-faceted Constrained or Composite Phenomenon multiple unitO
 					<documentation>Visible Range</documentation>
 				</annotation>
 			</enumeration>
-			<enumeration value="OTHER">
+			<enumeration value="UV">
 				<annotation>
-					<documentation>Other spectral range</documentation>
+					<documentation>Ultra Violet Range</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="INFRARED">
+				<annotation>
+					<documentation>Infrared range</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="NEAR-INFRARED">
+				<annotation>
+					<documentation>Near infrared Range</documentation>
 				</annotation>
 			</enumeration>
 		</restriction>
@@ -1151,14 +1066,14 @@ Note that for a multi-faceted Constrained or Composite Phenomenon multiple unitO
 	</simpleType>
 	<simpleType name="DegradationQuotationModeValueEnumerationType">
 		<restriction base="string">
+			<enumeration value="AUTOMATIC">
+				<annotation>
+					<documentation>Indicates the quality degradation percentage has been calculated automatically.</documentation>
+				</annotation>
+			</enumeration>
 			<enumeration value="MANUAL">
 				<annotation>
 					<documentation>Indicates the quality degradation percentage has been calculated manually.</documentation>
-				</annotation>
-			</enumeration>
-			<enumeration value="AUTOMATIC">
-				<annotation>
-					<documentation>Indicatesthe quality degradation percentage has been calculated automatically.</documentation>
 				</annotation>
 			</enumeration>
 		</restriction>
@@ -1173,9 +1088,9 @@ Note that for a multi-faceted Constrained or Composite Phenomenon multiple unitO
 	</simpleType>
 	<simpleType name="MaskTypeValueEnumerationType">
 		<restriction base="string">
-			<enumeration value="SNOW"/>
-			<enumeration value="CLOUD"/>
 			<enumeration value="QUALITY"/>
+			<enumeration value="CLOUD"/>
+			<enumeration value="SNOW"/>
 		</restriction>
 	</simpleType>
 	<simpleType name="MaskTypeValueOtherType">
@@ -1188,10 +1103,10 @@ Note that for a multi-faceted Constrained or Composite Phenomenon multiple unitO
 	</simpleType>
 	<simpleType name="ProcessingLevelValueEnumerationType">
 		<restriction base="string">
-			<enumeration value="1B"/>
-			<enumeration value="1A"/>
-			<enumeration value="2"/>
 			<enumeration value="3"/>
+			<enumeration value="2"/>
+			<enumeration value="1A"/>
+			<enumeration value="1B"/>
 		</restriction>
 	</simpleType>
 	<simpleType name="ProcessingLevelValueOtherType">
@@ -1204,9 +1119,9 @@ Note that for a multi-faceted Constrained or Composite Phenomenon multiple unitO
 	</simpleType>
 	<simpleType name="BrowseTypeValueEnumerationType">
 		<restriction base="string">
-			<enumeration value="THUMBNAIL">
+			<enumeration value="ALBUM">
 				<annotation>
-					<documentation>A small thumbnail image of the data.</documentation>
+					<documentation>A multi-image view of the data</documentation>
 				</annotation>
 			</enumeration>
 			<enumeration value="QUICKLOOK">
@@ -1214,9 +1129,9 @@ Note that for a multi-faceted Constrained or Composite Phenomenon multiple unitO
 					<documentation>A quicklook view of the data</documentation>
 				</annotation>
 			</enumeration>
-			<enumeration value="ALBUM">
+			<enumeration value="THUMBNAIL">
 				<annotation>
-					<documentation>A multi-image view of the data</documentation>
+					<documentation>A small thumbnail image of the data.</documentation>
 				</annotation>
 			</enumeration>
 		</restriction>
@@ -1226,27 +1141,13 @@ Note that for a multi-faceted Constrained or Composite Phenomenon multiple unitO
 			<pattern value="other: \w{2,}"/>
 		</restriction>
 	</simpleType>
-	<simpleType name="ProductQualityStatusValueType">
-		<union memberTypes="eop:ProductQualityStatusValueEnumerationType eop:ProductQualityStatusValueOtherType"/>
-	</simpleType>
-	<simpleType name="ProductQualityStatusValueEnumerationType">
-		<restriction base="string">
-			<enumeration value="DEGRADED"/>
-			<enumeration value="NORMAL"/>
-		</restriction>
-	</simpleType>
-	<simpleType name="ProductQualityStatusValueOtherType">
-		<restriction base="string">
-			<pattern value="other: \w{2,}"/>
-		</restriction>
-	</simpleType>
 	<simpleType name="FormatValueType">
 		<union memberTypes="eop:FormatValueEnumerationType eop:FormatValueOtherType"/>
 	</simpleType>
 	<simpleType name="FormatValueEnumerationType">
 		<restriction base="string">
-			<enumeration value="VECTOR"/>
 			<enumeration value="RASTER"/>
+			<enumeration value="VECTOR"/>
 		</restriction>
 	</simpleType>
 	<simpleType name="FormatValueOtherType">
@@ -1259,29 +1160,9 @@ Note that for a multi-faceted Constrained or Composite Phenomenon multiple unitO
 	</simpleType>
 	<simpleType name="StatusValueEnumerationType">
 		<restriction base="string">
-			<enumeration value="ARCHIVED">
+			<enumeration value="REJECTED">
 				<annotation>
-					<documentation>Data acquisition archived</documentation>
-				</annotation>
-			</enumeration>
-			<enumeration value="ACQUIRED">
-				<annotation>
-					<documentation>Data acquired</documentation>
-				</annotation>
-			</enumeration>
-			<enumeration value="CANCELLED">
-				<annotation>
-					<documentation>Data acquisition cancelled</documentation>
-				</annotation>
-			</enumeration>
-			<enumeration value="FAILED">
-				<annotation>
-					<documentation>Data acquisition failed</documentation>
-				</annotation>
-			</enumeration>
-			<enumeration value="PLANNED">
-				<annotation>
-					<documentation>Data acquisition planned</documentation>
+					<documentation>Data acquisition has been rejected for whatever reason</documentation>
 				</annotation>
 			</enumeration>
 			<enumeration value="POTENTIAL">
@@ -1289,15 +1170,35 @@ Note that for a multi-faceted Constrained or Composite Phenomenon multiple unitO
 					<documentation>Potential data acquisition</documentation>
 				</annotation>
 			</enumeration>
+			<enumeration value="PLANNED">
+				<annotation>
+					<documentation>Data acquisition planned</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="FAILED">
+				<annotation>
+					<documentation>Data acquisition failed</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="CANCELLED">
+				<annotation>
+					<documentation>Data acquisition cancelled</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="ACQUIRED">
+				<annotation>
+					<documentation>Data acquired</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="ARCHIVED">
+				<annotation>
+					<documentation>Data acquisition archived</documentation>
+				</annotation>
+			</enumeration>
 			<enumeration value="QUALITYDEGRADED">
 				<annotation>
 					<documentation>Data acquisition with known quality problems.
 Deprecated.</documentation>
-				</annotation>
-			</enumeration>
-			<enumeration value="REJECTED">
-				<annotation>
-					<documentation>Data acquisition has been rejected for whatever reason</documentation>
 				</annotation>
 			</enumeration>
 		</restriction>
@@ -1307,26 +1208,32 @@ Deprecated.</documentation>
 			<pattern value="other: \w{2,}"/>
 		</restriction>
 	</simpleType>
-	<simpleType name="ImageQualityStatusValueType">
-		<union memberTypes="eop:ImageQualityStatusValueEnumerationType eop:ImageQualityStatusValueOtherType"/>
-	</simpleType>
-	<simpleType name="ImageQualityStatusValueEnumerationType">
+	<simpleType name="StatusSubTypeValueEnumerationType">
 		<restriction base="string">
+			<enumeration value="ON-LINE">
+				<annotation>
+					<documentation>Product available ON-LINE</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="OFF-LINE">
+				<annotation>
+					<documentation>Product not available ON-LINE</documentation>
+				</annotation>
+			</enumeration>
+		</restriction>
+	</simpleType>
+	<simpleType name="ImageQualityStatusValueType">
+		<restriction base="string">
+			<enumeration value="NOMINAL">
+				<annotation>
+					<documentation>Data acquisition passed a quality check with success</documentation>
+				</annotation>
+			</enumeration>
 			<enumeration value="DEGRADED">
 				<annotation>
 					<documentation>Data acquisition passed a quality check and degradations were found.</documentation>
 				</annotation>
 			</enumeration>
-			<enumeration value="NORMAL">
-				<annotation>
-					<documentation>Data acquisition passed a quality check with success</documentation>
-				</annotation>
-			</enumeration>
-		</restriction>
-	</simpleType>
-	<simpleType name="ImageQualityStatusValueOtherType">
-		<restriction base="string">
-			<pattern value="other: \w{2,}"/>
 		</restriction>
 	</simpleType>
 	<attribute name="type" type="QName"/>
@@ -1335,4 +1242,78 @@ Deprecated.</documentation>
 			<documentation>Footprint coordinates, described by a closed polygon (last point=first point), using CRS:WGS84, Latitude,Longitude pairs (per-WGS84 definition of point ordering, not necessarily per all WFS implementations). Expected structure is gml:Polygon/gml:exterior/gml:LinearRing/gml:posList.</documentation>
 		</annotation>
 	</element>
+	<element name="extentOf" type="gml:SurfacePropertyType">
+		<annotation>
+			<documentation>Footprint coordinates, described by a closed polygon (last point=first point), using CRS:WGS84, Latitude,Longitude pairs (per-WGS84 definition of point ordering, not necessarily per all WFS implementations). Expected structure is gml:Polygon/gml:exterior/gml:LinearRing/gml:posList.</documentation>
+		</annotation>
+	</element>
+	<element name="Mask" type="eop:MaskType" substitutionGroup="gml:AbstractFeature">
+		<annotation>
+			<documentation>Mask defined as a feature collection (in the GML 3.2 sense : a feature collection is a feature having a property derived by extension from gml:AbstractFeatureMemberType). Mandates the following optional gml properties inherited from gml:AbstractFeature :
+        - gml:id attribute
+        - gml:name
+        - gml:boundedBy
+      </documentation>
+		</annotation>
+	</element>
+	<complexType name="MaskType">
+		<complexContent>
+			<extension base="gml:AbstractFeatureType">
+				<sequence>
+					<element ref="eop:maskMember" minOccurs="0" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<element name="maskMember" type="eop:MaskMemberType"/>
+	<complexType name="MaskMemberType">
+		<complexContent>
+			<extension base="gml:AbstractFeatureMemberType">
+				<sequence minOccurs="0">
+					<element ref="eop:MaskFeature"/>
+				</sequence>
+				<attributeGroup ref="gml:AssociationAttributeGroup"/>
+			</extension>
+		</complexContent>
+	</complexType>
+	<element name="MaskFeature" type="eop:MaskFeatureType" substitutionGroup="gml:AbstractFeature">
+		<annotation>
+			<documentation>Mask member : . Mandates the following optional gml properties inherited from gml:_Feature :
+        - gml:id attribute
+        - gml:name
+        - gml:boundedBy</documentation>
+		</annotation>
+	</element>
+	<complexType name="MaskFeatureType">
+		<complexContent>
+			<extension base="gml:AbstractFeatureType">
+				<sequence>
+					<element name="maskType" type="gml:CodeWithAuthorityType">
+						<annotation>
+							<documentation>Mask type. Value list can be retrieved with codeSpace</documentation>
+						</annotation>
+					</element>
+					<element ref="eop:extentOf">
+						<annotation>
+							<documentation>Mask member extent. Expected structure is gml:Polygon/gml:exterior/gml:LinearRing/gml:posList with 0 to n gml:Polygon/gml:interior/gml:LinearRing/gml:posList elements representing the holes.</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<simpleType name="ProductQualityStatusValueType">
+		<restriction base="string">
+			<enumeration value="DEGRADED">
+				<annotation>
+					<documentation>Data acquisition passed a quality check and degradations were found.</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="NOMINAL">
+				<annotation>
+					<documentation>Data acquisition passed a quality check with success</documentation>
+				</annotation>
+			</enumeration>
+		</restriction>
+	</simpleType>
 </schema>

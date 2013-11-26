@@ -107,7 +107,7 @@
             	<li><a href="#home">Home</a></li>
                 <li><a href="#howto">How To</a></li>
                 <li><a href="#query">Query examples</a></li>
-                <li><a href="#harvest">Harvest</a></li>
+                <li><a href="#harvest">Load</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
         </nav>        
@@ -191,9 +191,8 @@ The entry point to a search engine is its description document. This document co
                 </div>
                 <img src="_include/img/profile/harvest.png" alt="John Doe">
             </div>
-            <h3 class="profile-name">Harvest</h3>
-            <p class="profile-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ac augue at erat <a href="#">hendrerit dictum</a>. 
-            Praesent porta, purus eget sagittis imperdiet, nulla mi ullamcorper metus, id hendrerit metus diam vitae est. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
+            <h3 class="profile-name">Load metadata</h3>
+            <p class="profile-description">Metadata can be entered in the system via a command line metadata converter or via an HTTP interface. The catalogue accept etadata in O&amp;. Additionally the system can be configured to ingest custom metadata. <a href="#harvest">See detailed instructions.</a></p>
             	
             <!--div class="social">
             	<ul class="social-icons">
@@ -215,8 +214,11 @@ The entry point to a search engine is its description document. This document co
                 <img src="_include/img/profile/search.png" alt="Jane Helf">
             </div>
             <h3 class="profile-name">Search</h3>
-            <p class="profile-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ac augue at erat <a href="#">hendrerit dictum</a>. 
-            Praesent porta, purus eget sagittis imperdiet, nulla mi ullamcorper metus, id hendrerit metus diam vitae est. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
+            <p class="profile-description">Searches can be done using the OpenSearch standard with the Geotemporal Extension for OpenSearch (OGC 10-032r7) and the OpenSearch Extension for Earth Observation (OGC 13-026r2). <a href="#query">See some examples.</a>
+                The entry point of the catalogue is the <a href="service/opensearch/description.xml" target="_blank">OpenSearch Description Document (OSDD)</a> which provides metadata about the contents along with a set of URL Templates
+                which inlustrate the parameters accepted by the service and the variety of output formats in which the results can be retrieved.
+            
+            </p>
             	
             <!--div class="social">
             	<ul class="social-icons">
@@ -276,7 +278,7 @@ The entry point to a search engine is its description document. This document co
         	<div class="span10">                
                 <div class="info-block">
                 	<div class="info-text">
-                		<h3>Upload <span class="color-text">Metadata</span></h3>
+                		<h3>Upload <span class="color-text">Standard </span>Metadata</h3>
                                 <p>Metadata can be uploaded to the catalogue by simply posting a single <a href="#" data-toggle="tooltip" title="A single metadata in any supported domain: O&M, altimetric, optical, radar, limb, atmospheric">metadata</a> or a <a href="#" data-toggle="tooltip" title="A set of metadata in any supported domain (O&M, altimetric, optical, radar, limb, atmospheric) as child of a main metadata tag. Note, the name of the main metadata is not fixed. The important thing is that the element to be harvested are direct child of the main element." >group of metadata</a> to the following url </p>
                         </div>
                 </div>	
@@ -293,9 +295,9 @@ The entry point to a search engine is its description document. This document co
         	<div class="span10">                
                 <div class="info-block">
                 	<div class="info-text">
-                		<h3>Harvest <span class="color-text">Metadata</span></h3>
-                        <p>Data can be ingesed in the system via a converter. The converter accept a csv file as input and generate O&M compliant metadata according to a configuration file. 
-                            The configuration file defines the mapping between the columns of the csv file and the metadata elements. </p>
+                		<h3>Ingest <span class="color-text"> Custom </span> Metadata</h3>
+                        <p>Data can be ingesed in the system via a converter. The converter accept a csv or an XML file as input and generate O&M compliant metadata according to a configuration file (to be generated offline and configured in the system).
+                            The configuration file defines the mapping between the columns of the csv file or the XPATH of the source file and the elements of the O&amp;M metadata file. </p>
                 	</div>
                 </div>
             </div>	
@@ -314,7 +316,7 @@ The entry point to a search engine is its description document. This document co
         <div class="span12">
             <div class="title-page">
                 <h2 class="title">Get in Touch</h2>
-                <h3 class="title-description">We’re currently accepting new client projects. We look forward to serving you.</h3>
+                <h3 class="title-description">We’re are updating the catalogue implementation. send us a message to suggest new feature o to get in touch with us.</h3>
             </div>
         </div>
     </div>
@@ -342,21 +344,19 @@ The entry point to a search engine is its description document. This document co
                 
                 </div>
             </form>
-         
         </div>
         
         <div class="span3">
         	<div class="contact-details">
         		<h3>Contact Details</h3>
                 <ul>
-                    <li><a href="#">hello@brushed.com</a></li>
-                    <li>(916) 375-2525</li>
+                    <li><a href="#">simone.gianfranceschi@intecs.it</a></li>
                     <li>
-                        Brushed Studio
+                        Intecs SPA
                         <br>
-                        5240 Vanish Island. 105
+                        Salita del poggio Laurentino , 7
                         <br>
-                        Unknow
+                        Roma
                     </li>
                 </ul>
             </div>
@@ -368,12 +368,12 @@ The entry point to a search engine is its description document. This document co
 <!-- End Contact Section -->
 
 <!-- Twitter Feed -->
-<div id="twitter-feed" class="page-alternate">
+<!--div id="twitter-feed" class="page-alternate">
 	<div class="container">
     	<div class="row">
             <div class="span12">
                 <div class="follow">
-                    <a href="https://twitter.com/Bluxart" title="Follow Me on Twitter" target="_blank"><i class="font-icon-social-twitter"></i></a>
+                    <a href="https://twitter.com/eoos" title="Follow Me on Twitter" target="_blank"><i class="font-icon-social-twitter"></i></a>
                 </div>
                     
                 <div id="ticker" class="query"> 
@@ -381,7 +381,7 @@ The entry point to a search engine is its description document. This document co
             </div>
         </div>
     </div>
-</div>
+</div-->
 <!-- End Twitter Feed -->
 
 <!-- Socialize -->
@@ -391,15 +391,15 @@ The entry point to a search engine is its description document. This document co
             <div class="span12">
                 <nav id="social">
                     <ul>
-                        <li><a href="https://twitter.com/Bluxart" title="Follow Me on Twitter" target="_blank"><span class="font-icon-social-twitter"></span></a></li>
-                        <li><a href="http://dribbble.com/Bluxart" title="Follow Me on Dribbble" target="_blank"><span class="font-icon-social-dribbble"></span></a></li>
+                        <li><a href="https://twitter.com/IntecsNews" title="Follow Us on Twitter" target="_blank"><span class="font-icon-social-twitter"></span></a></li>
+                        <!--li><a href="http://dribbble.com/Bluxart" title="Follow Me on Dribbble" target="_blank"><span class="font-icon-social-dribbble"></span></a></li>
                         <li><a href="http://forrst.com/people/Bluxart" title="Follow Me on Forrst" target="_blank"><span class="font-icon-social-forrst"></span></a></li>
                         <li><a href="http://www.behance.net/alessioatzeni" title="Follow Me on Behance" target="_blank"><span class="font-icon-social-behance"></span></a></li>
                         <li><a href="https://www.facebook.com/Bluxart" title="Follow Me on Facebook" target="_blank"><span class="font-icon-social-facebook"></span></a></li>
-                        <li><a href="https://plus.google.com/105500420878314068694" title="Follow Me on Google Plus" target="_blank"><span class="font-icon-social-google-plus"></span></a></li>
-                        <li><a href="http://www.linkedin.com/in/alessioatzeni" title="Follow Me on LinkedIn" target="_blank"><span class="font-icon-social-linkedin"></span></a></li>
-                        <li><a href="http://themeforest.net/user/Bluxart" title="Follow Me on ThemeForest" target="_blank"><span class="font-icon-social-envato"></span></a></li>
-                        <li><a href="http://zerply.com/Bluxart/public" title="Follow Me on Zerply" target="_blank"><span class="font-icon-social-zerply"></span></a></li>
+                        <li><a href="https://plus.google.com/105500420878314068694" title="Follow Me on Google Plus" target="_blank"><span class="font-icon-social-google-plus"></span></a></li-->
+                        <li><a href="http://www.linkedin.com/company/intecs" title="Follow Us on LinkedIn" target="_blank"><span class="font-icon-social-linkedin"></span></a></li>
+                        <!--li><a href="http://themeforest.net/user/Bluxart" title="Follow Me on ThemeForest" target="_blank"><span class="font-icon-social-envato"></span></a></li>
+                        <li><a href="http://zerply.com/Bluxart/public" title="Follow Me on Zerply" target="_blank"><span class="font-icon-social-zerply"></span></a></li-->
                     </ul>
                 </nav>
             </div>
@@ -410,7 +410,7 @@ The entry point to a search engine is its description document. This document co
 
 <!-- Footer -->
 <footer>
-	<p class="credits">&copy;2013 Brushed. <a href="http://themes.alessioatzeni.com/html/brushed/" title="Brushed | Responsive One Page Template">Brushed Template</a> by <a href="http://www.alessioatzeni.com/" title="Alessio Atzeni | Web Designer &amp; Front-end Developer">Alessio Atzeni</a></p>
+	<p class="credits">&copy;2013 Intecs. EOOS catalogue  by <a href="http://www.intecs.it" title="Intecs">Intecs SPA</a></p>
 </footer>
 <!-- End Footer -->
 

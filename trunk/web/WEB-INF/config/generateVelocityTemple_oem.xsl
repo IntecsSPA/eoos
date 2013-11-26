@@ -1,4 +1,17 @@
-<xsl:transform xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:eop="http://www.opengis.net/eop/2.0" xmlns:opt="http://www.opengis.net/opt/2.0" xmlns:sar="http://www.opengis.net/sar/2.0" xmlns:atm="http://www.opengis.net/atm/2.0" xmlns:alt="http://www.opengis.net/alt/2.0" xmlns:lmb="http://www.opengis.net/lmb/2.0" xmlns:ssp="http://www.opengis.net/ssp/2.0" xmlns:rep="http://ngeo.eo.esa.int/schema/metadataReport" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:om="http://www.opengis.net/om/2.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ows="http://www.opengis.net/ows/2.0" xmlns:stl="http://pisa.intecs.it/stl" xmlns:swe="http://www.opengis.net/swe/1.0" version="4.0">
+<xsl:transform xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+xmlns:eop="http://www.opengis.net/eop/2.1" 
+xmlns:opt="http://www.opengis.net/opt/2.1" 
+xmlns:sar="http://www.opengis.net/sar/2.1" 
+xmlns:atm="http://www.opengis.net/atm/2.1" 
+xmlns:alt="http://www.opengis.net/alt/2.1" 
+xmlns:lmb="http://www.opengis.net/lmb/2.1" 
+xmlns:ssp="http://www.opengis.net/ssp/2.1" 
+xmlns:gml="http://www.opengis.net/gml/3.2" 
+xmlns:om="http://www.opengis.net/om/2.0" 
+xmlns:xlink="http://www.w3.org/1999/xlink" 
+xmlns:ows="http://www.opengis.net/ows/2.0" 
+xmlns:stl="http://pisa.intecs.it/stl" 
+xmlns:swe="http://www.opengis.net/swe/1.0" version="4.0">
 	<!--xsl:param name="sType">RADAR LIMB ATMOSPHERIC ALTIMETRIC OPTICAL</xsl:param-->
 	<xsl:output method="xml" version="1.0" encoding="UTF-8" indent="no"/>
 	<xsl:param name="sType">OPTICAL</xsl:param>
@@ -1132,6 +1145,7 @@
 			<xsl:if test="attribute[@id='linkedWith']/indexFieldName != ''">#end</xsl:if>
 		</xsl:if>
 		<eop:processing>
+                        <!-- TO DO extend the IF to all the optional elements-->
 			<xsl:if test="attribute[@id='processingMode'] !=''">
 				<xsl:choose>
 					<xsl:when test="$sType  = 'ALTIMETRIC'">
@@ -1171,10 +1185,7 @@
 								</eop:methodVersion>
 								<xsl:if test="attribute[@id='methodVersion']/indexFieldName != ''">#end</xsl:if>
 							</xsl:if>
-							<eop:processingMode>
-								<xsl:apply-templates select="attribute[@id='processingMode']"/>
-							</eop:processingMode>
-							<xsl:if test="attribute[@id='processorName'] !=''">
+                                                        <xsl:if test="attribute[@id='processorName'] !=''">
 								<xsl:if test="attribute[@id='processorName']/indexFieldName != ''">#if( $metadata.<xsl:value-of select="attribute[@id='processorName']/indexFieldName"/> != '' )</xsl:if>
 								<eop:processorName>
 									<xsl:apply-templates select="attribute[@id='processorName']"/>
@@ -1209,6 +1220,13 @@
 								</eop:auxiliaryDataSetFileName>
 								<xsl:if test="attribute[@id='auxiliaryDataSetFileName']/indexFieldName != ''">#end</xsl:if>
 							</xsl:if>
+                                                        <xsl:if test="attribute[@id='processingMode'] !=''">
+                                                                <xsl:if test="attribute[@id='processingMode']/indexFieldName != ''">#if( $metadata.<xsl:value-of select="attribute[@id='processingMode']/indexFieldName"/> != '' )</xsl:if>
+                                                                <eop:processingMode>
+                                                                        <xsl:apply-templates select="attribute[@id='processingMode']"/>
+                                                                </eop:processingMode>
+                                                                <xsl:if test="attribute[@id='processingMode']/indexFieldName != ''">#end</xsl:if>
+                                                        </xsl:if>
 							<xsl:if test="attribute[@id='groundTrackUncertainty'] !=''">
 								<xsl:if test="attribute[@id='groundTrackUncertainty']/indexFieldName != ''">#if( $metadata.<xsl:value-of select="attribute[@id='groundTrackUncertainty']/indexFieldName"/> != '' )</xsl:if>
 								<alt:groundTrackUncertainty uom="km">
@@ -1269,13 +1287,6 @@
 								</eop:methodVersion>
 								<xsl:if test="attribute[@id='methodVersion']/indexFieldName != ''">#end</xsl:if>
 							</xsl:if>
-							<xsl:if test="attribute[@id='processingMode'] !=''">
-								<xsl:if test="attribute[@id='processingMode']/indexFieldName != ''">#if( $metadata.<xsl:value-of select="attribute[@id='processingMode']/indexFieldName"/> != '' )</xsl:if>
-								<eop:processingMode>
-									<xsl:apply-templates select="attribute[@id='processingMode']"/>
-								</eop:processingMode>
-								<xsl:if test="attribute[@id='processingMode']/indexFieldName != ''">#end</xsl:if>
-							</xsl:if>
 							<xsl:if test="attribute[@id='processorName'] !=''">
 								<xsl:if test="attribute[@id='processorName']/indexFieldName != ''">#if( $metadata.<xsl:value-of select="attribute[@id='processorName']/indexFieldName"/> != '' )</xsl:if>
 								<eop:processorName>
@@ -1310,6 +1321,13 @@
 									<xsl:apply-templates select="attribute[@id='auxiliaryDataSetFileName']"/>
 								</eop:auxiliaryDataSetFileName>
 								<xsl:if test="attribute[@id='auxiliaryDataSetFileName']/indexFieldName != ''">#end</xsl:if>
+							</xsl:if>
+                                               		<xsl:if test="attribute[@id='processingMode'] !=''">
+								<xsl:if test="attribute[@id='processingMode']/indexFieldName != ''">#if( $metadata.<xsl:value-of select="attribute[@id='processingMode']/indexFieldName"/> != '' )</xsl:if>
+								<eop:processingMode>
+									<xsl:apply-templates select="attribute[@id='processingMode']"/>
+								</eop:processingMode>
+								<xsl:if test="attribute[@id='processingMode']/indexFieldName != ''">#end</xsl:if>
 							</xsl:if>
 						</eop:ProcessingInformation>
 					</xsl:otherwise>

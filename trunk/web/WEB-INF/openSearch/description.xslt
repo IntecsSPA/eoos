@@ -4,7 +4,7 @@
     <xsl:param name="url">http://pippo.com/</xsl:param>
     <xsl:param name="time_ext">startdate={time:start?}&amp;stopdate={time:end?}&amp;trel={time:relation?}&amp;</xsl:param>
     <xsl:param name="geo_ext">bbox={geo:box}&amp;geom={geo:geometry?}&amp;id={geo:uid?}&amp;lat={geo:lat?}&amp;lon={geo:lon?}&amp;radius={geo:radius?}&amp;rel={geo:relation?}&amp;loc={geo:name?}&amp;</xsl:param>
-    <xsl:param name="eo_ext">tp={cseop:timePosition?}&amp;psn={cseop:platformShortName?}&amp;psi={cseop:platformSerialIdentifier?}&amp;ot={cseop:orbitType?}&amp;isn={cseop:instrumentShortName?}&amp;st={cseop:sensorType?}&amp;som={cseop:sensorOperationalMode?}&amp;si={cseop:swathIdentifier?}</xsl:param>
+    <xsl:param name="eo_ext">pid={eo:parentIdentifier?}&amp;psn={eo:platformShortName?}&amp;psi={eo:platformSerialIdentifier?}&amp;ot={eo:orbitType?}&amp;isn={eo:instrumentShortName?}&amp;st={eo:sensorType?}&amp;som={eo:sensorOperationalMode?}&amp;si={eo:swathIdentifier?}</xsl:param>
 
     <xsl:template match="/">
 

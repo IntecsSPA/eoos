@@ -68,7 +68,8 @@
                   $e.getName() == 'polarisationMode' || 
                   $e.getName() == 'polarisationChannel' || 
                   $e.getName() == 'minimumIncidenceAngle' || 
-                  $e.getName() == 'maximumIncidenceAngle' || 
+                  $e.getName() == 'maximumIncidenceAngle' ||
+                  $e.getName() == 'parentIdentifier' ||
                   $e.getName() == '')
     <field name="$e.getName()">$e.getTextTrim()</field>
 #end
