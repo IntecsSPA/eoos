@@ -112,6 +112,7 @@ public class CatalogueServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String requestURI;
+
         requestURI = request.getRequestURI();
         if (requestURI.contains(METHOD_OPEN_SEARCH)) {
             try {
@@ -119,6 +120,7 @@ public class CatalogueServlet extends HttpServlet {
             } catch (Exception ex) {
                 ex.printStackTrace();
                 Log.error(ex.getMessage());
+                response.sendError(400, ex.getMessage());
             }
         } else if (requestURI.contains(METHOD_HARVEST)) {
             handleHarvest(request, response);
@@ -300,7 +302,7 @@ public class CatalogueServlet extends HttpServlet {
 
         tmpJson = new JsonObject();
         tmpJson.addProperty("title", "Simple search on a geographical area identified vua a Bounding Box. The results are returned in ATOM format.");
-        tmpJson.addProperty("value", request.getRequestURL()+"/opensearch/atom/?q=*.*&amp;startIndex=1&amp;count=10&amp;bbox=[20,40 90,180]");
+        tmpJson.addProperty("value", request.getRequestURL()+"/opensearch/atom/?q=*.*&amp;startIndex=1&amp;count=10&amp;bbox=60,40,90,90");
         rows.add(tmpJson);
         
         tmpJson = new JsonObject();

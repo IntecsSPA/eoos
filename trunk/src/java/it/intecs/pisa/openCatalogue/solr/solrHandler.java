@@ -1,7 +1,7 @@
 /* Copyright (c) 2013 Intecs - www.intecs.it. All rights reserved.
  * This code is licensed under the GPL 3.0 license, available at the root
  * application directory.
-*/
+ */
 package it.intecs.pisa.openCatalogue.solr;
 
 import it.intecs.pisa.log.Log;
@@ -12,6 +12,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.xpath.XPathConstants;
 import net.sf.saxon.s9api.SaxonApiException;
 import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.HttpClient;
@@ -48,13 +49,15 @@ public class solrHandler {
 
         // Execute the method.
         int statusCode = client.executeMethod(method);
+        SaxonDocument solrResponse = new SaxonDocument(method.getResponseBodyAsString());
+        Log.debug(solrResponse.getXMLDocumentString());
 
         if (statusCode != HttpStatus.SC_OK) {
             Log.error("Method failed: " + method.getStatusLine());
+            String errorMessage = (String) solrResponse.evaluatePath("//lst[@name='error']/str[@name='msg']/text()", XPathConstants.STRING);
+            throw new Exception(errorMessage);
         }
-        
-        SaxonDocument solrResponse = new SaxonDocument(method.getResponseBodyAsString());
-        Log.debug(solrResponse.getXMLDocumentString());        
+
         return solrResponse;
     }
 
@@ -92,16 +95,17 @@ public class solrHandler {
      * startdate={time:start?} stopdate={time:end?} tp={cseop:timePosition?}
      * psn={cseop:platformShortName?} psi={cseop:platformSerialIdentifier?}
      * ot={cseop:orbitType?} isn={cseop:instrumentShortName?}
-     * st={cseop:sensorType?} som={cseop:sensorOperationalMode?}
+     * st={cseop:sensorType?} som={cseop:sensorMode?}
      * si={cseop:swathIdentifier?}
      */
-    private String prepareUrl(HttpServletRequest request) throws UnsupportedEncodingException {
+    private String prepareUrl(HttpServletRequest request) throws UnsupportedEncodingException, Exception {
         Enumeration params = request.getParameterNames();
         String fq = "";
         String q = this.solrHost + "/select?q=*%3A*&wt=xml&indent=true";
         String name;
         String value;
-        if (null != request.getParameter("q") && !request.getParameter("q").equals("*.*")){
+        String qs = request.getParameter("q");
+        if (null != qs && !qs.isEmpty() && !qs.equals("*.*")) {
             value = request.getParameter("q");
             q = this.solrHost + "/select?q=" + URLDecoder.decode(value, "ISO-8859-1") + "&wt=xml&indent=true";
         }
@@ -113,61 +117,70 @@ public class solrHandler {
             name = (String) params.nextElement();
             value = request.getParameter(name);
 
-            if (name.equals("count")) {
-                q += "&rows=" + value;                
-            } else if (name.equals("startPage")) {
-            } else if (name.equals("startIndex")) {
-                q += "&start=" + (Integer.parseInt(value)-1);
-            } else if (name.equals("uid")) {
-            } else if (name.equals("bbox")) {
-                String[] values = value.split(",");
-                value="["+values[1]+","+values[0]+" "+values[3]+","+values[2]+"]";
-                Log.debug("BBOX "+value);
-                fq += " AND posList:" + URLDecoder.decode(value, "ISO-8859-1");
-            } else if (name.equals("geom")) {
-                fq += " AND posList :\"Intersects(" + (URLDecoder.decode(value, "ISO-8859-1")) + ")\"";
-            } else if (name.equals("id")) {
-                fq += " AND id:\"" + URLDecoder.decode(value, "ISO-8859-1")+"\"";
-            } else if (name.equals("lat")) {
-                lat = URLDecoder.decode(value, "ISO-8859-1");
-            } else if (name.equals("lon")) {
-                lon = URLDecoder.decode(value, "ISO-8859-1");
-            } else if (name.equals("radius")) {
-                radius = URLDecoder.decode(value, "ISO-8859-1");
-            } else if (name.equals("startdate")) {
-                value=value.endsWith("Z")?value:value+"Z";
-                fq += " AND beginPosition:[" + URLDecoder.decode(value, "ISO-8859-1") + " TO *]";
-            } else if (name.equals("stopdate")) {
-                value=value.endsWith("Z")?value:value+"Z";
-                fq += " AND endPosition:[* TO " + URLDecoder.decode(value, "ISO-8859-1") + "]";
-            } else if (name.equals("tp")) {
-            } else if (name.equals("psn")) {
-                fq += " AND platformShortName=" + value;
-            } else if (name.equals("psi")) {
-                fq += " AND platformSerialIdentifier=" + value;
-            } else if (name.equals("ot")) {
-                fq += " AND orbitType=" + value;
-            } else if (name.equals("isn")) {
-                fq += " AND instrumentShortName=" + value;
-            } else if (name.equals("st")) {
-                fq += " AND sensorType=" + value;
-            } else if (name.equals("som")) {
-                fq += " AND sensorOperationalMode=" + value;
-            } else if (name.equals("si")) {
-                fq += " AND swathIdentifier=" + value;
-            } else if (name.equals("pid")) {
-                fq += " AND parentIdentifier=" + value;
-            } else {
+            if (!value.isEmpty()) {
+                if (name.equals("count")) {
+                    q += "&rows=" + value;
+                } else if (name.equals("startPage")) {
+                } else if (name.equals("startIndex")) {
+                    q += "&start=" + (Integer.parseInt(value) - 1);
+                } else if (name.equals("uid")) {
+                } else if (name.equals("bbox")) {
+                    String[] values = value.split(",");
+                    if (values.length != 4) {
+                        throw new Exception();
+                    }
+                    value = "[" + values[1] + "," + values[0] + " " + values[3] + "," + values[2] + "]";
+                    Log.debug("BBOX " + value);
+                    fq += " AND posList:" + URLDecoder.decode(value, "ISO-8859-1");
+                } else if (name.equals("geom")) {
+                    fq += " AND posList :\"Intersects(" + (URLDecoder.decode(value, "ISO-8859-1")) + ")\"";
+                } else if (name.equals("id")) {
+                    fq += " AND id:\"" + URLDecoder.decode(value, "ISO-8859-1") + "\"";
+                } else if (name.equals("lat")) {
+                    lat = URLDecoder.decode(value, "ISO-8859-1");
+                } else if (name.equals("lon")) {
+                    lon = URLDecoder.decode(value, "ISO-8859-1");
+                } else if (name.equals("radius")) {
+                    radius = URLDecoder.decode(value, "ISO-8859-1");
+                } else if (name.equals("startdate")) {
+                    value = value.endsWith("Z") ? value : value + "Z";
+                    fq += " AND beginPosition:[" + URLDecoder.decode(value, "ISO-8859-1") + " TO *]";
+                } else if (name.equals("stopdate")) {
+                    value = value.endsWith("Z") ? value : value + "Z";
+                    fq += " AND endPosition:[* TO " + URLDecoder.decode(value, "ISO-8859-1") + "]";
+                } else if (name.equals("tp")) {
+                } else if (name.equals("psn")) {
+                    fq += " AND platformShortName=" + value;
+                } else if (name.equals("psi")) {
+                    fq += " AND platformSerialIdentifier=" + value;
+                } else if (name.equals("ot")) {
+                    fq += " AND orbitType=" + value;
+                } else if (name.equals("isn")) {
+                    fq += " AND instrumentShortName=" + value;
+                } else if (name.equals("st")) {
+                    fq += " AND sensorType=" + value;
+                } else if (name.equals("som")) {
+                    fq += " AND sensorMode=" + value;
+                } else if (name.equals("si")) {
+                    fq += " AND swathIdentifier=" + value;
+                } else if (name.equals("pid")) {
+                    fq += " AND parentIdentifier=" + value;
+                } else {
+                }
             }
+
+
         }
-              
-        
-        if ((lat!=null)&&(lon!=null)&&(radius!=null))
-                fq += " AND posList :\"Intersects(Circle(" + lat + " "+ lon+ " "+ radius+"))\""; 
-        
+
+
+        if ((lat != null) && (lon != null) && (radius != null)) {
+            fq += " AND posList :\"Intersects(Circle(" + lon + "," + lat + " d=" + radius + "))\"";
+        }
+
         String url = q;
-        if (fq.length() > 1)
-                url += "&fq="+URLEncoder.encode(fq.substring(5), "ISO-8859-1");        
+        if (fq.length() > 1) {
+            url += "&fq=" + URLEncoder.encode(fq.substring(5), "ISO-8859-1");
+        }
         return url;
     }
 
@@ -175,15 +188,15 @@ public class solrHandler {
         HttpClient client = new HttpClient();
         HttpMethod method;
         String urlStr = solrHost + "/update?commit=true";
-        Log.debug("Ingesting a new document to: " + urlStr);        
-        Log.debug(body);        
+        Log.debug("Ingesting a new document to: " + urlStr);
+        Log.debug(body);
         method = new PostMethod(urlStr);
         RequestEntity entity = new StringRequestEntity(body);
         ((PostMethod) method).setRequestEntity(entity);
         method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(3, false));
         method.setRequestHeader("Content-Type", "text/xml");
         method.setRequestHeader("charset", "utf-8");
-        
+
         // Execute the method.
         int statusCode = client.executeMethod(method);
 
@@ -192,7 +205,7 @@ public class solrHandler {
         }
 
         SaxonDocument solrResponse = new SaxonDocument(method.getResponseBodyAsStream());
-        Log.debug(solrResponse.getXMLDocumentString());        
+        Log.debug(solrResponse.getXMLDocumentString());
         return statusCode;
     }
 }
