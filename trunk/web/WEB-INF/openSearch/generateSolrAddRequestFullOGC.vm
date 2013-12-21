@@ -34,7 +34,7 @@
 #macro ( recursive $e)   
 #if( $e.getChildren().size() > 0 )
     #if ( $e.getName() == 'Platform' )
-        <field name="platformSerialIdentifier">#foreach($child in $e.getChildren())#getShortName($child)#end</field>
+        <field name="platformShortName">#foreach($child in $e.getChildren())#getShortName($child)#end</field>
     #elseif ( $e.getName() == 'Instrument' )
         <field name="instrumentShortName">#foreach($child in $e.getChildren())#getShortName($child)#end</field>
     #else
@@ -46,6 +46,32 @@
 #if ($e.getName() == 'posList')
     <field name="$e.getName()">POLYGON(($coordinates.adjustCoordinatesForSolr($e.getTextTrim())))</field>
     <field name="posListOrig">$e.getTextTrim()</field>
+#elseif ( $e.getName() == 'operationalMode')
+    <field name="sensorOperationalMode">$e.getTextTrim()</field>
+#elseif ( $e.getName() == 'serialIdentifier')
+    <field name="platformSerialIdentifier">$e.getTextTrim()</field>
+#elseif ( $e.getName() == 'resolution')
+    <field name="sensorResolution">$e.getTextTrim()</field>
+#elseif ( $e.getName() == 'status')
+    <field name="productionStatus">$e.getTextTrim()</field>
+#elseif ( $e.getName() == 'wrsLongitudeGrid')
+    <field name="track">$e.getTextTrim()</field>
+#elseif ( $e.getName() == 'wrsLatitudeGrid')
+    <field name="frame">$e.getTextTrim()</field>
+#elseif ( $e.getName() == 'cloudCoverPercentage')
+    <field name="cloudCover">$e.getTextTrim()</field>
+#elseif ( $e.getName() == 'snowCoverPercentage')
+    <field name="snowCover">$e.getTextTrim()</field>
+#elseif ( $e.getName() == 'productQualityDegradation')
+    <field name="imageQualityDegradation">$e.getTextTrim()</field>
+#elseif ( $e.getName() == 'productQualityDegradationTag')
+    <field name="imageQualityDegradationTag">$e.getTextTrim()</field>
+#elseif ( $e.getName() == 'productQualityDegradationTag')
+    <field name="imageQualityDegradationTag">$e.getTextTrim()</field>
+#elseif ( $e.getName() == 'operationalMode')
+    <field name="sensorMode">$e.getTextTrim()</field>
+#elseif ( $e.getName() == 'timePosition')
+    <field name="availabilityTime">$e.getTextTrim()</field>
 #elseif ( $e.getName() == 'instrumentShortName' ||
                   $e.getName() == 'beginPosition' || 
                   $e.getName() == 'endPosition' || 
@@ -53,7 +79,6 @@
                   $e.getName() == 'acquisitionType' || 
                   $e.getName() == 'acquisitionSubType' || 
                   $e.getName() == 'orbitDirection' || 
-                  $e.getName() == 'Status' || 
                   $e.getName() == 'orbitNumber' || 
                   $e.getName() == 'productType' || 
                   $e.getName() == 'acquisitionStation' || 
@@ -61,7 +86,6 @@
                   $e.getName() == 'archivingCenter' || 
                   $e.getName() == 'sensorType' || 
                   $e.getName() == 'sensorOperationalMode' || 
-                  $e.getName() == 'sensorResolution' || 
                   $e.getName() == 'swathIdentifier' || 
                   $e.getName() == 'cloudCoverPercentage' || 
                   $e.getName() == 'snowCoverPercentage' || 
@@ -70,12 +94,29 @@
                   $e.getName() == 'minimumIncidenceAngle' || 
                   $e.getName() == 'maximumIncidenceAngle' ||
                   $e.getName() == 'parentIdentifier' ||
+                  $e.getName() == 'compositeType' ||
+                  $e.getName() == 'processingLevel' ||
+                  $e.getName() == 'orbitType' ||
+                  $e.getName() == 'spectralRange' ||
+                  $e.getName() == 'wavelengths' ||
+                  $e.getName() == 'swathIdentifier' ||
+                  $e.getName() == 'processorName' ||
+                  $e.getName() == 'processingCenter' ||
+                  $e.getName() == 'processingDate' ||
+                  $e.getName() == 'processingMode' ||
+                  $e.getName() == 'startTimeFromAscendingNode' ||
+                  $e.getName() == 'completionTimeFromAscendingNode' ||
+                  $e.getName() == 'illuminationAzimuthAngle' ||
+                  $e.getName() == 'illuminationZenithAngle' ||
+                  $e.getName() == 'illuminationElevationAngle' ||
+                  $e.getName() == 'antennaLookDirection' ||
+                  $e.getName() == 'dopplerFrequency' ||
+                  $e.getName() == 'incidenceAngleVariation'
                   $e.getName() == '')
     <field name="$e.getName()">$e.getTextTrim()</field>
 #end
 #end
 #end
-
 <add>
     <doc>
         <field name="id">#getIdentifier($metadataDocument.getRootElement())</field>

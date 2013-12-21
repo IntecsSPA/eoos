@@ -3,12 +3,26 @@
     <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="no" escape-uri-attributes="yes"/>
     <xsl:param name="url">http://pippo.com/</xsl:param>
     <xsl:param name="time_ext">startdate={time:start?}&amp;stopdate={time:end?}&amp;trel={time:relation?}&amp;</xsl:param>
-    <xsl:param name="geo_ext">bbox={geo:box}&amp;geom={geo:geometry?}&amp;id={geo:uid?}&amp;lat={geo:lat?}&amp;lon={geo:lon?}&amp;radius={geo:radius?}&amp;rel={geo:relation?}&amp;loc={geo:name?}&amp;</xsl:param>
-    <xsl:param name="eo_ext">pid={eo:parentIdentifier?}&amp;psn={eo:platformShortName?}&amp;psi={eo:platformSerialIdentifier?}&amp;ot={eo:orbitType?}&amp;isn={eo:instrumentShortName?}&amp;st={eo:sensorType?}&amp;som={eo:sensorOperationalMode?}&amp;si={eo:swathIdentifier?}</xsl:param>
+    <xsl:param name="geo_ext">bbox={geo:box?}&amp;geom={geo:geometry?}&amp;id={geo:uid?}&amp;lat={geo:lat?}&amp;lon={geo:lon?}&amp;radius={geo:radius?}&amp;rel={geo:relation?}&amp;loc={geo:name?}&amp;</xsl:param>
+    <xsl:param name="eo_ext">pid={eo:parentIdentifier?}&amp;psn={eo:platformShortName?}&amp;psi={eo:platformSerialIdentifier?}&amp;ot={eo:orbitType?}&amp;isn={eo:instrumentShortName?}&amp;st={eo:sensorType?}&amp;som={eo:sensorMode?}&amp;si={eo:swathIdentifier?}</xsl:param>
 
     <xsl:template match="/">
 
-        <OpenSearchDescription xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:eop="http://www.genesi-dr.eu/spec/opensearch/extensions/eop/1.0/" xmlns:time="http://a9.com/-/opensearch/extensions/time/1.0/" xmlns:geo="http://a9.com/-/opensearch/extensions/geo/1.0/" xmlns:sar="http://earth.esa.int/sar" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dct="http://purl.org/dc/terms/" xmlns:dclite4g="http://xmlns.com/2008/dclite4g#" xmlns:ical="http://www.w3.org/2002/12/cal/ical#" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:ws="http://dclite4g.xmlns.com/ws.rdf#" xmlns:os="http://a9.com/-/spec/opensearch/1.1/" xmlns:sru="http://a9.com/-/opensearch/extensions/sru/2.0/" xmlns="http://a9.com/-/spec/opensearch/1.1/">
+        <OpenSearchDescription 
+        xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+        xmlns:eo="http://a9.com/-/opensearch/extensions/eo/1.0/"
+        xmlns:time="http://a9.com/-/opensearch/extensions/time/1.0/" 
+        xmlns:geo="http://a9.com/-/opensearch/extensions/geo/1.0/" 
+        xmlns:sar="http://earth.esa.int/sar" 
+        xmlns:dc="http://purl.org/dc/elements/1.1/" 
+        xmlns:dct="http://purl.org/dc/terms/" 
+        xmlns:dclite4g="http://xmlns.com/2008/dclite4g#" 
+        xmlns:ical="http://www.w3.org/2002/12/cal/ical#" 
+        xmlns:atom="http://www.w3.org/2005/Atom" 
+        xmlns:ws="http://dclite4g.xmlns.com/ws.rdf#" 
+        xmlns:os="http://a9.com/-/spec/opensearch/1.1/" 
+        xmlns:sru="http://a9.com/-/opensearch/extensions/sru/2.0/" 
+        xmlns="http://a9.com/-/spec/opensearch/1.1/">
             <ShortName>openCaralogue</ShortName>
             <LongName>Earth Observation Catalogue</LongName>
             <Description>This OpenSearch Service allows the discovery of Earth Observation data. This search service is in accordance with the OGC 10-032r3 specification. </Description>
@@ -24,9 +38,9 @@
             <Language>en-us</Language>
             <OutputEncoding>UTF-8</OutputEncoding>
             <InputEncoding>UTF-8</InputEncoding>
-            <Url type="application/atom+xml" indexOffset="0" pageOffset="0" template="" >
+            <Url type="application/atom+xml" indexOffset="1" pageOffset="1" template="" >
                 <xsl:attribute name="template">
-                    <xsl:value-of select="$url"/>/atom/?q={searchTerm}&amp;count={count}&amp;startIndex={startIndex?}&amp;startPage={startPage?}&amp;<xsl:value-of select="$geo_ext"/><xsl:value-of select="$time_ext"/><xsl:value-of select="$eo_ext"/>
+                    <xsl:value-of select="$url"/>/atom/?q={searchTerm}&amp;count={count}&amp;startIndex={startIndex?}&amp;startPage={startPage?}&amp;<xsl:value-of select="$geo_ext"/><xsl:value-of select="$time_ext"/><xsl:value-of select="$eo_ext"/>&amp;recordSchema={sru:recordSchema?}
                 </xsl:attribute>
             </Url>
         </OpenSearchDescription>
