@@ -13,7 +13,10 @@ xmlns:ows="http://www.opengis.net/ows/2.0"
 xmlns:stl="http://pisa.intecs.it/stl" 
 xmlns:swe="http://www.opengis.net/swe/1.0" version="4.0">
 	<!--xsl:param name="sType">RADAR LIMB ATMOSPHERIC ALTIMETRIC OPTICAL</xsl:param-->
-	<xsl:output method="xml" version="1.0" encoding="UTF-8" indent="no"/>
+        <xsl:character-map name="a">
+            <xsl:output-character character="&#34;" string="&#34;"/>
+        </xsl:character-map>
+	<xsl:output method="xml" version="1.0" encoding="UTF-8" indent="no" use-character-maps="a"/>
 	<xsl:param name="sType">OPTICAL</xsl:param>
 	<xsl:template match="model">
 		<xsl:apply-templates select="generalConstant"/>
@@ -440,7 +443,7 @@ xmlns:swe="http://www.opengis.net/swe/1.0" version="4.0">
 						<xsl:apply-templates select="attribute[@id='browseReferenceSystemIdentifier']"/>
 					</eop:referenceSystemIdentifier>
 					<eop:fileName>
-						<ows:ServiceReference xmlns="http://www.opengis.net/ows/2.0">
+						<ows:ServiceReference>
 							<xsl:attribute name="xlink:href"><xsl:apply-templates select="attribute[@id='BrowseURI']"/></xsl:attribute>
 							<ows:RequestMessage/>
 						</ows:ServiceReference>
