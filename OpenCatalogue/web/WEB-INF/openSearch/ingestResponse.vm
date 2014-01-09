@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<csi:insertReplaceResponse 
+     xmlns:csi="http://ngeo.eo.esa.int/schema/catalogue/ingestion"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<csi:status>$ingestionSummary.status</csi:status>
+	<csi:ingestionSummary>
+		<csi:toBeInserted>$ingestionSummary.toBeInserted</csi:toBeInserted>
+		<csi:actuallyInserted>$ingestionSummary.actuallyInserted</csi:actuallyInserted>
+		<csi:toBeDeleted>$ingestionSummary.toBeDeleted</csi:toBeDeleted>
+		<csi:actuallyDeleted>$ingestionSummary.actuallyDeleted</csi:actuallyDeleted>
+		<csi:toBeUpdated>$ingestionSummary.toBeUpdated</csi:toBeUpdated>
+		<csi:actuallyUpdated>$ingestionSummary.actuallyUpdated</csi:actuallyUpdated>
+	</csi:ingestionSummary>
+	<csi:ingestionResult>
+#foreach( $result in $resultsList )
+		<csi:briefRecord>
+			<csi:identifier>DS_PHR1A_20010822110247_TLS_PX_E123N45_0101_01234</csi:identifier>
+			<csi:status>$result.status</csi:status>
+		</csi:briefRecord>
+#end
+	</csi:ingestionResult>
+</csi:insertReplaceResponse>
+
+
+
+

@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="UTF-8"?><model>
+	<dateTimeFormat>yyyy-MM-dd'T'HH:mm:ss'Z'</dateTimeFormat>
+	<separator>;</separator>
+	<timeFilter>LAST_UPDATE</timeFilter>
+	<generalConstant name="urlRoot">http://root-path-to-landsat-products/</generalConstant>
+	<excludeDirs>
+		<filter>*/exclude*/*</filter>
+		<filter>*/browses/*</filter>
+		<filter>*/metadata/*</filter>
+		<filter>.*</filter>
+	</excludeDirs>
+	<!--<attribute id="observedProperty">
+		<defaultValue>http://dummy.url</defaultValue>
+	</attribute>-->
+	<attribute id="observedPropertyNilReason">
+		<defaultValue>inapplicable</defaultValue>
+	</attribute>
+	<!-- Dataset identification-->
+	<attribute id="productType">
+		<defaultValue>DummyAltimeter</defaultValue>
+	</attribute>
+	<!-- Product identification-->
+	<attribute id="productId">
+		<defaultValue>Dummy</defaultValue>
+	</attribute>
+	<!-- Product date-time-->
+	<attribute id="beginAcquisition">
+		<defaultValue>2001-08-22T11:02:47.000</defaultValue>
+	</attribute>
+	<attribute id="endAcquisition">
+		<defaultValue>2001-08-22T11:02:47.999</defaultValue>
+	</attribute>
+	<attribute id="availabilityTime">
+		<defaultValue>2001-08-22T11:02:47.999</defaultValue>
+	</attribute>
+	<!-- Product footprint-->
+	<attribute id="footprint">
+		<!--formula>$metadata.BOUNDING_POLYGON.replaceAll(","," ")</formula-->
+		<defaultValue>2.1025 43.516667 2.861667 43.381667 2.65 42.862778 1.896944 42.996389 2.1025 43.516667</defaultValue>
+	</attribute>
+	<!-- Product footprint-->
+	<attribute id="productURI">
+		<!--formula>$urlRoot${metadata.PRODUCT_ID}.zip</formula-->
+		<defaultValue>http://www.mybrowse.com/dummy</defaultValue>
+	</attribute>
+	<attribute id="productVersion">
+		<defaultValue>1.0</defaultValue>
+	</attribute>
+	<attribute id="productSize">
+		<defaultValue>200</defaultValue>
+	</attribute>
+	<!-- Other product metadata-->
+	<attribute id="acquisitionType">
+		<defaultValue>NOMINAL</defaultValue>
+	</attribute>
+	<attribute id="acquisitionSubType">
+		<defaultValue>DEFAULT</defaultValue>
+	</attribute>
+	<attribute id="productType">
+		<defaultValue>TBD</defaultValue>
+	</attribute>
+	<attribute id="status">
+		<defaultValue>ARCHIVED</defaultValue>
+	</attribute>
+	<attribute id="statusSubType">
+		<defaultValue>ON-LINE</defaultValue>
+	</attribute>
+	<attribute id="creationDate">
+		<defaultValue>2012-12-06T10:20:41.960Z</defaultValue>
+	</attribute>
+	<attribute id="insertionDate">
+		<defaultValue>2012-12-06T10:20:41.960Z</defaultValue>
+	</attribute>
+	<!--reason of a failure, cancelation, rejection or degraded quality-->
+	<attribute id="statusDetail">
+		<defaultValue>reason of a failure, cancelation, rejection or degraded quality</defaultValue>
+	</attribute>
+	<attribute id="doi">
+		<defaultValue>10.1000/123456</defaultValue>
+	</attribute>
+	<attribute id="parentIdentifier">
+		<defaultValue>DummyParentIdentifier</defaultValue>
+	</attribute>
+	<!--downlinkedTo-->
+	<attribute id="acquisitionStation">
+		<defaultValue>TLS</defaultValue>
+	</attribute>
+	<attribute id="acquisitionDate">
+		<defaultValue>2012-12-06T10:20:41.960Z</defaultValue>
+	</attribute>
+	<!--archivedIn-->
+	<attribute id="archivingCenter">
+		<defaultValue>TLS</defaultValue>
+	</attribute>
+	<attribute id="archivingDate">
+		<defaultValue>2012-12-06T10:20:41.960Z</defaultValue>
+	</attribute>
+	<attribute id="archivingIdentifier">
+		<defaultValue>DummyArchivingIdentifier</defaultValue>
+	</attribute>
+	
+	<!-- DEPRECATED
+	<attribute id="imageQualityDegradation">
+		<defaultValue>0</defaultValue>
+	</attribute>	
+	<attribute id="imageQualityStatus">
+		<defaultValue>NOMINAL</defaultValue>
+	</attribute>
+	<attribute id="imageQualityDegradationTag">
+		<defaultValue>RADIOMETRY</defaultValue>
+	</attribute>
+	<attribute id="imageQualityReportURL">
+		<defaultValue>DEFAULT</defaultValue>
+	</attribute>-->
+	
+	<attribute id="productGroupId">
+		<defaultValue>DEFAULT</defaultValue>
+	</attribute>
+	<attribute id="productQualityDegradation">
+		<defaultValue>10</defaultValue>
+	</attribute>
+	<attribute id="productQualityStatus">
+		<defaultValue>DEGRADED</defaultValue>
+	</attribute>
+	<attribute id="productQualityDegradationTag">
+		<defaultValue>RADIOMETRY</defaultValue>
+	</attribute>
+	<attribute id="productQualityReportURL">
+		<defaultValue>http://www.myproductqualityreport.com/dummy</defaultValue>
+	</attribute>
+	<attribute id="productQualityDegradationQuotationMode">
+		<defaultValue>MANUAL</defaultValue>
+	</attribute>
+	
+	<!--histogram-->
+<attribute id="bandId">
+		<defaultValue>dummyBandId</defaultValue>
+	</attribute>
+	<attribute id="min">
+		<defaultValue>1</defaultValue>
+	</attribute>
+	<attribute id="max">
+		<defaultValue>100</defaultValue>
+	</attribute>
+	<attribute id="mean">
+		<defaultValue>50</defaultValue>
+	</attribute>
+		<attribute id="stdDeviation">
+		<defaultValue>20</defaultValue>
+	</attribute>
+	
+	<!--Link to an EO product that is part of this EO product (e.g. a phr:DataStrip is composed of one or more phr:Scene)-->
+	<!--attribute id="composedOf">
+		<defaultValue>20</defaultValue>
+	</attribute-->
+	<!--Link to the “father” EO product (e.g. a phr:Scene is a subset of a phr:DataStrip)-->
+	<!--attribute id="subsetOf">
+		<defaultValue>20</defaultValue>
+	</attribute-->
+	<!--Specify a link to another EO product (e.g. ERS1 and ERS2 interferometric pair) -->
+	<!--attribute id="linkedWith">
+		<defaultValue>20</defaultValue>
+	</attribute-->
+	
+	
+	<!--processing-->
+	<attribute id="processingMode">
+		<defaultValue>OTHER</defaultValue>
+	</attribute>
+	<attribute id="processingCenter">
+		<defaultValue>DEFAULT</defaultValue>
+	</attribute>
+	<attribute id="processingDate">
+		<defaultValue>2012-12-06T10:20:41.960Z</defaultValue>
+	</attribute>
+	<attribute id="compositeType">
+		<defaultValue>P10D</defaultValue>
+	</attribute>
+	<attribute id="method">
+		<defaultValue>ROSE</defaultValue>
+	</attribute>
+	<attribute id="methodVersion">
+		<defaultValue>1.0</defaultValue>
+	</attribute>
+	<attribute id="processorName">
+		<defaultValue>FastROSE</defaultValue>
+	</attribute>
+	<attribute id="processorVersion">
+		<defaultValue>2.0</defaultValue>
+	</attribute>
+	<attribute id="processingLevel">
+		<defaultValue>1A</defaultValue>
+	</attribute>
+	<attribute id="nativeProductFormat">
+		<defaultValue>DEFAULT</defaultValue>
+	</attribute>
+	<attribute id="auxiliaryDataSetFileName">
+		<defaultValue>2.0</defaultValue>
+	</attribute>
+	
+	<!--ALTIMETRIC-->
+	<attribute id="groundTrackUncertainty">
+		<defaultValue>1</defaultValue>
+	</attribute>
+	<attribute id="productContentsType">
+		<defaultValue>COASTAL</defaultValue>
+	</attribute>
+	<attribute id="samplingRate">
+		<defaultValue>20</defaultValue>
+	</attribute>
+	
+	<attribute id="productGroupId">
+		<defaultValue>DummyProductGroupId</defaultValue>
+	</attribute>
+	<attribute id="orbitNumber">
+		<defaultValue>12</defaultValue>
+	</attribute>
+	<attribute id="lastOrbitNumber">
+		<defaultValue>12</defaultValue>
+	</attribute>
+	<attribute id="orbitDirection">
+		<defaultValue>ASCENDING</defaultValue>
+	</attribute>
+	<attribute id="wrsLongitudeGrid">
+		<defaultValue>DEFAULT</defaultValue>
+	</attribute>
+	<attribute id="wrsLatitudeGrid">
+		<defaultValue>DEFAULT</defaultValue>
+	</attribute>
+	<attribute id="ascendingNodeDate">
+		<defaultValue>2012-12-06T10:20:41.960Z</defaultValue>
+	</attribute>
+	<attribute id="ascendingNodeLongitude">
+		<defaultValue>10</defaultValue>
+	</attribute>
+	<attribute id="startTimeFromAscendingNode">
+		<defaultValue>50</defaultValue>
+	</attribute>
+	<attribute id="completionTimeFromAscendingNode">
+		<defaultValue>200</defaultValue>
+	</attribute>
+	<attribute id="orbitDuration">
+		<defaultValue>60</defaultValue>
+	</attribute>
+	<attribute id="illuminationAzimuthAngle">
+		<defaultValue>10</defaultValue>
+	</attribute>
+	<attribute id="illuminationZenithAngle">
+		<defaultValue>30</defaultValue>
+	</attribute>
+	<attribute id="illuminationElevationAngle">
+		<defaultValue>10</defaultValue>
+	</attribute>
+	<attribute id="incidenceAngle">
+		<defaultValue>10</defaultValue>
+	</attribute>
+	<attribute id="acrossTrackIncidenceAngle">
+		<defaultValue>-14.0</defaultValue>
+	</attribute>
+	<attribute id="alongTrackIncidenceAngle">
+		<defaultValue>-13.9</defaultValue>
+	</attribute>
+	<attribute id="instrumentAzimuthAngle">
+		<defaultValue>10</defaultValue>
+	</attribute>
+	<attribute id="instrumentZenithAngle">
+		<defaultValue>10</defaultValue>
+	</attribute>
+	<attribute id="instrumentElevationAngle">
+		<defaultValue>10</defaultValue>
+	</attribute>
+	<attribute id="pitch">
+		<defaultValue>0</defaultValue>
+	</attribute>
+	<attribute id="roll">
+		<defaultValue>0</defaultValue>
+	</attribute>
+	<attribute id="yaw">
+		<defaultValue>0</defaultValue>
+	</attribute>
+	
+	<!-- metadata for RADAR products -->	
+	<attribute id="polarisationMode">
+		<defaultValue>S</defaultValue>
+	</attribute>
+	<attribute id="polarisationChannels">
+		<defaultValue>HH</defaultValue>
+	</attribute>
+	<attribute id="antennaLookDirection">
+		<defaultValue>LEFT</defaultValue>
+	</attribute>
+	<attribute id="minimumIncidenceAngle">
+		<defaultValue>34</defaultValue>
+	</attribute>
+		<attribute id="maximumIncidenceAngle">
+		<defaultValue>40</defaultValue>
+	</attribute>
+	<attribute id="incidenceAngleVariation">
+		<defaultValue>4</defaultValue>
+	</attribute>
+		<attribute id="dopplerFrequency">
+		<defaultValue>345</defaultValue>
+	</attribute>	
+	
+	<!-- metadata for ATMOSFERIC products -->	
+	<attribute id="multiViewAngles">
+		<defaultValue>345</defaultValue>
+	</attribute>	
+	<attribute id="centreViewAngles">
+		<defaultValue>345</defaultValue>
+	</attribute>		
+
+	<!-- metadata for ALTIMETRIC and LIMB products -->
+	<attribute id="cycleNumber">
+		<defaultValue>20</defaultValue>
+	</attribute>
+	<attribute id="isSegment">
+		<defaultValue>false</defaultValue>
+	</attribute>
+	<attribute id="relativePassNumber">
+		<defaultValue>10</defaultValue>
+	</attribute>
+
+    <!-- metadata for LIMB products -->
+	<attribute id="observationMode">
+		<defaultValue>10</defaultValue>
+	</attribute>
+	<attribute id="verticalResolution">
+		<defaultValue>10</defaultValue>
+	</attribute>
+
+	<!-- ProductInformation-->
+	<attribute id="productURI">
+		<defaultValue>http://www.myproduct.com/dummy</defaultValue>
+	</attribute>
+	<attribute id="productReferenceSystemIdentifier">
+		<defaultValue>4326</defaultValue>
+	</attribute>
+	<attribute id="ProductVersion">
+		<defaultValue>2</defaultValue>
+	</attribute>
+	<attribute id="productSize">
+		<defaultValue>100</defaultValue>
+	</attribute>
+	<attribute id="productTimeliness">
+		<defaultValue>NRT</defaultValue>
+	</attribute>
+	
+	<!-- BrowseInformation-->
+	<attribute id="browseType">
+		<defaultValue>QUICKLOOK</defaultValue>
+	</attribute>
+	<attribute id="browseSubType">
+		<defaultValue>OPTICAL</defaultValue>
+	</attribute>
+	<attribute id="browseReferenceSystemIdentifier">
+		<defaultValue>epsg:4326</defaultValue>
+	</attribute>
+	<attribute id="BrowseURI">
+		<defaultValue>http://www.mybrowse.com/dummy</defaultValue>
+	</attribute>
+	
+	<!-- MaskInformation-->
+	<attribute id="maskType">
+		<defaultValue>CLOUD</defaultValue>
+	</attribute>
+	<attribute id="maskSubType">
+		<defaultValue>OPTICAL</defaultValue>
+	</attribute>
+	<attribute id="maskFormat">
+		<defaultValue>VECTOR</defaultValue>
+	</attribute>
+	<attribute id="maskReferenceSystemIdentifier">
+		<defaultValue>epsg:4326</defaultValue>
+	</attribute>
+	<attribute id="MaskURI">
+		<defaultValue>http://www.mybrowse.com/dummy2</defaultValue>
+	</attribute>
+	
+	<!-- Parameter-->
+	<attribute id="unitOfMeasure">
+		<defaultValue>c</defaultValue>
+	</attribute>
+	<attribute id="phenomenonName">
+		<defaultValue>sea_surface_height_above_sea_level</defaultValue>
+	</attribute>
+	
+	<!--coverage-->
+	<attribute id="CoverageURI">
+		<defaultValue>http://www.mycoverage.com/dummy2</defaultValue>
+	</attribute>
+	<!-- metadata for OPTICAL or SSP or  ATMOSPHERIC products -->	
+	<attribute id="cloudCoverPercentage">
+		<defaultValue>5</defaultValue>
+	</attribute>
+	<attribute id="cloudCoverPercentageAssessmentConfidence">
+		<defaultValue>10</defaultValue>
+	</attribute>
+	<attribute id="cloudCoverPercentageQuotationMode">
+		<defaultValue>AUTOMATIC</defaultValue>
+	</attribute>
+	<attribute id="snowCoverPercentage">
+		<defaultValue>20</defaultValue>
+	</attribute>
+	<attribute id="snowCoverPercentageAssessmentConfidence">
+		<defaultValue>25</defaultValue>
+	</attribute>
+	<attribute id="snowCoverPercentageQuotationMode">
+		<defaultValue>MANUAL</defaultValue>
+	</attribute>
+		<!-- metadata for ATMOSPHERIC  products -->	
+	<attribute id="speciesError">
+		<defaultValue>30</defaultValue>
+	</attribute>
+	<attribute id="species">
+		<defaultValue>30</defaultValue>
+	</attribute>
+	<attribute id="unit">
+		<defaultValue>30</defaultValue>
+	</attribute>
+	<attribute id="verticalRange">
+		<defaultValue>30</defaultValue>
+	</attribute>
+	<attribute id="algorithmName">
+		<defaultValue>30</defaultValue>
+	</attribute>
+	<attribute id="algorithmVersion">
+		<defaultValue>30</defaultValue>
+	</attribute>
+	<attribute id="verticalResolution">
+		<defaultValue>30</defaultValue>
+	</attribute>
+	
+	<!--Instrument-->
+	<attribute id="instrumentShortName">
+		<defaultValue>DummyAltimeter</defaultValue>
+	</attribute>
+	<attribute id="instrumentDescription">
+		<defaultValue>Dummy Altimeter Instrument</defaultValue>
+	</attribute>
+	<attribute id="instrumentType">
+		<defaultValue>OTHER</defaultValue>
+	</attribute>
+	<!-- ALTIMETRIC auxiliaryInstrument-->
+	<attribute id="auxInstrument">
+		<defaultValue>DummyAuxiliaryInstrument</defaultValue>
+	</attribute>
+	<attribute id="auxInstrumentType">
+		<defaultValue>MICROWAVE_RADIOMETER</defaultValue>
+	</attribute>
+	
+	<!--Platform-->
+	<attribute id="platformShortName">
+		<defaultValue>DummyAltimeter</defaultValue>
+	</attribute>
+	<attribute id="platformSerialIdentifier">
+		<defaultValue>DummyP</defaultValue>
+	</attribute>
+	<attribute id="orbitType">
+		<defaultValue>GEO</defaultValue>
+	</attribute>
+	
+	<!--Sensor-->
+	<attribute id="sensorType">
+		<indexFieldName>SENSOR_TYPE</indexFieldName>
+	</attribute>	
+	<attribute id="operationalMode">
+		<defaultValue>PX</defaultValue>
+	</attribute>
+	<attribute id="resolution" >
+		<defaultValue>0.7</defaultValue>
+	</attribute>
+	<attribute id="swathIdentifier">
+		<defaultValue>I1</defaultValue>
+	</attribute>
+	<!--wavelengthInformation-->
+	<!--attribute id="discreteWavelengths">
+		<defaultValue>?gml:MeasureList?</defaultValue>
+	</attribute-->
+	<!--attribute id="endWavelength">
+		<defaultValue>?gml:Measure?</defaultValue>
+	</attribute-->
+	<!--attribute id="spectralRange">
+		<defaultValue>INFRARED</defaultValue>
+	</attribute-->
+	<!--attribute id="startWavelength">
+		<defaultValue>?gml:Measure?</defaultValue>
+	</attribute-->
+	<!--attribute id="wavelengthResolution">
+		<defaultValue>?gml:Measure?</defaultValue>
+	</attribute-->
+   	<!-- LIMB -->
+	<attribute id="measurementType">
+		<defaultValue>ABSORPTION</defaultValue>
+	</attribute>
+	
+	
+	
+	<!-- According to the MDGICD this field is of complex type. How can this be mapped?-->
+	<!-- metadata for LIMB products-->
+	<!--attribute id="occultationPoints">
+		<defaultValue>DEFAULT</defaultValue>
+	</attribute-->
+	<!-- According to the MDGICD this field is of complex type. How can this be mapped?-->
+	<!-- Additional product medata-->
+	<!--attribute id="add-pippo">
+		<defaultValue>PIPPO</defaultValue>
+	</attribute>
+	<attribute id="add-pluto">
+		<defaultValue>PLUTO</defaultValue>
+	</attribute-->
+	<!-- Browse metadata-->
+	<!--attribute id="browseImageLocation">
+		<indexFieldName>BROWSE</indexFieldName>
+	</attribute>
+	<attribute id="browseMetadataLocation">
+		<indexFieldName>BROWSE_METADATA</indexFieldName>
+	</attribute-->
+	<!-- NOT MAPPED IN THE DOCUMENT-->
+	<attribute id="dateType">
+		<defaultValue>INGESTION_TIME</defaultValue>
+	</attribute>
+	<attribute id="source">
+		<defaultValue>FEED</defaultValue>
+	</attribute>
+</model>

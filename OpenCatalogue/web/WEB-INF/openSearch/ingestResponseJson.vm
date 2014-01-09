@@ -1,0 +1,12 @@
+{
+    "toBeInserted":$ingestionSummary.toBeInserted,
+    "actuallyInserted":$ingestionSummary.actuallyInserted,
+    "ingestionReult":[
+#foreach( $result in $resultsList )
+		{                
+                $result.status
+                },
+#end    
+{}
+    ]
+}

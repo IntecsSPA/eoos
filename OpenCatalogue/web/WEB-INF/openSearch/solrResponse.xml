@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<response>
+    <lst name="responseHeader">
+        <int name="status">0</int>
+        <int name="QTime">0</int>
+        <lst name="params">
+            <str name="q">wireless</str>
+        </lst>
+    </lst>
+    <result name="response" numFound="114" start="0">
+        <doc>
+            <str name="id">ID_000000000000000000000000000001</str>
+      <!-- si={cseop:swathIdentifier?} -->
+            <str name="si">GM</str>
+      <!-- som={cseop:sensorOperationalMode?} -->      
+            <str name="som"></str>
+      <!-- st={cseop:sensorType?} -->
+            <str name="st">RADAR</str>
+      <!-- isn={cseop:instrumentShortName?} -->
+            <str name="isn">ASAR/GM</str>
+      <!-- ot={cseop:orbitType?} -->
+            <str name="ot">LEO</str>
+      <!-- psi={cseop:platformSerialIdentifier?} -->
+            <str name="psi"></str>
+      <!-- psn={cseop:platformShortName?} -->
+            <str name="psn">ENVISAT</str>
+      <!-- tp={cseop:timePosition?} -->
+            <str name="tp"></str>
+      <!-- stopdate={time:end?} -->
+            <date name="stopdate">2007-01-01T00:31:06.176Z</date>
+      <!-- startdate={time:start?} -->
+            <date name="startdate">2007-01-01T00:29:23.845Z</date>
+      <!-- tp={cseop:timePosition?} -->
+            <date name="tp"></date>
+      <!-- loc={geo:name&amp;} -->
+            <str name="loc"></str>
+      <!-- rel={geo:relation?} -->
+            <str name="rel"></str>
+            <str name="feature">POLYGON((-10 30, -40 40, -10 -20, 40 20, 0 0, -10 30))</str>
+        </doc>
+        <doc>
+            <str name="id">ID_000000000000000000000000000002</str>
+      <!-- si={cseop:swathIdentifier?} -->
+            <str name="si">GM</str>
+      <!-- som={cseop:sensorOperationalMode?} -->      
+            <str name="som"></str>
+      <!-- st={cseop:sensorType?} -->
+            <str name="st">RADAR</str>
+      <!-- isn={cseop:instrumentShortName?} -->
+            <str name="isn">ASAR/GM</str>
+      <!-- ot={cseop:orbitType?} -->
+            <str name="ot">LEO</str>
+      <!-- psi={cseop:platformSerialIdentifier?} -->
+            <str name="psi"></str>
+      <!-- psn={cseop:platformShortName?} -->
+            <str name="psn">ENVISAT</str>
+      <!-- tp={cseop:timePosition?} -->
+            <str name="tp"></str>
+      <!-- stopdate={time:end?} -->
+            <date name="stopdate">2007-01-01T00:31:06.176Z</date>
+      <!-- startdate={time:start?} -->
+            <date name="startdate">2007-01-01T00:29:23.845Z</date>
+      <!-- tp={cseop:timePosition?} -->
+            <date name="tp"></date>
+      <!-- loc={geo:name&amp;} -->
+            <str name="loc"></str>
+      <!-- rel={geo:relation?} -->
+            <str name="rel"></str>
+            <str name="feature">POLYGON((-10 30, -40 40, -10 -20, 40 20, 0 0, -10 30))</str>
+        </doc>
+        <doc>
+            <str name="id">ID_000000000000000000000000000003</str>
+      <!-- si={cseop:swathIdentifier?} -->
+            <str name="si">GM</str>
+      <!-- som={cseop:sensorOperationalMode?} -->      
+            <str name="som"></str>
+      <!-- st={cseop:sensorType?} -->
+            <str name="st">RADAR</str>
+      <!-- isn={cseop:instrumentShortName?} -->
+            <str name="isn">ASAR/GM</str>
+      <!-- ot={cseop:orbitType?} -->
+            <str name="ot">LEO</str>
+      <!-- psi={cseop:platformSerialIdentifier?} -->
+            <str name="psi"></str>
+      <!-- psn={cseop:platformShortName?} -->
+            <str name="psn">ENVISAT</str>
+      <!-- tp={cseop:timePosition?} -->
+            <str name="tp"></str>
+      <!-- stopdate={time:end?} -->
+            <date name="stopdate">2007-01-01T00:31:06.176Z</date>
+      <!-- startdate={time:start?} -->
+            <date name="startdate">2007-01-01T00:29:23.845Z</date>
+      <!-- tp={cseop:timePosition?} -->
+            <date name="tp"></date>
+      <!-- loc={geo:name&amp;} -->
+            <str name="loc"></str>
+      <!-- rel={geo:relation?} -->
+            <str name="rel"></str>
+            <str name="feature">POLYGON((-10 30, -40 40, -10 -20, 40 20, 0 0, -10 30))</str>
+        </doc>
+        <doc>
+            <str name="id">ID_000000000000000000000000000004</str>
+      <!-- si={cseop:swathIdentifier?} -->
+            <str name="si">GM</str>
+      <!-- som={cseop:sensorOperationalMode?} -->      
+            <str name="som"></str>
+      <!-- st={cseop:sensorType?} -->
+            <str name="st">RADAR</str>
+      <!-- isn={cseop:instrumentShortName?} -->
+            <str name="isn">ASAR/GM</str>
+      <!-- ot={cseop:orbitType?} -->
+            <str name="ot">LEO</str>
+      <!-- psi={cseop:platformSerialIdentifier?} -->
+            <str name="psi"></str>
+      <!-- psn={cseop:platformShortName?} -->
+            <str name="psn">ENVISAT</str>
+      <!-- tp={cseop:timePosition?} -->
+            <str name="tp"></str>
+      <!-- stopdate={time:end?} -->
+            <date name="stopdate">2007-01-01T00:31:06.176Z</date>
+      <!-- startdate={time:start?} -->
+            <date name="startdate">2007-01-01T00:29:23.845Z</date>
+      <!-- tp={cseop:timePosition?} -->
+            <date name="tp"></date>
+      <!-- loc={geo:name&amp;} -->
+            <str name="loc"></str>
+      <!-- rel={geo:relation?} -->
+            <str name="rel"></str>
+            <str name="feature">POLYGON((-10 30, -40 40, -10 -20, 40 20, 0 0, -10 30))</str>
+        </doc>
+    </result>
+</response>

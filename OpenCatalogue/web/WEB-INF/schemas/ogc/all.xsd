@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://opencatalogue.org/eoos" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+elementFormDefault="qualified" 
+attributeFormDefault="unqualified" 
+version="1.2">
+<xs:import namespace="http://www.opengis.net/eop/2.1" schemaLocation="ogc/eop.xsd"/>
+<xs:import namespace="http://www.opengis.net/alt/2.1" schemaLocation="ogc/alt.xsd"/>
+<xs:import namespace="http://www.opengis.net/atm/2.1" schemaLocation="ogc/atm.xsd"/>
+<xs:import namespace="http://www.opengis.net/lmb/2.1" schemaLocation="ogc/lmb.xsd"/>
+<xs:import namespace="http://www.opengis.net/opt/2.1" schemaLocation="ogc/opt.xsd"/>
+<xs:import namespace="http://www.opengis.net/sar/2.1" schemaLocation="ogc/sar.xsd"/>
+<xs:import namespace="http://www.opengis.net/ssp/2.1" schemaLocation="ogc/ssp.xsd"/>
+</xs:schema>

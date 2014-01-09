@@ -1,0 +1,139 @@
+#macro ( getHTML $x )
+    #set( $psn = "" )
+    #set( $psn = $x.find("//*[local-name() = 'Platform']/*[local-name() = 'shortName']/text()").getText() )
+    #if ( $psn != "")
+<tr valign="top"><td><b>Platform Short Name</b></td><td>$psn</td></tr>
+    #end
+    #set( $sid = "" )
+    #set( $sid = $x.find("//*[local-name() = 'serialIdentifier']/text()") )
+    #if ($sid != "") 
+<tr valign="top"><td><b>Platform Serial Identifier</b></td><td>$sid</td></tr>
+    #end
+    #set( $isn = "" )
+    #set( $isn = $x.find("//*[local-name() = 'Instrument']/*[local-name() = 'shortName']/text()").getText() )
+    #if ( "$isn" != "" )
+<tr valign="top"><td><b>Instrument Short Name</b></td><td>$isn</td></tr>
+    #end
+    #set( $ot = "" )
+    #set( $ot = $x.find("//*[local-name() = 'orbitaType']/text()") )
+    #if ($ot != "") 
+<tr valign="top"><td><b>Orbit Type</b></td><td>$ot</td></tr>
+    #end
+    #set( $st = "" )
+    #set( $st = $x.find("//*[local-name() = 'sensorType']/text()") )
+    #if ($!st != "")
+<tr valign="top"><td><b>Sensor Type</b></td><td>$st</td></tr>
+    #end
+    #set( $om = "" )
+    #set( $om = $x.find("//*[local-name() = 'operationalMode']/text()") )
+    #if ($om != "") 
+<tr valign="top"><td><b>Sensor Operational Mode</b></td><td>$x.find("//*[local-name() = 'operationalMode']/text()").getText()</td></tr>
+    #end
+    #set( $res = "" )
+    #set( $res = $x.find("//*[local-name() = 'resolution']/text()") )
+    #if ($res != "") 
+<tr valign="top"><td><b>Sensor Resolution</b></td><td>$res</td></tr>
+    #end
+    #set( $swi = "" )
+    #set( $swi = $x.find("//*[local-name() = 'swathIdentifier']/text()") )
+    #if ($swi != "") 
+<tr valign="top"><td><b>Swath Identifier</b></td><td>$swi</td></tr>
+    #end
+    #set( $on = "" )
+    #set( $on = $x.find("//*[local-name() = 'orbitNumber']/text()") )
+    #if ($on != "") 
+<tr valign="top"><td><b>Orbit Number</b></td><td>$on</td></tr>
+    #end
+    #set( $od = "" )
+    #set( $od = $x.find("//*[local-name() = 'orbitDirection']/text()") )
+    #if ($od != "") 
+<tr valign="top"><td><b>Orbit Direction</b></td><td>$od</td></tr>
+    #end
+    #set( $pm = "" )
+    #set( $pm = $x.find("//*[local-name() = 'polarisationMode']/text()") )
+    #if ($pm != "") 
+<tr valign="top"><td><b>Polarization Mode</b></td><td>$pm</td></tr>
+    #end
+    #set( $pc = "" )
+    #set( $pc = $x.find("//*[local-name() = 'polarisationChannels']/text()") )
+    #if ($pc != "") 
+<tr valign="top"><td><b>Polarization Channels</b></td><td>$pc</td></tr>
+    #end
+    #set( $bp = "" )
+    #set( $bp = $x.find("//*[local-name() = 'beginPosition']/text()") )
+    #if ($bp != "") 
+<tr valign="top"><td><b>Start Date</b></td><td>$bp</td></tr>
+    #end
+    #set( $ep = "" )
+    #set( $ep = $x.find("//*[local-name() = 'endPosition']/text()") )
+    #if ($ep != "") 
+<tr valign="top"><td><b>End Date</b></td><td>$ep</td></tr>
+    #end
+#end
+<?xml version="1.0" encoding="UTF-8"?> 
+<atom:feed xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:atom="http://www.w3.org/2005/Atom" 
+xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/"
+xmlns:georss="http://www.georss.org/georss"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:gml="http://www.opengis.net/gml"
+xmlns:media="http://search.yahoo.com/mrss/">
+    <opensearch:totalResults>$OPEN_SEARCH_NUMBER_OF_RESULTS</opensearch:totalResults> 
+    <opensearch:startIndex>$OPEN_SEARCH_START_INDEX</opensearch:startIndex> 
+    <opensearch:itemsPerPage>$OPEN_SEARCH_ITEMS_PER_PAGE</opensearch:itemsPerPage> 
+    <opensearch:Query role="request" searchTerms="" startPage="1"/> 
+    <atom:author><atom:name>openCatalogue Server</atom:name></atom:author> 
+    <atom:generator>openCatalogue Server</atom:generator> 
+    <atom:id>$OPEN_SEARCH_REQUEST</atom:id> 
+    <atom:title>openCatalogue Server - EO Product Search Response</atom:title> 
+    <atom:updated>$date.get('yyyy-M-d')T$date.get('H:m:s')Z</atom:updated> 
+    <atom:link href="${BASE_URL}/service/opensearch/atom/?${OPEN_SEARCH_QUERY}startIndex=$OPEN_SEARCH_START_INDEX&amp;count=$OPEN_SEARCH_ITEMS_PER_PAGE" rel="self" type="application/atom+xml"/>
+    <atom:link href="${BASE_URL}/service/opensearch/atom/?${OPEN_SEARCH_QUERY}startIndex=1&amp;count=$OPEN_SEARCH_ITEMS_PER_PAGE" rel="first" type="application/atom+xml"/>
+    <atom:link href="${BASE_URL}/service/opensearch/atom/?${OPEN_SEARCH_QUERY}startIndex=$OPEN_SEARCH_NEXT_RESULTS&amp;count=$OPEN_SEARCH_ITEMS_PER_PAGE" rel="next" type="application/atom+xml"/>
+    <atom:link href="${BASE_URL}/service/opensearch/atom/?${OPEN_SEARCH_QUERY}startIndex=$OPEN_SEARCH_LAST_RESULTS&amp;count=$OPEN_SEARCH_ITEMS_PER_PAGE" rel="last" type="application/atom+xml"/>
+    <atom:link href="${BASE_URL}/opensearch/description.xml" rel="search" type="application/opensearchdescription+xml"/>
+#foreach( $metadata in $metadataList )
+    <atom:entry> 
+        <atom:id>$metadata.identifier</atom:id>
+        <atom:title>$metadata.identifier</atom:title> 
+	<dc:identifier>$metadata.identifier</dc:identifier>
+        <atom:published>$date.get('yyyy-M-d')T$date.get('H:m:s')Z</atom:published> 
+        <atom:content type="html"><![CDATA[<table><tr><td valign="top"><table>#getHTML($metadata.xmlTOOL)<tr><td><b>Media Type</b></td><td><a href="${BASE_URL}/service/opensearch/atom?id=$metadata.identifier" title="Atom format">ATOM</a></td></tr><tr>
+	<td><b>Metadata</b></td><td><a href="${BASE_URL}/service/opensearch/eoproduct?id=$metadata.identifier" title="O&amp;M format">O&amp;M</a></td></tr></table></td></tr></table>]]></atom:content>
+        <atom:updated>$date.get('yyyy-M-d')T$date.get('H:m:s')Z</atom:updated> 
+##	<dc:date>$date.get('yyyy-M-d')T$date.get('H:m:s')Z</dc:date>
+        <atom:link href="${BASE_URL}/service/opensearch/atom?id=$metadata.identifier" rel="alternate" type="application/atom+xml" title="URL for retrieving the ATOM of the product: $metadata.identifier"/> 	
+        <georss:where>
+		<gml:Polygon>
+			<gml:exterior>
+				<gml:LinearRing>
+					<gml:posList srsDimension="2">$metadata.polygon</gml:posList>
+				</gml:LinearRing>
+			</gml:exterior>
+		</gml:Polygon>
+	</georss:where>
+        <atom:link href="${BASE_URL}/service/opensearch/eoproduct?id=$metadata.identifier" rel="alternate" type="application/gml+xml" title="URL for retrieving metadata of the product: $metadata.identifier"/>
+#set($link = "")
+#set($link = $metadata.xmlTOOL.find("//*[local-name() = 'ProductInformation']//*[local-name() = 'ServiceReference']/@*[local-name() = 'href']").getText())
+#if ($link != "")
+        <atom:link href="$link.replace("&", "&amp;")" rel="enclosure" type="image/tiff" title="URL for retrieving the following product: $metadata.identifier"/>
+#end
+#set($link = "")
+#set($link = $metadata.xmlTOOL.find("//*[local-name() = 'BrowseInformation']//*[local-name() = 'ServiceReference']/@*[local-name() = 'href']").getText())
+#if ($link != "")
+        <media:group>
+            <media:content url="$link.replace("&", "&amp;")" type="image/jpeg" medium="image">
+                <media:category scheme="http://www.opengis.net/spec/EOMPOM/1.0">QUICKLOOK</media:category>
+            </media:content>
+        </media:group>
+#end
+#if ($OPEN_SEARCH_RECORD_SCHEMA == 'om')
+$metadata.metadataString
+##alternative method to have the doc pretty print
+##set($i = " ")#recursive( $metadata.metadataDocument.getRootElement() $i ) 
+##alternative method       
+##$metadata.xmlTOOL.find("//*[local-name() = 'EarthObservation']").toString()
+#end
+    </atom:entry> 
+#end
+</atom:feed>
