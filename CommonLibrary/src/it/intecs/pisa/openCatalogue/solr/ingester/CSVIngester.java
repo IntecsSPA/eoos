@@ -36,7 +36,7 @@ public class CSVIngester extends Ingester{
 
         String key = "";
         
-        ArrayList<Document> docarray=new ArrayList<>();
+        ArrayList<Document> docarray=new ArrayList<Document>();
         
         while ((strLine = br.readLine()) != null) {
             String[] values = StringUtil.stringtoArray(strLine, elements_separator);
