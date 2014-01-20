@@ -1,0 +1,539 @@
+2013-12-13 02:10:25,292 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:10:25,292 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:10:25,292 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:10:31,867 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:10:31,867 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:10:31,868 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:10:31,873 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:10:31,873 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:10:31,873 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:10:31,873 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:10:31,873 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:10:46,419 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:10:46,420 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:10:46,420 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:10:46,425 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:10:46,425 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:10:46,425 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:10:46,425 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:10:46,426 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:10:53,051 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:10:53,052 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:10:53,052 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:10:53,057 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:10:53,057 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:10:53,057 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:10:53,057 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:10:53,057 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:10:59,676 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:10:59,676 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:10:59,677 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:10:59,682 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:10:59,682 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:10:59,682 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:10:59,682 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:10:59,682 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:11:06,361 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:11:06,361 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:11:06,362 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:11:06,367 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:11:06,367 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:11:06,367 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:11:06,367 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:11:06,367 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:11:12,907 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:11:12,908 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:11:12,908 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:11:12,913 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:11:12,914 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:11:12,914 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:11:12,914 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:11:12,914 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:11:19,462 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:11:19,463 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:11:19,463 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:11:19,468 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:11:19,468 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:11:19,468 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:11:19,468 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:11:19,468 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:11:25,896 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:11:25,896 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:11:25,897 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:11:25,902 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:11:25,902 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:11:25,902 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:11:25,902 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:11:25,902 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:11:32,513 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:11:32,513 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:11:32,514 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:11:32,519 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:11:32,519 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:11:32,519 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:11:32,519 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:11:32,519 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:11:39,032 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:11:39,033 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:11:39,033 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:11:39,038 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:11:39,038 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:11:39,038 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:11:39,039 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:11:39,039 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:11:46,029 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:11:46,029 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:11:46,029 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:11:46,035 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:11:46,035 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:11:46,035 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:11:46,035 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:11:46,035 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:11:52,530 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:11:52,531 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:11:52,531 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:11:52,536 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:11:52,536 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:11:52,536 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:11:52,537 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:11:52,537 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:11:59,038 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:11:59,038 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:11:59,039 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:11:59,044 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:11:59,044 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:11:59,044 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:11:59,044 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:11:59,044 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:12:05,776 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:12:05,776 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:12:05,777 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:12:05,782 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:12:05,782 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:12:05,782 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:12:05,782 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:12:05,782 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:12:12,329 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:12:12,330 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:12:12,330 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:12:12,335 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:12:12,335 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:12:12,335 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:12:12,335 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:12:12,335 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:12:18,794 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:12:18,795 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:12:18,795 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:12:18,800 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:12:18,800 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:12:18,800 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:12:18,801 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:12:18,801 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:12:25,324 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:12:25,325 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:12:25,325 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:12:25,330 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:12:25,330 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:12:25,330 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:12:25,331 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:12:25,331 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:12:32,024 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:12:32,025 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:12:32,025 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:12:32,030 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:12:32,030 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:12:32,030 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:12:32,031 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:12:32,031 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:12:38,608 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:12:38,608 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:12:38,609 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:12:38,614 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:12:38,614 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:12:38,614 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:12:38,614 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:12:38,614 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:12:45,232 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:12:45,232 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:12:45,233 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:12:45,238 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:12:45,238 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:12:45,238 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:12:45,238 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:12:45,238 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:12:51,677 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:12:51,678 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:12:51,678 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:12:51,683 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:12:51,683 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:12:51,683 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:12:51,684 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:12:51,684 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:12:58,029 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:12:58,030 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:12:58,030 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:12:58,035 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:12:58,035 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:12:58,035 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:12:58,036 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:12:58,036 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:13:04,189 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:13:04,189 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:13:04,190 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:13:04,231 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:13:04,231 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:13:04,231 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:13:04,231 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:13:04,231 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:13:10,361 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:13:10,361 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:13:10,362 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:13:10,367 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:13:10,367 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:13:10,367 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:13:10,367 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:13:10,367 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:13:16,520 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:13:16,520 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:13:16,521 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:13:16,526 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:13:16,526 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:13:16,526 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:13:16,526 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:13:16,526 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:13:22,627 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:13:22,627 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:13:22,628 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:13:22,633 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:13:22,633 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:13:22,633 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:13:22,633 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:13:22,633 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:13:28,883 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:13:28,884 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:13:28,884 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:13:28,889 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:13:28,889 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:13:28,889 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:13:28,889 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:13:28,889 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:13:35,231 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:13:35,231 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:13:35,231 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:13:35,236 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:13:35,236 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:13:35,236 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:13:35,237 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:13:35,237 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:13:41,747 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:13:41,748 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:13:41,748 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:13:41,753 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:13:41,753 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:13:41,753 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:13:41,753 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:13:41,754 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:13:47,901 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:13:47,902 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:13:47,902 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:13:47,907 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:13:47,907 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:13:47,907 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:13:47,907 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:13:47,907 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:13:54,102 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:13:54,103 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:13:54,103 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:13:54,108 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:13:54,108 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:13:54,108 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:13:54,109 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:13:54,109 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:14:00,504 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:14:00,504 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:14:00,505 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:14:00,509 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:14:00,509 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:14:00,510 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:14:00,510 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:14:00,510 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:14:06,784 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:14:06,785 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:14:06,785 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:14:06,790 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:14:06,790 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:14:06,790 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:14:06,790 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:14:06,790 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:14:13,133 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:14:13,134 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:14:13,134 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:14:13,139 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:14:13,139 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:14:13,139 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:14:13,139 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:14:13,140 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:14:19,494 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:14:19,495 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:14:19,495 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:14:19,500 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:14:19,500 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:14:19,500 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:14:19,500 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:14:19,500 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:14:25,827 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:14:25,828 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:14:25,828 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:14:25,833 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:14:25,833 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:14:25,833 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:14:25,834 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:14:25,834 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:14:32,192 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:14:32,193 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:14:32,193 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:14:32,198 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:14:32,198 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:14:32,198 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:14:32,198 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:14:32,199 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:14:38,833 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:14:38,833 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:14:38,834 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:14:38,839 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:14:38,839 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:14:38,839 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:14:38,839 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:14:38,839 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:14:45,064 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:14:45,064 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:14:45,065 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:14:45,070 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:14:45,070 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:14:45,070 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:14:45,070 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:14:45,070 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:14:51,229 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:14:51,230 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:14:51,230 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:14:51,235 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:14:51,235 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:14:51,236 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:14:51,236 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:14:51,236 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:14:57,391 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:14:57,391 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:14:57,391 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:14:57,396 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:14:57,397 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:14:57,397 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:14:57,397 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:14:57,397 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:15:03,637 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:15:03,637 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:15:03,638 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:15:03,643 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:15:03,643 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:15:03,643 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:15:03,643 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:15:03,643 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:15:09,894 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:15:09,895 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:15:09,895 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:15:09,900 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:15:09,900 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:15:09,900 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:15:09,900 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:15:09,901 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:15:19,069 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:15:19,069 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:15:19,070 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:15:19,075 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:15:19,075 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:15:19,075 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:15:19,075 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:15:19,075 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:15:29,860 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:15:29,861 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:15:29,861 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:15:29,866 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:15:29,866 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:15:29,866 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:15:29,867 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:15:29,867 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:15:39,881 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:15:39,882 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:15:39,882 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:15:39,887 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:15:39,887 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:15:39,887 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:15:39,887 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:15:39,887 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:15:46,382 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:15:46,383 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:15:46,383 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:15:46,388 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:15:46,388 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:15:46,388 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:15:46,388 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:15:46,389 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:15:52,655 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:15:52,656 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:15:52,656 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:15:52,704 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:15:52,704 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:15:52,704 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:15:52,704 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:15:52,704 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:15:58,951 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:15:58,952 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:15:58,952 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:15:58,957 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:15:58,957 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:15:58,957 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:15:58,957 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:15:58,957 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:16:05,279 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:16:05,279 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:16:05,280 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:16:05,285 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:16:05,285 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:16:05,286 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:16:05,286 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:16:05,286 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:16:11,493 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:16:11,493 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:16:11,494 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:16:11,498 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:16:11,499 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:16:11,499 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:16:11,499 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:16:11,499 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:16:17,967 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2013-12-13 02:16:17,968 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2013-12-13 02:16:17,968 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2013-12-13 02:16:17,998 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2013-12-13 02:16:17,998 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2013-12-13 02:16:17,999 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2013-12-13 02:16:17,999 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2013-12-13 02:16:17,999 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-01-20 12:18:38,419 - Log4JLogChute initialized using file 'velocity.log'
+2014-01-20 12:18:38,435 - Initializing Velocity, Calling init()...
+2014-01-20 12:18:38,435 - Starting Apache Velocity v1.7 (compiled: 2010-11-19 12:14:37)
+2014-01-20 12:18:38,435 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
+2014-01-20 12:18:38,435 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2014-01-20 12:18:38,435 - Target log system for org.apache.velocity.runtime.log.AvalonLogChute is not available (java.lang.NoClassDefFoundError: org/apache/log/format/Formatter).  Falling back to next log system...
+2014-01-20 12:18:38,435 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2014-01-20 12:18:38,435 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2014-01-20 12:18:38,442 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-01-20 12:18:38,444 - Do unicode file recognition:  false
+2014-01-20 12:18:38,444 - FileResourceLoader : adding path '/home/massi/Sviluppo/netbeans_workspace/eoos/trunk/catalogueWS/config/DIMAP'
+2014-01-20 12:18:38,460 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl) with class java.util.Collections$SynchronizedMap cache map.
+2014-01-20 12:18:38,466 - Loaded System Directive: org.apache.velocity.runtime.directive.Stop
+2014-01-20 12:18:38,468 - Loaded System Directive: org.apache.velocity.runtime.directive.Define
+2014-01-20 12:18:38,469 - Loaded System Directive: org.apache.velocity.runtime.directive.Break
+2014-01-20 12:18:38,470 - Loaded System Directive: org.apache.velocity.runtime.directive.Evaluate
+2014-01-20 12:18:38,471 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2014-01-20 12:18:38,473 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2014-01-20 12:18:38,475 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2014-01-20 12:18:38,477 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2014-01-20 12:18:38,478 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2014-01-20 12:18:38,525 - Created '20' parsers.
+2014-01-20 12:18:38,536 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2014-01-20 12:18:38,536 - Velocimacro : Default library not found.
+2014-01-20 12:18:38,536 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2014-01-20 12:18:38,536 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2014-01-20 12:18:38,536 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2014-01-20 12:18:38,537 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2014-01-20 12:18:38,570 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-01-20 12:18:38,583 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2014-01-20 12:18:38,586 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2014-01-20 12:18:38,622 - Velocimacro : added VM getMetadata: source=generateSolrAddRequest.vm
+2014-01-20 12:18:38,622 - Velocimacro : added VM getShortName: source=generateSolrAddRequest.vm
+2014-01-20 12:18:38,623 - Velocimacro : added VM getIdentifier: source=generateSolrAddRequest.vm
+2014-01-20 12:18:38,624 - Velocimacro : added VM recursive: source=generateSolrAddRequest.vm
+2014-01-20 12:18:38,624 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-01-20 12:18:52,088 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-01-20 12:18:52,089 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2014-01-20 12:18:52,090 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2014-01-20 12:18:52,107 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2014-01-20 12:18:52,107 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2014-01-20 12:18:52,108 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2014-01-20 12:18:52,109 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2014-01-20 12:18:52,109 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-01-20 12:19:02,935 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-01-20 12:19:02,937 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2014-01-20 12:19:02,937 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2014-01-20 12:19:02,955 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2014-01-20 12:19:02,955 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2014-01-20 12:19:02,956 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2014-01-20 12:19:02,957 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2014-01-20 12:19:02,957 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-01-20 12:19:16,352 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-01-20 12:19:16,353 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2014-01-20 12:19:16,354 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2014-01-20 12:19:16,389 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2014-01-20 12:19:16,389 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2014-01-20 12:19:16,390 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2014-01-20 12:19:16,391 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2014-01-20 12:19:16,391 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-01-20 12:26:56,030 - Log4JLogChute initialized using file 'velocity.log'
+2014-01-20 12:26:56,031 - Initializing Velocity, Calling init()...
+2014-01-20 12:26:56,031 - Starting Apache Velocity v1.7 (compiled: 2010-11-19 12:14:37)
+2014-01-20 12:26:56,031 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
+2014-01-20 12:26:56,031 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2014-01-20 12:26:56,031 - Target log system for org.apache.velocity.runtime.log.AvalonLogChute is not available (java.lang.NoClassDefFoundError: org/apache/log/format/Formatter).  Falling back to next log system...
+2014-01-20 12:26:56,031 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2014-01-20 12:26:56,031 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2014-01-20 12:26:56,041 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-01-20 12:26:56,042 - Do unicode file recognition:  false
+2014-01-20 12:26:56,042 - FileResourceLoader : adding path '/home/massi/Sviluppo/netbeans_workspace/eoos/trunk/catalogueWS/config/DIMAP'
+2014-01-20 12:26:56,058 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl) with class java.util.Collections$SynchronizedMap cache map.
+2014-01-20 12:26:56,061 - Loaded System Directive: org.apache.velocity.runtime.directive.Stop
+2014-01-20 12:26:56,062 - Loaded System Directive: org.apache.velocity.runtime.directive.Define
+2014-01-20 12:26:56,064 - Loaded System Directive: org.apache.velocity.runtime.directive.Break
+2014-01-20 12:26:56,065 - Loaded System Directive: org.apache.velocity.runtime.directive.Evaluate
+2014-01-20 12:26:56,066 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2014-01-20 12:26:56,068 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2014-01-20 12:26:56,070 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2014-01-20 12:26:56,072 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2014-01-20 12:26:56,074 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2014-01-20 12:26:56,126 - Created '20' parsers.
+2014-01-20 12:26:56,138 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2014-01-20 12:26:56,138 - Velocimacro : Default library not found.
+2014-01-20 12:26:56,138 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2014-01-20 12:26:56,138 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2014-01-20 12:26:56,139 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2014-01-20 12:26:56,139 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2014-01-20 12:26:56,181 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-01-20 12:26:56,200 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2014-01-20 12:26:56,204 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2014-01-20 12:26:56,244 - Velocimacro : added VM getMetadata: source=generateSolrAddRequest.vm
+2014-01-20 12:26:56,245 - Velocimacro : added VM getShortName: source=generateSolrAddRequest.vm
+2014-01-20 12:26:56,245 - Velocimacro : added VM getIdentifier: source=generateSolrAddRequest.vm
+2014-01-20 12:26:56,246 - Velocimacro : added VM recursive: source=generateSolrAddRequest.vm
+2014-01-20 12:26:56,247 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-01-20 12:27:08,933 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-01-20 12:27:08,934 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2014-01-20 12:27:08,935 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2014-01-20 12:27:08,952 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2014-01-20 12:27:08,953 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2014-01-20 12:27:08,953 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2014-01-20 12:27:08,954 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2014-01-20 12:27:08,954 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-01-20 12:27:19,701 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-01-20 12:27:19,702 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2014-01-20 12:27:19,703 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2014-01-20 12:27:19,745 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2014-01-20 12:27:19,745 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2014-01-20 12:27:19,745 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2014-01-20 12:27:19,746 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2014-01-20 12:27:19,747 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-01-20 12:27:28,910 - ResourceManager : found metadataReportOPTICAL.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-01-20 12:27:28,924 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 4266] : $browseUrlBasePathSERVICE cannot be resolved.
+2014-01-20 12:27:28,925 - Null reference [template 'metadataReportOPTICAL.vm', line 5, column 5324] : $productUrlBasePathservice cannot be resolved.
+2014-01-20 12:27:28,962 - Velocimacro : VM addition rejected : getMetadata : inline not allowed to replace existing VM
+2014-01-20 12:27:28,962 - Velocimacro : VM addition rejected : getShortName : inline not allowed to replace existing VM
+2014-01-20 12:27:28,968 - Velocimacro : VM addition rejected : getIdentifier : inline not allowed to replace existing VM
+2014-01-20 12:27:28,970 - Velocimacro : VM addition rejected : recursive : inline not allowed to replace existing VM
+2014-01-20 12:27:28,970 - ResourceManager : found generateSolrAddRequest.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader

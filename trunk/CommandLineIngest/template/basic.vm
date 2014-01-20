@@ -1,0 +1,12 @@
+#foreach( $metadata in $metadataList )
+-----------
+    $metadata.File
+    $metadata.PRODUCT_TYPE
+    $metadata.PRODUCT_ID
+    $metadata.ORBIT
+    $metadata.BEGIN_DATE
+    $metadata.END_DATE
+    $metadata.BOUNDING_POLYGON
+-----------
+#end
+
