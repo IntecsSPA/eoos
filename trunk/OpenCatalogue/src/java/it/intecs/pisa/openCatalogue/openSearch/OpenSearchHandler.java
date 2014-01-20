@@ -56,7 +56,10 @@ public class OpenSearchHandler {
     private static final String VELOCITY_TOOL_CUSTOM_COORDINATES = "coordinates";
     private static final String VELOCITY_TOOL_DATE = "date";
     private static final String VELOCITY_TOOL_COORDINATES = "coordinates";
-    private static final String VELOCITY_PRODUCT_URL = "productUrl";
+    private static final String VELOCITY_PRODUCT_URL_WCS = "productUrlWcs";
+    private static final String VELOCITY_PRODUCT_URL_FTP = "productUrlFtp";
+    private static final String VELOCITY_PRODUCT_URL_HTTP = "productUrlHttp";   
+    private static final String VELOCITY_PRODUCT_URL="productUrl";
     private static final String VELOCITY_BROWSE_URL = "browseUrl";
     private static final String VELOCITY_METADATA_LIST = "metadataList";
     private static final String XPATH_NUM_FOUNDS = "//result/@numFound";
@@ -78,7 +81,10 @@ public class OpenSearchHandler {
     private static final String METADATA_DOCUMENT = "metadataDocument";
     private static final String METADATA_STRING = "metadataString";
     private static final String BROWSE_URL_KEY = "$browseUrlBasePath";
-    private static final String PRODUCT_URL_KEY = "$productUrlBasePath";
+    private static final String PRODUCT_URL_WCS_KEY = "$productUrlWcsBasePath";
+    private static final String PRODUCT_URL_HTTP_KEY = "$productUrlHttpBasePath";
+    private static final String PRODUCT_URL_FTP_KEY = "$productUrlFtpBasePath";
+    private static final String PRODUCT_URL_KEY="$productUrlBasePath";
     private static final String XML_TOOL = "xmlTOOL";
 
     VelocityEngine ve;
@@ -224,10 +230,22 @@ public class OpenSearchHandler {
         VelocityContext context = new VelocityContext();
         context.put(VELOCITY_TOOL_DATE, new DateTool());
 
-        String productUrl = Prefs.getProductURLBase();
+        String productUrl = Prefs.getProductURLBaseWcs();
+        if (null != productUrl && !productUrl.equals("")) {
+            context.put(VELOCITY_PRODUCT_URL_WCS, productUrl);
+        }
+        productUrl = Prefs.getProductURLBaseHttp();
+        if (null != productUrl && !productUrl.equals("")) {
+            context.put(VELOCITY_PRODUCT_URL_HTTP, productUrl);
+        }
+        productUrl = Prefs.getProductURLBaseFtp();
+        if (null != productUrl && !productUrl.equals("")) {
+            context.put(VELOCITY_PRODUCT_URL_FTP, productUrl);
+        } 
+        productUrl = Prefs.getProductURLBase();
         if (null != productUrl && !productUrl.equals("")) {
             context.put(VELOCITY_PRODUCT_URL, productUrl);
-        }
+        } 
         String browseUrl = Prefs.getBrowseURLBase();
         if (null != productUrl && !productUrl.equals("")) {
             context.put(VELOCITY_BROWSE_URL, browseUrl);
@@ -263,7 +281,22 @@ public class OpenSearchHandler {
 
     private void sendBackProductResponse(SaxonDocument solrResponse, HttpServletRequest request, HttpServletResponse response) throws IOException, XPathFactoryConfigurationException, XPathException, XPathExpressionException, SAXException, JDOMException {
         String originalMetadata = this.getOriginalMetadata(solrResponse);
-        String productUrl = Prefs.getProductURLBase();
+        String productUrl = Prefs.getProductURLBaseWcs();
+        if (null != productUrl && !productUrl.equals("")) {
+            // replace the string in the metadata        
+            originalMetadata = originalMetadata.replace(PRODUCT_URL_WCS_KEY, productUrl);
+        }
+        productUrl = Prefs.getProductURLBaseHttp();
+        if (null != productUrl && !productUrl.equals("")) {
+            // replace the string in the metadata        
+            originalMetadata = originalMetadata.replace(PRODUCT_URL_HTTP_KEY, productUrl);
+        }
+        productUrl = Prefs.getProductURLBaseFtp();
+        if (null != productUrl && !productUrl.equals("")) {
+            // replace the string in the metadata        
+            originalMetadata = originalMetadata.replace(PRODUCT_URL_FTP_KEY, productUrl);
+        }
+         productUrl = Prefs.getProductURLBase();
         if (null != productUrl && !productUrl.equals("")) {
             // replace the string in the metadata        
             originalMetadata = originalMetadata.replace(PRODUCT_URL_KEY, productUrl);
@@ -298,7 +331,22 @@ public class OpenSearchHandler {
             builder = new SAXBuilder();
 //            builder.setJDOMFactory( (JDOMFactory)new AnakiaJDOMFactory()); 
             cdata_field = (String) solrResponse.evaluatePath(XPATH_METADATA.replace("$$", String.valueOf(i)), XPathConstants.STRING);
-            String productUrl = Prefs.getProductURLBase();
+            String productUrl = Prefs.getProductURLBaseWcs();
+            if (null != productUrl && !productUrl.equals("")) {
+                // replace the string in the metadata        
+                cdata_field = cdata_field.replace(PRODUCT_URL_WCS_KEY, productUrl);
+            }
+            productUrl = Prefs.getProductURLBaseHttp();
+            if (null != productUrl && !productUrl.equals("")) {
+                // replace the string in the metadata        
+                cdata_field = cdata_field.replace(PRODUCT_URL_HTTP_KEY, productUrl);
+            }
+            productUrl = Prefs.getProductURLBaseFtp();
+            if (null != productUrl && !productUrl.equals("")) {
+                // replace the string in the metadata        
+                cdata_field = cdata_field.replace(PRODUCT_URL_FTP_KEY, productUrl);
+            }
+            productUrl = Prefs.getProductURLBase();
             if (null != productUrl && !productUrl.equals("")) {
                 // replace the string in the metadata        
                 cdata_field = cdata_field.replace(PRODUCT_URL_KEY, productUrl);

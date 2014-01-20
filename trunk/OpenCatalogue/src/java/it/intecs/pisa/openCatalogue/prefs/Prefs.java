@@ -6,8 +6,6 @@
 package it.intecs.pisa.openCatalogue.prefs;
 
 import it.intecs.pisa.log.Log;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import it.intecs.pisa.log.ErrorCodes;
 import it.intecs.pisa.openCatalogue.catalogue.ServletVars;
 import it.intecs.pisa.openCatalogue.filesystem.AbstractFilesystem;
@@ -22,13 +20,8 @@ import java.io.FileOutputStream;
  * application directory.
 */
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.Map.Entry;
 import java.util.Properties;
-import java.util.Set;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -65,8 +58,11 @@ public class Prefs {
     private static final String CONFIG_PROPERTIES_FILE_PATH="misc/config.properties";
     public static final String PREFS_LOGLEVEL = "log.level";
     public static final String PREFS_SOLR_URL = "solr.url";
-    public static final String PREFS_PRODUCT_URL_BASE = "product.base.url";
+    public static final String PREFS_PRODUCT_URL_WCS_BASE = "product.base.url.wcs";
+    public static final String PREFS_PRODUCT_URL_HTTP_BASE = "product.base.url.http";
+    public static final String PREFS_PRODUCT_URL_FTP_BASE = "product.base.url.ftp";
     public static final String PREFS_BROWSE_URL_BASE = "browse.base.url";
+    private static final String PREFS_PRODUCT_URL_BASE="product.base.url";
    
  
     public static void install()
@@ -157,11 +153,31 @@ public class Prefs {
             return props.getProperty(PREFS_SOLR_URL);
     }
 
-    public static String getProductURLBase() throws FileNotFoundException, IOException {
+    public static String getProductURLBaseWcs() throws FileNotFoundException, IOException {
             Properties props;
+            props = Prefs.load();
+            return props.getProperty(PREFS_PRODUCT_URL_WCS_BASE);
+    }
+
+    public static String getProductURLBaseHttp() throws FileNotFoundException, IOException {
+            Properties props;
+            props = Prefs.load();
+            return props.getProperty(PREFS_PRODUCT_URL_HTTP_BASE);
+    }
+
+    public static String getProductURLBaseFtp() throws FileNotFoundException, IOException {
+            Properties props;
+            props = Prefs.load();
+            return props.getProperty(PREFS_PRODUCT_URL_FTP_BASE);
+    }
+    
+    public static String getProductURLBase() throws IOException
+    {
+        Properties props;
             props = Prefs.load();
             return props.getProperty(PREFS_PRODUCT_URL_BASE);
     }
+    
     
     public static String getBrowseURLBase() throws FileNotFoundException, IOException {
             Properties props;
