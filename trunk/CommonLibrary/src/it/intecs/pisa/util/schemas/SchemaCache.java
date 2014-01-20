@@ -19,8 +19,8 @@ import org.xml.sax.InputSource;
  * @author massi
  */
 public class SchemaCache {
-    protected static final HashMap<String,SchemaCache> caches=new HashMap<>();
-    protected static final HashMap<String,ByteBuffer> cache=new HashMap<>();
+    protected static final HashMap<String,SchemaCache> caches=new HashMap<String,SchemaCache>();
+    protected static final HashMap<String,ByteBuffer> cache=new HashMap<String,ByteBuffer>();
     protected AbstractFilesystem folder=null;
     
     public static SchemaCache getCache(String name)
