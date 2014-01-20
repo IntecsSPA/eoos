@@ -451,51 +451,52 @@ xmlns:swe="http://www.opengis.net/swe/1.0" version="4.0">
 				</eop:BrowseInformation>
 			</eop:browse>
 		</xsl:if>
-		<xsl:if test="attribute[@id='productURI'] != ''">
+		<xsl:for-each select="attribute[@id='productURI']">
+		<!--xsl:if test=". != ''"-->
 			<eop:product>
-				<!--TODO 0..n-->
 				<eop:ProductInformation>
 					<eop:fileName>
 						<ows:ServiceReference xlink:href="">
-							<xsl:attribute name="xlink:href"><xsl:apply-templates select="attribute[@id='productURI']"/></xsl:attribute>
+							<xsl:attribute name="xlink:href"><xsl:apply-templates select="."/></xsl:attribute>
 							<ows:RequestMessage/>
 						</ows:ServiceReference>
 					</eop:fileName>
-					<xsl:if test="attribute[@id='productReferenceSystemIdentifier'] != ''">
-						<xsl:if test="attribute[@id='productReferenceSystemIdentifier']/indexFieldName != ''">#if( $metadata.<xsl:value-of select="attribute[@id='productReferenceSystemIdentifier']/indexFieldName"/> != '' )</xsl:if>
+					<xsl:if test="../attribute[@id='productReferenceSystemIdentifier'] != ''">
+						<xsl:if test="../attribute[@id='productReferenceSystemIdentifier']/indexFieldName != ''">#if( $metadata.<xsl:value-of select="attribute[@id='../productReferenceSystemIdentifier']/indexFieldName"/> != '' )</xsl:if>
 						<eop:referenceSystemIdentifier codeSpace="EPSG">
-							<xsl:apply-templates select="attribute[@id='productReferenceSystemIdentifier']"/>
+							<xsl:apply-templates select="../attribute[@id='productReferenceSystemIdentifier']"/>
 						</eop:referenceSystemIdentifier>
-						<xsl:if test="attribute[@id='productReferenceSystemIdentifier']/indexFieldName != ''">#end</xsl:if>
+						<xsl:if test="attribute[@id='../productReferenceSystemIdentifier']/indexFieldName != ''">#end</xsl:if>
 					</xsl:if>
-					<xsl:if test="attribute[@id='productVersion'] != ''">
-						<xsl:if test="attribute[@id='productVersion']/indexFieldName != ''">#if( $metadata.<xsl:value-of select="attribute[@id='productVersion']/indexFieldName"/> != '' )</xsl:if>
+					<xsl:if test="../attribute[@id='productVersion'] != ''">
+						<xsl:if test="../attribute[@id='productVersion']/indexFieldName != ''">#if( $metadata.<xsl:value-of select="../attribute[@id='productVersion']/indexFieldName"/> != '' )</xsl:if>
 						<eop:version>
-							<xsl:apply-templates select="attribute[@id='productVersion']"/>
+							<xsl:apply-templates select="../attribute[@id='productVersion']"/>
 						</eop:version>
-						<xsl:if test="attribute[@id='productVersion']/indexFieldName != ''">#end</xsl:if>
+						<xsl:if test="../attribute[@id='productVersion']/indexFieldName != ''">#end</xsl:if>
 					</xsl:if>
-					<xsl:if test="attribute[@id='productSize'] != ''">
-						<xsl:if test="attribute[@id='productSize']/indexFieldName != ''">#if( $metadata.<xsl:value-of select="attribute[@id='productSize']/indexFieldName"/> != '' )</xsl:if>
+					<xsl:if test="../attribute[@id='productSize'] != ''">
+						<xsl:if test="../attribute[@id='productSize']/indexFieldName != ''">#if( $metadata.<xsl:value-of select="../attribute[@id='productSize']/indexFieldName"/> != '' )</xsl:if>
 						<eop:size uom="kb">
-							<xsl:apply-templates select="attribute[@id='productSize']"/>
+							<xsl:apply-templates select="../attribute[@id='productSize']"/>
 						</eop:size>
-						<xsl:if test="attribute[@id='productSize']/indexFieldName != ''">#end</xsl:if>
+						<xsl:if test="../attribute[@id='productSize']/indexFieldName != ''">#end</xsl:if>
 					</xsl:if>
 					<!--Timeliness of the product, such as "near real time", "rush". Possible values are mission specific and 
 					shall refer to mission/ground segment dedicated codeSpace. 
 					Example of values could be "NRT" or "NOMINAL"
 				-->
-					<xsl:if test="attribute[@id='productTimeliness'] != ''">
-						<xsl:if test="attribute[@id='productTimeliness']/indexFieldName != ''">#if( $metadata.<xsl:value-of select="attribute[@id='productTimeliness']/indexFieldName"/> != '' )</xsl:if>
+					<xsl:if test="../attribute[@id='productTimeliness'] != ''">
+						<xsl:if test="../attribute[@id='productTimeliness']/indexFieldName != ''">#if( $metadata.<xsl:value-of select="../attribute[@id='productTimeliness']/indexFieldName"/> != '' )</xsl:if>
 						<eop:timeliness>
-							<xsl:apply-templates select="attribute[@id='productTimeliness']"/>
+							<xsl:apply-templates select="../attribute[@id='productTimeliness']"/>
 						</eop:timeliness>
-						<xsl:if test="attribute[@id='productTimeliness']/indexFieldName != ''">#end</xsl:if>
+						<xsl:if test="../attribute[@id='productTimeliness']/indexFieldName != ''">#end</xsl:if>
 					</xsl:if>
 				</eop:ProductInformation>
 			</eop:product>
-		</xsl:if>
+		<!--/xsl:if-->		
+		</xsl:for-each>
 		<xsl:if test="attribute[@id='maskType'] != ''">
 			<eop:mask>
 				<eop:MaskInformation>

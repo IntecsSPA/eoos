@@ -35,7 +35,7 @@ import org.xml.sax.SAXException;
 /**
  * @author simone
  */
-public class Ingester {
+public class Ingester extends BasicIngester{
 
     public static final String DOLLAR = "$";
     public static final String SLASH = "/";
@@ -58,27 +58,12 @@ public class Ingester {
     private AbstractFilesystem metadataRepository;
     private solrHandler solr;
 
-    /**
-     *
-     * @param resourceToScan End point to be harvested
-     * @param lastHarvestDateTime it should specify the date when the last
-     * processed element was added or updated (e.g. LAST_UPDATE) in a specific
-     * the index file. Only the metadata of records which have a LAST_DATE value
-     * greater than this date (i.e more recent) will be processed.
-     * @param configDirectory It specify the folder that holds the configuration
-     * file
-     * @throws SAXException
-     * @throws IOException
-     * @throws SaxonApiException
-     * @throws Exception
-     */
+    
     public Ingester(AbstractFilesystem metadataRepository, AbstractFilesystem configDirectory, String solrURL) throws SAXException, IOException, SaxonApiException, Exception {
-        this.metadataRepository = metadataRepository;
-        this.ve = new VelocityEngine();
-        ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "file");
-        ve.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, configDirectory.getAbsolutePath());
-        solr = new solrHandler(solrURL);
+        super(metadataRepository,configDirectory,solrURL);
     }
+    
+    
 
     public void ingestData(HttpServletRequest request, HttpServletResponse response) throws Exception {
         int toBeInserted = 0;
@@ -138,15 +123,15 @@ public class Ingester {
         return saxBuilder.build(stream);
     }
 
-    private void storeMetadata(org.jdom2.Document metadata, String key) throws IOException {
+   /* private void storeMetadata(org.jdom2.Document metadata, String key) throws IOException {
         FileFilesystem fs = new FileFilesystem(metadataRepository.getAbsolutePath() + "/" + key + ".xml");
         XMLOutputter outputter = new XMLOutputter();
         String metadataString = outputter.outputString(metadata);
         byte[] b = metadataString.getBytes();
         fs.getOutputStream().write(b);
-    }
+    }*/
 
-    private void uploadMetadataToSolr(org.jdom2.Document metadata, String key) throws IOException, SaxonApiException, Exception {
+  /*  private void uploadMetadataToSolr(org.jdom2.Document metadata, String key) throws IOException, SaxonApiException, Exception {
         VelocityContext context = new VelocityContext();
         context.put(VELOCITY_DATE, new DateTool());
         context.put(VELOCITY_MATH, new MathTool());
@@ -165,7 +150,7 @@ public class Ingester {
     private void saveSolrfile(String swOut, String key) throws IOException {
         FileFilesystem fs = new FileFilesystem(metadataRepository.getAbsolutePath() + "/" + key + ".slr");
         fs.getOutputStream().write(swOut.getBytes());
-    }
+    }*/
 
     private void sendBackResponse(ArrayList responseElements,Map is,HttpServletRequest request, HttpServletResponse response) throws IOException, XPathException, SAXException, JDOMException {
         VelocityContext context = new VelocityContext();

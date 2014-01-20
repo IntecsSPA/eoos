@@ -154,7 +154,8 @@ public class OpenSearchHandler {
 
     private SaxonDocument sendRequestToSolr(HttpServletRequest request) throws SaxonApiException, IOException, Exception {
         // this is a simutation for the moment
-        return solr.exchange(request);
+        HashMap<String,String> params=getParametersHashMap(request);
+        return solr.search(params);
     }
 
     private void sendBackAtomResponse(SaxonDocument solrResponse, HttpServletRequest request, HttpServletResponse response) throws IOException, XPathFactoryConfigurationException, XPathException, XPathExpressionException, SAXException, JDOMException, DocumentException {
@@ -374,5 +375,21 @@ public class OpenSearchHandler {
         }
 
         return q;
+    }
+
+    private HashMap<String, String> getParametersHashMap(HttpServletRequest request) {
+        HashMap<String,String> hash=new HashMap<String,String>();
+        
+        Enumeration<String> names=request.getParameterNames();
+        
+        while(names.hasMoreElements())
+        {
+            String name=names.nextElement();
+            String value=request.getParameter(name);
+            
+            hash.put(name, value);
+        }
+        
+        return hash;
     }
 }
