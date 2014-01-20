@@ -114,9 +114,9 @@ xmlns:media="http://search.yahoo.com/mrss/">
 	</georss:where>
         <atom:link href="${BASE_URL}/service/opensearch/eoproduct?id=$metadata.identifier" rel="alternate" type="application/gml+xml" title="URL for retrieving metadata of the product: $metadata.identifier"/>
 #set($link = "")
-#set($link = $metadata.xmlTOOL.find("//*[local-name() = 'ProductInformation']//*[local-name() = 'ServiceReference']/@*[local-name() = 'href']").getText())
-#if ($link != "")
-        <atom:link href="$link.replace("&", "&amp;")" rel="enclosure" type="image/tiff" title="URL for retrieving the following product: $metadata.identifier"/>
+#set($links = $metadata.xmlTOOL.find("//*[local-name() = 'ProductInformation']//*[local-name() = 'ServiceReference']/@*[local-name() = 'href']").iterator())
+#foreach( $link in $links )
+        <atom:link href="$link.getText().replace("&", "&amp;")" rel="enclosure" type="image/tiff" title="URL for retrieving the following product: $metadata.identifier"/>
 #end
 #set($link = "")
 #set($link = $metadata.xmlTOOL.find("//*[local-name() = 'BrowseInformation']//*[local-name() = 'ServiceReference']/@*[local-name() = 'href']").getText())
