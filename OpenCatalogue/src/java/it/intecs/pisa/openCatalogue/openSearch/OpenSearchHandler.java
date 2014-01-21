@@ -6,8 +6,8 @@ package it.intecs.pisa.openCatalogue.openSearch;
 
 import it.intecs.pisa.gis.util.CoordinatesUtil;
 import it.intecs.pisa.log.Log;
+import it.intecs.pisa.metadata.filesystem.AbstractFilesystem;
 import it.intecs.pisa.openCatalogue.catalogue.ServletVars;
-import it.intecs.pisa.openCatalogue.filesystem.AbstractFilesystem;
 import it.intecs.pisa.openCatalogue.prefs.Prefs;
 import it.intecs.pisa.openCatalogue.saxon.SaxonDocument;
 import it.intecs.pisa.openCatalogue.saxon.SaxonURIResolver;
