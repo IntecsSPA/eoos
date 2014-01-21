@@ -7,9 +7,9 @@ package it.intecs.pisa.openCatalogue.prefs;
 
 import it.intecs.pisa.log.Log;
 import it.intecs.pisa.log.ErrorCodes;
+import it.intecs.pisa.metadata.filesystem.AbstractFilesystem;
+import it.intecs.pisa.metadata.filesystem.FileFilesystem;
 import it.intecs.pisa.openCatalogue.catalogue.ServletVars;
-import it.intecs.pisa.openCatalogue.filesystem.AbstractFilesystem;
-import it.intecs.pisa.openCatalogue.filesystem.FileFilesystem;
 import it.intecs.pisa.util.IOUtil;
 import java.io.File;
 import java.io.FileInputStream;

@@ -7,19 +7,18 @@ package it.intecs.pisa.openCatalogue.catalogue;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import it.intecs.pisa.log.Log;
-import it.intecs.pisa.openCatalogue.filesystem.AbstractFilesystem;
-import it.intecs.pisa.openCatalogue.filesystem.FileFilesystem;
-import it.intecs.pisa.openCatalogue.filesystem.StreamFileSystem;
-import it.intecs.pisa.openCatalogue.ingest.convert.csv.CSVIngester;
-import it.intecs.pisa.openCatalogue.ingest.Ingester;
+import it.intecs.pisa.metadata.filesystem.AbstractFilesystem;
+import it.intecs.pisa.metadata.filesystem.FileFilesystem;
 import it.intecs.pisa.openCatalogue.openSearch.OpenSearchHandler;
 import it.intecs.pisa.openCatalogue.prefs.Prefs;
+import it.intecs.pisa.openCatalogue.solr.ingester.Ingester;
+import it.intecs.pisa.openCatalogue.solr.ingester.IngesterFactory;
 import it.intecs.pisa.util.DOMUtil;
 import it.intecs.pisa.util.json.JsonUtil;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.StringTokenizer;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -170,8 +169,30 @@ public class CatalogueServlet extends HttpServlet {
             throws ServletException, IOException {
         String requestURI;
 
-        requestURI = request.getRequestURI();
-        if (requestURI.contains(RESOURCE_OEM)) {
+        try
+        {
+            requestURI = request.getRequestURI();
+
+            StringTokenizer tokenizer=new StringTokenizer(requestURI,"/");
+            tokenizer.nextToken();
+            tokenizer.nextToken();
+
+            String format=tokenizer.nextToken();
+            if(tokenizer.hasMoreTokens())
+            {
+                format+="/"+tokenizer.nextToken();
+            }
+
+            Ingester ingester=IngesterFactory.fromInputType(format);
+
+            AbstractFilesystem workspace = Prefs.getWorkspaceFolderAsAbstractFS();
+            ingester.setConfiguration(workspace.get("ingester/"+format), "configuration.xml");
+        }
+        catch(Exception e)
+        {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+        /*if (requestURI.contains(RESOURCE_OEM)) {
             handleIngest(request, response);
         }else if (requestURI.contains(RESOURCE_CSV)) {
             handleCSV(request, response);
@@ -180,8 +201,8 @@ public class CatalogueServlet extends HttpServlet {
         }
         else
         {
-            response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-        }
+            
+        }*/
     }
 
     /**
@@ -256,7 +277,7 @@ public class CatalogueServlet extends HttpServlet {
     }
 
     private void handleIngest(HttpServletRequest request, HttpServletResponse response) throws IOException  {
-        InputStream in;
+    /*    InputStream in;
         JsonObject inputJson = null;
         String itemId = null;
         String errorReason = null;
@@ -286,7 +307,7 @@ public class CatalogueServlet extends HttpServlet {
             outputJson.addProperty("errorReason", errorReason);
         }
 
-        sendJsonBackToClient(outputJson, response);
+        sendJsonBackToClient(outputJson, response);*/
     }
 
     
@@ -327,7 +348,7 @@ public class CatalogueServlet extends HttpServlet {
     
     
     private void handleCSV(HttpServletRequest request, HttpServletResponse response) throws IOException  {
-        InputStream in;
+      /* InputStream in;
         String errorReason = null;
         boolean success = false;
         boolean isTomcatCall= true;
@@ -358,11 +379,11 @@ public class CatalogueServlet extends HttpServlet {
             outputJson.addProperty("errorReason", errorReason);
         }
 
-        sendJsonBackToClient(outputJson, response);
+        sendJsonBackToClient(outputJson, response);*/
     }
 
     private void handleXML(HttpServletRequest request, HttpServletResponse response) throws IOException  {
-        InputStream in;
+     /*   InputStream in;
         String errorReason = null;
         boolean success = false;
         boolean isTomcatCall= true;
@@ -391,7 +412,7 @@ public class CatalogueServlet extends HttpServlet {
             outputJson.addProperty("errorReason", errorReason);
         }
 
-        sendJsonBackToClient(outputJson, response);
+        sendJsonBackToClient(outputJson, response);*/
     }
     
     
