@@ -134,6 +134,14 @@ $metadata.metadataString
 ##alternative method       
 ##$metadata.xmlTOOL.find("//*[local-name() = 'EarthObservation']").toString()
 #end
+#if ($OPEN_SEARCH_RECORD_SCHEMA == 'phenomenonTime')
+	<om:phenomenonTime>
+		<gml:TimePeriod gml:id="tp_09a9d496-59a4-4079-97b6-1e83a3c15f72">
+			<gml:beginPosition>$metadata.xmlTOOL.find("//*[local-name() = 'beginPosition']/text()")</gml:beginPosition>
+			<gml:endPosition>$metadata.xmlTOOL.find("//*[local-name() = 'endPosition']/text()")</gml:endPosition>
+		</gml:TimePeriod>
+	</om:phenomenonTime>
+#end
     </atom:entry> 
 #end
 </atom:feed>

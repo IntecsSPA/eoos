@@ -18,10 +18,7 @@ import it.intecs.pisa.util.DOMUtil;
 import it.intecs.pisa.util.IOUtil;
 import java.io.*;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.sax.SAXSource;
@@ -49,6 +46,7 @@ import org.xml.sax.SAXException;
  * @author simone
  */
 public class OpenSearchHandler {
+
     private final static String ATOM_TEMPLATE = "atomResponse.vm";
     private static final String CONTENT_TYPE_APPLICATION_JSON = "application/json";
     private final static String CZML_TEMPLATE = "czmlResponse.vm";
@@ -58,8 +56,8 @@ public class OpenSearchHandler {
     private static final String VELOCITY_TOOL_COORDINATES = "coordinates";
     private static final String VELOCITY_PRODUCT_URL_WCS = "productUrlWcs";
     private static final String VELOCITY_PRODUCT_URL_FTP = "productUrlFtp";
-    private static final String VELOCITY_PRODUCT_URL_HTTP = "productUrlHttp";   
-    private static final String VELOCITY_PRODUCT_URL="productUrl";
+    private static final String VELOCITY_PRODUCT_URL_HTTP = "productUrlHttp";
+    private static final String VELOCITY_PRODUCT_URL = "productUrl";
     private static final String VELOCITY_BROWSE_URL = "browseUrl";
     private static final String VELOCITY_METADATA_LIST = "metadataList";
     private static final String XPATH_NUM_FOUNDS = "//result/@numFound";
@@ -84,15 +82,13 @@ public class OpenSearchHandler {
     private static final String PRODUCT_URL_WCS_KEY = "$productUrlWcsBasePath";
     private static final String PRODUCT_URL_HTTP_KEY = "$productUrlHttpBasePath";
     private static final String PRODUCT_URL_FTP_KEY = "$productUrlFtpBasePath";
-    private static final String PRODUCT_URL_KEY="$productUrlBasePath";
+    private static final String PRODUCT_URL_KEY = "$productUrlBasePath";
     private static final String XML_TOOL = "xmlTOOL";
-
     VelocityEngine ve;
     HashMap metadatas;
     AbstractFilesystem repository;
     solrHandler solr;
-    
-    
+
     public OpenSearchHandler(AbstractFilesystem configDirectory, AbstractFilesystem repo, String solrEndPoint) {
         this.ve = new VelocityEngine();
         ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "file");
@@ -160,7 +156,7 @@ public class OpenSearchHandler {
 
     private SaxonDocument sendRequestToSolr(HttpServletRequest request) throws SaxonApiException, IOException, Exception {
         // this is a simutation for the moment
-        HashMap<String,String> params=getParametersHashMap(request);
+        HashMap<String, String> params = getParametersHashMap(request);
         return solr.search(params);
     }
 
@@ -230,25 +226,11 @@ public class OpenSearchHandler {
         VelocityContext context = new VelocityContext();
         context.put(VELOCITY_TOOL_DATE, new DateTool());
 
-        String productUrl = Prefs.getProductURLBaseWcs();
-        if (null != productUrl && !productUrl.equals("")) {
-            context.put(VELOCITY_PRODUCT_URL_WCS, productUrl);
-        }
-        productUrl = Prefs.getProductURLBaseHttp();
-        if (null != productUrl && !productUrl.equals("")) {
-            context.put(VELOCITY_PRODUCT_URL_HTTP, productUrl);
-        }
-        productUrl = Prefs.getProductURLBaseFtp();
-        if (null != productUrl && !productUrl.equals("")) {
-            context.put(VELOCITY_PRODUCT_URL_FTP, productUrl);
-        } 
-        productUrl = Prefs.getProductURLBase();
-        if (null != productUrl && !productUrl.equals("")) {
-            context.put(VELOCITY_PRODUCT_URL, productUrl);
-        } 
-        String browseUrl = Prefs.getBrowseURLBase();
-        if (null != productUrl && !productUrl.equals("")) {
-            context.put(VELOCITY_BROWSE_URL, browseUrl);
+        HashMap<String, String> urls = Prefs.getURLBase();
+        if (null != urls && !urls.isEmpty()) {
+            for (String stringKey : urls.keySet()) {
+                context.put(stringKey, urls.get(stringKey));
+            }
         }
 
         context.put(VELOCITY_TOOL_COORDINATES, new CoordinatesUtil());
@@ -281,31 +263,22 @@ public class OpenSearchHandler {
 
     private void sendBackProductResponse(SaxonDocument solrResponse, HttpServletRequest request, HttpServletResponse response) throws IOException, XPathFactoryConfigurationException, XPathException, XPathExpressionException, SAXException, JDOMException {
         String originalMetadata = this.getOriginalMetadata(solrResponse);
-        String productUrl = Prefs.getProductURLBaseWcs();
-        if (null != productUrl && !productUrl.equals("")) {
-            // replace the string in the metadata        
-            originalMetadata = originalMetadata.replace(PRODUCT_URL_WCS_KEY, productUrl);
-        }
-        productUrl = Prefs.getProductURLBaseHttp();
-        if (null != productUrl && !productUrl.equals("")) {
-            // replace the string in the metadata        
-            originalMetadata = originalMetadata.replace(PRODUCT_URL_HTTP_KEY, productUrl);
-        }
-        productUrl = Prefs.getProductURLBaseFtp();
-        if (null != productUrl && !productUrl.equals("")) {
-            // replace the string in the metadata        
-            originalMetadata = originalMetadata.replace(PRODUCT_URL_FTP_KEY, productUrl);
-        }
-         productUrl = Prefs.getProductURLBase();
-        if (null != productUrl && !productUrl.equals("")) {
-            // replace the string in the metadata        
-            originalMetadata = originalMetadata.replace(PRODUCT_URL_KEY, productUrl);
-        }
-        String browseUrl = Prefs.getBrowseURLBase();
-        if (null != browseUrl && !browseUrl.equals("")) {
-            // replace the string in the metadata      
-            originalMetadata = originalMetadata.replace(BROWSE_URL_KEY, browseUrl);
-        }
+        
+
+            HashMap<String, String> urls = Prefs.getURLBase();
+            if (null != urls && !urls.isEmpty()) {
+                for (String stringKey : urls.keySet()) {
+                originalMetadata = originalMetadata.replace(stringKey, (String) urls.get(stringKey));
+                }
+            }
+
+        /*
+         * String urls = Prefs.getBrowseURLBase(); if (null != urls &&
+         * !urls.equals("")) { // replace the string in the metadata
+         * originalMetadata = originalMetadata.replace(BROWSE_URL_KEY,
+         * urls); }
+         *
+         */
         response.setContentType("application/xml");
         Writer swOut = response.getWriter();
         if (!originalMetadata.contains("<?xml")) {
@@ -331,43 +304,32 @@ public class OpenSearchHandler {
             builder = new SAXBuilder();
 //            builder.setJDOMFactory( (JDOMFactory)new AnakiaJDOMFactory()); 
             cdata_field = (String) solrResponse.evaluatePath(XPATH_METADATA.replace("$$", String.valueOf(i)), XPathConstants.STRING);
-            String productUrl = Prefs.getProductURLBaseWcs();
-            if (null != productUrl && !productUrl.equals("")) {
-                // replace the string in the metadata        
-                cdata_field = cdata_field.replace(PRODUCT_URL_WCS_KEY, productUrl);
-            }
-            productUrl = Prefs.getProductURLBaseHttp();
-            if (null != productUrl && !productUrl.equals("")) {
-                // replace the string in the metadata        
-                cdata_field = cdata_field.replace(PRODUCT_URL_HTTP_KEY, productUrl);
-            }
-            productUrl = Prefs.getProductURLBaseFtp();
-            if (null != productUrl && !productUrl.equals("")) {
-                // replace the string in the metadata        
-                cdata_field = cdata_field.replace(PRODUCT_URL_FTP_KEY, productUrl);
-            }
-            productUrl = Prefs.getProductURLBase();
-            if (null != productUrl && !productUrl.equals("")) {
-                // replace the string in the metadata        
-                cdata_field = cdata_field.replace(PRODUCT_URL_KEY, productUrl);
-            }
-            String browseUrl = Prefs.getBrowseURLBase();
-            if (null != browseUrl && !browseUrl.equals("")) {
-                // replace the string in the metadata      
-                cdata_field = cdata_field.replace(BROWSE_URL_KEY, browseUrl);
-            }
 
+            HashMap<String, String> urls = Prefs.getURLBase();
+            if (null != urls && !urls.isEmpty()) {
+                for (String stringKey : urls.keySet()) {
+                    cdata_field = cdata_field.replace(stringKey, (String) urls.get(stringKey));
+                    //System.out.println("stringKey=" +stringKey +" --> value="+(String) urls.get(stringKey));
+                }
+            }
+            /*
+             * String urls = Prefs.getBrowseURLBase(); if (null !=
+             * urls && !urls.equals("")) { // replace the string in
+             * the metadata cdata_field = cdata_field.replace(BROWSE_URL_KEY,
+             * urls); }
+             */
             SAXReader reader = new SAXReader();
             org.dom4j.Document root = reader.read(new StringReader(cdata_field));
 
 //            XmlTool x = new XmlTool(root);
 //            x.find("//*[local-name() = 'ProductInformation']//*[local-name() = 'ServiceReference']/@*[local-name() = 'href']");
 //            x.find("//*[local-name() = 'ProductInformation']/*[local-name() = 'fileName']/*[local-name() = 'ServiceReference']/@*[local-name() = 'href']");
-            
-            /* some example on how to use the xpath
-             * XmlTool x = new XmlTool(root);
-             * x.find("//*[local-name() = 'ServiceReference']/@*[local-name() =
-             * 'href']"); x.find("//*[local-name() = 'orbitType']/text()");
+
+            /*
+             * some example on how to use the xpath XmlTool x = new
+             * XmlTool(root); x.find("//*[local-name() =
+             * 'ServiceReference']/@*[local-name() = 'href']");
+             * x.find("//*[local-name() = 'orbitType']/text()");
              * x.find("//*[local-name() = 'sensorType']/text()");
              * x.find("//*[local-name() = 'orbitType']/text()").isEmpty();
              * x.find("//*[local-name() = 'sensorType']/text()").isEmpty();
@@ -426,18 +388,17 @@ public class OpenSearchHandler {
     }
 
     private HashMap<String, String> getParametersHashMap(HttpServletRequest request) {
-        HashMap<String,String> hash=new HashMap<String,String>();
-        
-        Enumeration<String> names=request.getParameterNames();
-        
-        while(names.hasMoreElements())
-        {
-            String name=names.nextElement();
-            String value=request.getParameter(name);
-            
+        HashMap<String, String> hash = new HashMap<String, String>();
+
+        Enumeration<String> names = request.getParameterNames();
+
+        while (names.hasMoreElements()) {
+            String name = names.nextElement();
+            String value = request.getParameter(name);
+
             hash.put(name, value);
         }
-        
+
         return hash;
     }
 }
