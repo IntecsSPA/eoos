@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package it.intecs.pisa.openCatalogue.solr.ingester;
 
 import it.intecs.pisa.gis.util.CoordinatesUtil;
@@ -49,6 +48,7 @@ import org.xml.sax.SAXException;
  * @author Massimiliano Fanciulli
  */
 public class Ingester {
+
     private final String XPATH_SEPARATOR = "//separator";
     private final String XPATH_DATE_TIME_FORMAT = "//dateTimeFormat";
     private final String XPATH_SENSOR_TYPE = "//attribute[@id='sensorType']";
@@ -71,7 +71,6 @@ public class Ingester {
     public static final String VELOCITY_OPERATIONAL_MODE = "OPERATIONAL_MODE";
     public static final String VELOCITY_PRODUCT_TYPE = "PRODUCT_TYPE";
     public static final String BROWSE_FROM_HARVEST = "browse_from_harvest";
-     
     protected AbstractFilesystem metadataRepository;
     protected VelocityEngine ve;
     protected SaxonDocument configuration;
@@ -83,12 +82,11 @@ public class Ingester {
     private Schematron schematron = null;
     private AbstractFilesystem schemaRoot = null;
     private AbstractFilesystem schemaFile = null;
-    private static SchemaCache schemaCache=null;
+    private static SchemaCache schemaCache = null;
     private String period_start;
     private String period_end;
-     
-    public void setConfiguration(AbstractFilesystem configDirectory,String configFileName) throws SAXException, IOException, SaxonApiException, Exception
-    {
+
+    public void setConfiguration(AbstractFilesystem configDirectory, String configFileName) throws SAXException, IOException, SaxonApiException, Exception {
         ve = new VelocityEngine();
         ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "file");
         ve.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, configDirectory.getAbsolutePath());
@@ -104,52 +102,61 @@ public class Ingester {
                 : DEFAULT_DATE_TIME_FORMAT;
 
         elements_separator = (String) configuration.evaluatePath(XPATH_SEPARATOR, XPathConstants.STRING);
-        
+
         SAXBuilder saxBuilder = new SAXBuilder();
         org.jdom2.Document doc = saxBuilder.build(configDirectory.get(configFileName).getInputStream());
-        
+
         Element rootElement = doc.getRootElement();
         defaultMap = new HashMap();
         generateDefaultMap(rootElement, defaultMap);
     }
-    
-     public void ingestDataFromDir(AbstractFilesystem dir) throws Exception {
+
+    public void ingestDataFromDir(AbstractFilesystem dir) throws Exception {
         AbstractFilesystem[] files = dir.list(false, null);
+        Log.info("Going to ingest " + files.length + " metadata");
+        int fileNo= files.length;
         for (AbstractFilesystem file : files) {
-            ingestData(file);
+            try {
+                fileNo--;
+                ingestData(file);
+                Log.info("["+ fileNo +"] files remaining");
+            } catch (Exception e) {
+                Log.error("Failaed to ingest " + file.getName());
+                Log.error(e.getMessage());
+            }
+
         }
     }
-     
-     public void ingestData(AbstractFilesystem file) throws Exception {
+
+    public void ingestData(AbstractFilesystem file) throws Exception {
         if (file.isFile()) {
-            Log.info("Trying to ingest file "+file.getName());
+            Log.info("Trying to ingest file " + file.getName());
             String fileName = file.getName();
-            
+
             Document[] metadata = parse(file);
-            
-            for(Document doc:metadata)
-            {
-                boolean isValid=true;
+
+            for (Document doc : metadata) {
+                boolean isValid = true;
                 isValid = validateMetadata(doc);
 
-                if(isValid)
-                {
-                    isValid=validateThroughSchematron();
+                if (isValid) {
+                    isValid = validateThroughSchematron();
 
                     if (isValid) {
-                        
+
                         uploadMetadataToSolr(doc);
                     } else {
                         Log.info("Metadata is not schematron valid.");
                     }
+                } else {
+                    Log.info("Metadata file " + fileName + " (or part of it) is not valid. Ingestion is skipped.");
                 }
-                else Log.info("Metadata file "+fileName+" (or part of it) is not valid. Ingestion is skipped.");
-            
-                storeMetadata(doc,isValid);
+
+                storeMetadata(doc, isValid);
             }
         }
     }
-     
+
     protected Document[] parse(AbstractFilesystem indexFile) throws Exception {
         Document metadata;
         InputStream stream = indexFile.getInputStream();
@@ -161,7 +168,7 @@ public class Ingester {
         org.dom4j.Element rootElement = doc.getRootElement();
 
         Map map = new HashMap(defaultMap);
-        map.put(FILENAME,indexFile.getName().replaceAll(".xml",""));
+        map.put(FILENAME, indexFile.getName().replaceAll(".xml", ""));
 
         generateMap2(rootElement, map);
         key = UUID.randomUUID().toString();
@@ -169,9 +176,9 @@ public class Ingester {
 
         return new Document[]{metadata};
     }
-    
-     private void uploadMetadataToSolr(org.jdom2.Document metadata) throws IOException, SaxonApiException, Exception {
-        if (solr != null) {    
+
+    private void uploadMetadataToSolr(org.jdom2.Document metadata) throws IOException, SaxonApiException, Exception {
+        if (solr != null) {
             VelocityContext context = new VelocityContext();
             context.put(VELOCITY_DATE, new DateTool());
             context.put(VELOCITY_MATH, new MathTool());
@@ -189,17 +196,16 @@ public class Ingester {
             swOut.close();
         }
     }
-     
-     private void saveSolrfile(String swOut, String key) throws IOException {
+
+    private void saveSolrfile(String swOut, String key) throws IOException {
         FileFilesystem fs = new FileFilesystem(metadataRepository.getAbsolutePath() + "/" + key + ".slr");
         fs.getOutputStream().write(swOut.getBytes());
     }
-    
-     private FileFilesystem storeMetadata(org.jdom2.Document metadata, boolean isValid) throws IOException {
-        if(metadataRepository!=null)
-        {
+
+    private FileFilesystem storeMetadata(org.jdom2.Document metadata, boolean isValid) throws IOException {
+        if (metadataRepository != null) {
             XPathExpression<Element> xpath = XPathFactory.instance().compile("//*[local-name() = 'identifier']", Filters.element());
-        
+
             String key = xpath.evaluateFirst(metadata.getRootElement()).getTextTrim();
             FileFilesystem fs = null;
             if (isValid) {
@@ -212,27 +218,26 @@ public class Ingester {
             byte[] b = metadataString.getBytes();
             fs.getOutputStream().write(b);
             return fs;
+        } else {
+            return null;
         }
-        else return null;
     }
-    
+
     private boolean validateMetadata(Document metadata) {
         if (schemaRoot != null && schemaFile != null) {
-            try
-            {
+            try {
                 XMLOutputter outputter = new XMLOutputter();
                 String metadataString = outputter.outputString(metadata);
                 byte[] b = metadataString.getBytes();
                 return SchemasUtil.SAXvalidate(new ByteArrayInputStream(b), schemaFile, schemaRoot, schemaCache);
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 return false;
             }
+        } else {
+            return true;
         }
-        else return true;
     }
-    
+
     public org.jdom2.Document generateMetadata(Map metadataMap, String key) throws IOException, SaxonApiException, XPathFactoryConfigurationException, JDOMException {
         VelocityContext context = new VelocityContext();
         context.put(VELOCITY_DATE, new DateTool());
@@ -254,14 +259,14 @@ public class Ingester {
         swOut.close();
         return metadata;
     }
-    
+
     public Template getTemplate(String sType) {
         return ve.getTemplate(METADATA_REPORT_TEMPLATE.replace("sType", sType));
     }
-    
-     private static void generateMap2(org.dom4j.Element el, Map map) {
+
+    private static void generateMap2(org.dom4j.Element el, Map map) {
         String value = el.getTextTrim();
-        
+
         Iterator i = el.elementIterator();
         if (!i.hasNext() && value != null) {
             //System.out.println("PATH:" + getXPath(el));
@@ -272,8 +277,8 @@ public class Ingester {
             }
         }
     }
-     
-      private static String getXPath(org.dom4j.Element el) {
+
+    private static String getXPath(org.dom4j.Element el) {
         String path = el.getUniquePath();
         if (path.contains(":")) {
             String[] elements = path.split("/");
@@ -291,11 +296,8 @@ public class Ingester {
 
         return path.substring(1);
     }
-     
-     
-    
-    public void setSchema(AbstractFilesystem schemaFolder,AbstractFilesystem schema)
-    {
+
+    public void setSchema(AbstractFilesystem schemaFolder, AbstractFilesystem schema) {
         schemaRoot = schemaFolder;
         schemaFile = schema;
 
@@ -303,37 +305,32 @@ public class Ingester {
             schemaCache = new SchemaCache(schemaRoot);
         }
     }
-    
-    public void setSolrURL(String solrURL)
-    {
+
+    public void setSolrURL(String solrURL) {
         if (solrURL != null && !solrURL.equals("")) {
             solr = new solrHandler(solrURL);
         }
     }
-    
-    public void setSchematronURI(String schematronURI)
-    {
+
+    public void setSchematronURI(String schematronURI) {
         if (schematronURI != null && !schematronURI.equals("")) {
             schematron = new Schematron(schematronURI);
         }
     }
-      
-    public void setRunsOnTomcat()
-    {
-        if(ve!=null)
-        {
+
+    public void setRunsOnTomcat() {
+        if (ve != null) {
             ve.setProperty("runtime.log.logsystem.class", "org.apache.velocity.runtime.log.NullLogSystem");
         }
     }
-    
-    public void setMetedateRepository(AbstractFilesystem repo)
-    {
+
+    public void setMetedateRepository(AbstractFilesystem repo) {
         if (repo != null) {
             this.metadataRepository = repo;
             this.metadataRepository.mkdirs();
         }
     }
-    
+
     protected static void generateDefaultMap(Element el, Map map) {
         String key = "";
         List<Element> listEmpElement = el.getChildren();
@@ -351,16 +348,13 @@ public class Ingester {
     private boolean validateThroughSchematron() {
         //temporarily disabled
         /*
-        if (metadataRepository != null) {
-            AbstractFilesystem metadataFile = storeMetadata(metadata, isValid);
-            if (schematron != null) {
-                schematron.Validate(metadataFile);
-            }
-        }*/
-        
+         * if (metadataRepository != null) { AbstractFilesystem metadataFile =
+         * storeMetadata(metadata, isValid); if (schematron != null) {
+         * schematron.Validate(metadataFile); }
+        }
+         */
+
         return true;
-    
+
     }
-    
-    
 }

@@ -497,52 +497,55 @@ xmlns:swe="http://www.opengis.net/swe/1.0" version="4.0">
 			</eop:product>
 		<!--/xsl:if-->		
 		</xsl:for-each>
-		<xsl:if test="attribute[@id='maskType'] != ''">
-			<eop:mask>
-				<eop:MaskInformation>
-					<eop:type>
-						<xsl:apply-templates select="attribute[@id='maskType']"/>
-					</eop:type>
-					<xsl:if test="attribute[@id='maskSubType'] != ''">
-						<xsl:if test="attribute[@id='maskSubType']/indexFieldName != ''">#if( $metadata.<xsl:value-of select="attribute[@id='maskSubType']/indexFieldName"/> != '' )</xsl:if>
-						<eop:subType>
-							<xsl:apply-templates select="attribute[@id='maskSubType']"/>
-						</eop:subType>
-						<xsl:if test="attribute[@id='maskSubType']/indexFieldName != ''">#end</xsl:if>
-					</xsl:if>
-					<eop:format>
-						<xsl:apply-templates select="attribute[@id='maskFormat']"/>
-					</eop:format>
-					<xsl:if test="attribute[@id='maskReferenceSystemIdentifier'] != ''">
-						<xsl:if test="attribute[@id='maskReferenceSystemIdentifier']/indexFieldName != ''">#if( $metadata.<xsl:value-of select="attribute[@id='maskReferenceSystemIdentifier']/indexFieldName"/> != '' )</xsl:if>
-						<eop:referenceSystemIdentifier codeSpace="EPSG">
-							<xsl:apply-templates select="attribute[@id='maskReferenceSystemIdentifier']"/>
-						</eop:referenceSystemIdentifier>
-						<xsl:if test="attribute[@id='maskReferenceSystemIdentifier']/indexFieldName != ''">#end</xsl:if>
-					</xsl:if>
-					<xsl:if test="attribute[@id='MaskURI'] != ''">
-						<xsl:if test="attribute[@id='MaskURI']/indexFieldName != ''">#if( $metadata.<xsl:value-of select="attribute[@id='MaskURI']/indexFieldName"/> != '' )</xsl:if>
-						<eop:fileName>
-							<ows:ServiceReference xlink:href="">
-								<xsl:attribute name="xlink:href"><xsl:apply-templates select="attribute[@id='MaskURI']"/></xsl:attribute>
-								<ows:RequestMessage/>
-							</ows:ServiceReference>
-						</eop:fileName>
-						<xsl:if test="attribute[@id='MaskURI']/indexFieldName != ''">#end</xsl:if>
-					</xsl:if>
-					<!--TBD Contains inline encoded mask polygon geometries using the gml:MultiSurface/gml:SurfaceMembers/gml:Polygon constructs.
-		0..1 (either fileName or multiExtentOf shall be provided)-->
-					<!--multiExtentOf>
-						<gml:MultiSurface>
-							<gml:SurfaceMembers>
-								<gml:Polygon>
-								</gml:Polygon>
-							</gml:SurfaceMembers>
-						</gml:MultiSurface>
-					</multiExtentOf-->
-				</eop:MaskInformation>
-			</eop:mask>
-		</xsl:if>
+                <xsl:for-each select="attribute[@id='MaskURI']">
+                    <!--xsl:if test="attribute[@id='maskType'] != ''"-->
+                                <xsl:variable name="maskKey" select="@key"/>
+                                <eop:mask>
+                                    <eop:MaskInformation>
+                                            <eop:type>
+                                                    <xsl:apply-templates select="../attribute[@id='maskType' and @key=$maskKey]"/>
+                                            </eop:type>
+                                            <xsl:if test="../attribute[@id='maskSubType' and @key=$maskKey] != ''">
+                                                    <xsl:if test="../attribute[@id='maskSubType' and @key=$maskKey]/indexFieldName != ''">#if( $metadata.<xsl:value-of select="../attribute[@id='maskSubType' and @key=$maskKey]/indexFieldName"/> != '' )</xsl:if>
+                                                    <eop:subType>
+                                                            <xsl:apply-templates select="../attribute[@id='maskSubType' and @key=$maskKey]"/>
+                                                    </eop:subType>
+                                                    <xsl:if test="../attribute[@id='maskSubType' and @key=$maskKey]/indexFieldName != ''">#end</xsl:if>
+                                            </xsl:if>
+                                            <eop:format>
+                                                    <xsl:apply-templates select="../attribute[@id='maskFormat' and @key=$maskKey]"/>
+                                            </eop:format>
+                                            <xsl:if test="../attribute[@id='maskReferenceSystemIdentifier' and @key=$maskKey] != ''">
+                                                    <xsl:if test="../attribute[@id='maskReferenceSystemIdentifier' and @key=$maskKey]/indexFieldName != ''">#if( $metadata.<xsl:value-of select="../attribute[@id='maskReferenceSystemIdentifier' and @key=$maskKey]/indexFieldName"/> != '' )</xsl:if>
+                                                    <eop:referenceSystemIdentifier codeSpace="EPSG">
+                                                            <xsl:apply-templates select="../attribute[@id='maskReferenceSystemIdentifier' and @key=$maskKey]"/>
+                                                    </eop:referenceSystemIdentifier>
+                                                    <xsl:if test="../attribute[@id='maskReferenceSystemIdentifier' and @key=$maskKey]/indexFieldName != ''">#end</xsl:if>
+                                            </xsl:if>
+                                            <xsl:if test="../attribute[@id='MaskURI'  and @key=$maskKey] != ''">
+                                                    <xsl:if test="../attribute[@id='MaskURI' and @key=$maskKey]/indexFieldName != ''">#if( $metadata.<xsl:value-of select="../attribute[@id='MaskURI' and @key=$maskKey]/indexFieldName"/> != '' )</xsl:if>
+                                                    <eop:fileName>
+                                                            <ows:ServiceReference xlink:href="">
+                                                                    <xsl:attribute name="xlink:href"><xsl:apply-templates select="../attribute[@id='MaskURI' and @key=$maskKey]"/></xsl:attribute>
+                                                                    <ows:RequestMessage/>
+                                                            </ows:ServiceReference>
+                                                    </eop:fileName>
+                                                    <xsl:if test="../attribute[@id='MaskURI' and @key=$maskKey]/indexFieldName != ''">#end</xsl:if>
+                                            </xsl:if>
+                                            <!--TBD Contains inline encoded mask polygon geometries using the gml:MultiSurface/gml:SurfaceMembers/gml:Polygon constructs.
+                    0..1 (either fileName or multiExtentOf shall be provided)-->
+                                            <!--multiExtentOf>
+                                                    <gml:MultiSurface>
+                                                            <gml:SurfaceMembers>
+                                                                    <gml:Polygon>
+                                                                    </gml:Polygon>
+                                                            </gml:SurfaceMembers>
+                                                    </gml:MultiSurface>
+                                            </multiExtentOf-->
+                                    </eop:MaskInformation>
+                            </eop:mask>
+                    <!--/xsl:if-->
+                </xsl:for-each>
 		<xsl:if test="attribute[@id='phenomenonName'] != ''">
 			<eop:parameter>
 				<!--TODO 0..1 -->

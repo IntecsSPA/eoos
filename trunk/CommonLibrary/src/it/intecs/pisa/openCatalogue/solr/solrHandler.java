@@ -1,7 +1,7 @@
 /* Copyright (c) 2013 Intecs - www.intecs.it. All rights reserved.
  * This code is licensed under the GPL 3.0 license, available at the root
  * application directory.
-*/
+ */
 package it.intecs.pisa.openCatalogue.solr;
 
 import it.intecs.pisa.log.Log;
@@ -35,7 +35,7 @@ public class solrHandler {
         this.solrHost = solrEndPoint;
     }
 
-    public SaxonDocument search(HashMap<String,String> request) throws UnsupportedEncodingException, IOException, SaxonApiException, Exception {
+    public SaxonDocument search(HashMap<String, String> request) throws UnsupportedEncodingException, IOException, SaxonApiException, Exception {
         HttpClient client = new HttpClient();
         HttpMethod method;
         String urlStr = prepareUrl(request);
@@ -49,7 +49,7 @@ public class solrHandler {
         // Execute the method.
         int statusCode = client.executeMethod(method);
         SaxonDocument solrResponse = new SaxonDocument(method.getResponseBodyAsString());
-        Log.debug(solrResponse.getXMLDocumentString());
+        //Log.debug(solrResponse.getXMLDocumentString());
 
         if (statusCode != HttpStatus.SC_OK) {
             Log.error("Method failed: " + method.getStatusLine());
@@ -59,27 +59,27 @@ public class solrHandler {
 
         return solrResponse;
     }
-    
+
     public int postDocument(String body) throws IOException, SaxonApiException, Exception {
         HttpClient client = new HttpClient();
         HttpMethod method;
         String urlStr = solrHost + "/update?commit=true";
-        Log.debug("Ingesting a new document to: " + urlStr);        
-        Log.debug(body);        
+        Log.debug("Ingesting a new document to: " + urlStr);
+        Log.debug(body);
         method = new PostMethod(urlStr);
         RequestEntity entity = new StringRequestEntity(body);
         ((PostMethod) method).setRequestEntity(entity);
         method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(3, false));
         method.setRequestHeader("Content-Type", "text/xml");
         method.setRequestHeader("charset", "utf-8");
-        
+
         // Execute the method.
         int statusCode = client.executeMethod(method);
         SaxonDocument solrResponse = new SaxonDocument(method.getResponseBodyAsStream());
 
         if (statusCode != HttpStatus.SC_OK) {
             Log.error("Method failed: " + method.getStatusLine());
-            Log.error(solrResponse.getXMLDocumentString());        
+            Log.error(solrResponse.getXMLDocumentString());
         }
         return statusCode;
     }
@@ -121,24 +121,26 @@ public class solrHandler {
      * st={cseop:sensorType?} som={cseop:sensorMode?}
      * si={cseop:swathIdentifier?}
      */
-    private String prepareUrl(HashMap<String,String> request) throws UnsupportedEncodingException, Exception {
+    private String prepareUrl(HashMap<String, String> request) throws UnsupportedEncodingException, Exception {
         String[] params = request.keySet().toArray(new String[0]);
         String fq = "";
         String q = this.solrHost + "/select?q=*%3A*&wt=xml&indent=true";
-        
-        if (request.containsKey("q") && (request.get("q").equals("*.*")==false)) {
-            q = this.solrHost + "/select?q=" + URLDecoder.decode(request.get("q"), "ISO-8859-1") + "&wt=xml&indent=true";
+
+        if (request.containsKey("q") && (request.get("q").equals("*.*") == false)) {
+            String newQ = request.get("q");
+            if (null == newQ || newQ.isEmpty())
+                newQ = "*.*";
+            q = this.solrHost + "/select?q=" + URLDecoder.decode(newQ, "ISO-8859-1") + "&wt=xml&indent=true";
         }
-        
+
         String lat = null;
         String lon = null;
         String radius = null;
 
-        for(String  name:params)
-        {
-            String value=request.get(name);
-            
-            if (value!=null && value.equals("")==false) {
+        for (String name : params) {
+            String value = request.get(name);
+
+            if (value != null && value.equals("") == false) {
                 if (name.equals("count")) {
                     q += "&rows=" + value;
                 } else if (name.equals("startPage")) {
@@ -186,24 +188,55 @@ public class solrHandler {
                     fq += " AND swathIdentifier=" + value;
                 } else if (name.equals("pid")) {
                     fq += " AND parentIdentifier=" + value;
+                } else if (name.equals("ccp")) {
+                    fq += parse("cloudCoverPercentage", value);
+                } else if (name.equals("scp")) {
+                    fq += parse("snowCoverPercentage", value);
                 } else {
                 }
             }
-
-
         }
-
 
         if ((lat != null) && (lon != null) && (radius != null)) {
             fq += " AND posList :\"Intersects(Circle(" + lon + "," + lat + " d=" + radius + "))\"";
         }
 
         String url = q;
+//        System.out.println("filter query:" + fq);
         if (fq.length() > 1) {
             url += "&fq=" + URLEncoder.encode(fq.substring(5), "ISO-8859-1");
         }
+        System.out.println("query URL:" + url);
         return url;
-    } 
+    }
 
-    
+    public String parse(String tag, String value) {
+        /*
+         * n1 equal to field = n1, {n1,n2} equals to field=n1 OR field = n2
+         * [n1,n2] equal to n1 <= field <= n2, [n1,n2[ equals to n1 <= field <
+         * n2 ]n1,n2[ equals to n1 < field < n2 ]n1,n2] equal to n1 < field <=
+         * n2. [n1 equals to n1<= field ]n1 equals to n1 < field n2] equals to
+         * field <= n2 n2[ equals to field < n2.
+         */
+        String queryElement = "";
+        // in the current implementation we consider only the >= and <=
+        if (value.startsWith("[") && value.endsWith("]")) {
+            //[n1,n2] equal to n1 <= field <= n2
+            queryElement = value.replace(","," TO ");
+        } else if (value.startsWith("[")) {
+            //[n1 equals to n1<= field
+            queryElement = value +" TO *]";
+        } else if (value.endsWith("]")) {
+            //n2] equals to field <= n2
+            queryElement = "[* TO "+ value;
+        } else {
+            queryElement = value;
+
+        }
+
+
+        return " AND " + tag + ":" + queryElement;
+
+
+    }
 }
