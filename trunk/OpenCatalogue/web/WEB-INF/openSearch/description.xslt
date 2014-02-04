@@ -4,10 +4,9 @@
     <xsl:param name="url">http://pippo.com/</xsl:param>
     <xsl:param name="time_ext">startdate={time:start?}&amp;stopdate={time:end?}&amp;trel={time:relation?}&amp;</xsl:param>
     <xsl:param name="geo_ext">bbox={geo:box?}&amp;geom={geo:geometry?}&amp;id={geo:uid?}&amp;lat={geo:lat?}&amp;lon={geo:lon?}&amp;radius={geo:radius?}&amp;rel={geo:relation?}&amp;loc={geo:name?}&amp;</xsl:param>
-    <xsl:param name="eo_ext">pid={eo:parentIdentifier?}&amp;psn={eo:platformShortName?}&amp;psi={eo:platformSerialIdentifier?}&amp;ot={eo:orbitType?}&amp;isn={eo:instrumentShortName?}&amp;st={eo:sensorType?}&amp;som={eo:sensorMode?}&amp;si={eo:swathIdentifier?}&amp;ccp={eo:cloudCover}&amp;scp={eo:snowCover}</xsl:param>
-
+    <!--xsl:param name="eo_ext">pid={eo:parentIdentifier?}&amp;psn={eo:platformShortName?}&amp;psi={eo:platformSerialIdentifier?}&amp;ot={eo:orbitType?}&amp;isn={eo:instrumentShortName?}&amp;st={eo:sensorType?}&amp;som={eo:sensorMode?}&amp;si={eo:swathIdentifier?}&amp;ccp={eo:cloudCover}&amp;scp={eo:snowCover}</xsl:param-->
+    <xsl:param name="eo_ext">pt={eo:productType?}&amp;psn={eo:platformShortName?}&amp;psi={eo:platformSerialIdentifier?}&amp;inst={eo:instrument?}&amp;st={eo:sensorType?}&amp;ct={eo:compositeType?}&amp;pl={eo:processingLevel?}&amp;ot={eo:orbitType?}&amp;res={eo:resolution?}&amp;sr={eo:spectralRange?}&amp;wl={eo:wavelengths?}&amp;ul={eo:useLimitation?}&amp;hsc={eo:hasSecurityConstraints?}&amp;orgname={eo:organisationName?}&amp;diss={eo:dissemination?}&amp;pid={eo:parentIdentifier?}&amp;ps={eo:productionStatus?}&amp;at={eo:acquisitionType?}&amp;on={eo:orbitNumber?}&amp;od={eo:orbitDirection?}&amp;tr={eo:track?}&amp;fr={eo:frame?}&amp;si={eo:swathIdentifier?}&amp;cc={eo:cloudCover?}&amp;sc={eo:snowCover?}&amp;pqd={eo:productQualityDegradation?}&amp;pqdt={eo:productQualityDegradationTag?}&amp;pn={eo:processorName?}&amp;pcen={eo:processingCenter?}&amp;pd={eo:processingDate?}&amp;sm={eo:sensorMode?}&amp;ac={eo:archivingCenter?}&amp;procm={eo:processingMode?}&amp;as={eo:acquisitionStation?}&amp;ast={eo:acquisitionSubType?}&amp;stfan={eo:startTimeFromAscendingNode?}&amp;ctfan={eo:completionTimeFromAscendingNode?}&amp;iaa={eo:illuminationAzimuthAngle?}&amp;iza={eo:illuminationZenithAngle?}&amp;iea={eo:illuminationElevationAngle?}&amp;pm={eo:polarisationMode?}&amp;pc={eo:polarizationChannels?}&amp;ald={eo:antennaLookDirection?}&amp;minia={eo:minimumIncidenceAngle?}&amp;maxia={eo:maximumIncidenceAngle?}&amp;df={eo:dopplerFrequency?}&amp;iav={eo:incidenceAngleVariation?}</xsl:param>
     <xsl:template match="/">
-
         <OpenSearchDescription 
         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
         xmlns:eo="http://a9.com/-/opensearch/extensions/eo/1.0/"
@@ -28,8 +27,8 @@
             <Description>This OpenSearch Service allows the discovery of Earth Observation data. This search service is in accordance with the OGC 10-032r3 specification. </Description>
             <Tags>ESA, Earth Observation, Digital Repository, Catalogue, OGC</Tags>
             <Contact>openCatalogue@intecs.it</Contact>
-            <!--Image height="75" width="125" type="image/png">http://eo-virtual-archive4.esa.int/images/geo.png</Image>
-            <Image height="16" width="16" type="image/vnd.microsoft.icon">http://eo-virtual-archive4.esa.int/favicon.ico</Image-->
+            <Image height="75" width="125" type="image/png"><xsl:value-of select="$url"/>_include/img/profile/logo.png</Image>
+            <Image height="16" width="16" type="image/vnd.microsoft.icon"><xsl:value-of select="$url"/>favicon.ico</Image>
             <Query role="example" geo:box="-25,30,45,70" />
             <Developer>Intecs team</Developer>
             <Attribution>Intecs</Attribution>
