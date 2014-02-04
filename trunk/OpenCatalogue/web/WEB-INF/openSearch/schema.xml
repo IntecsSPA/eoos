@@ -60,8 +60,6 @@
    <field name="endPosition" type="date" indexed="true" stored="true"/>
 
    <!-- Spatial elements-->
-   <!--field name="lastOrbitNumber" type="int" indexed="true" stored="true" multiValued="false"/-->
-   <!--field name="sensorOperationalMode" type="string" indexed="true" stored="true" multiValued="false"/-->
    <field name="posList" type="location_rpt" indexed="true" stored="true" multiValued="false"/>
    <field name="posListOrig" type="string" indexed="false" stored="true" multiValued="false"/>
    <field name="metadataOrig" type="string" indexed="false" stored="true" multiValued="false"/>
@@ -80,7 +78,7 @@
    <field name="wavelengths" type="int" indexed="true" stored="true" multiValued="false"/>
    <field name="useLimitation" type="string" indexed="true" stored="true" multiValued="false"/>
    <field name="hasSecurityConstraints" type="string" indexed="true" stored="true" multiValued="false"/>
-   <field name="organizationName" type="string" indexed="true" stored="true" multiValued="false"/>
+   <field name="organisationName" type="string" indexed="true" stored="true" multiValued="false"/>
    <field name="dissemination" type="string" indexed="true" stored="true" multiValued="false"/>
 
 
@@ -93,8 +91,8 @@
    <field name="track" type="int" indexed="true" stored="true" multiValued="false"/>
    <field name="frame" type="int" indexed="true" stored="true" multiValued="false"/>
    <field name="swathIdentifier" type="string" indexed="true" stored="true" multiValued="false"/>
-   <field name="cloudCover" type="int" indexed="true" stored="true" multiValued="false"/>
-   <field name="snowCover" type="int" indexed="true" stored="true" multiValued="false"/>
+   <field name="cloudCover" type="double" indexed="true" stored="true" multiValued="false"/>
+   <field name="snowCover" type="double" indexed="true" stored="true" multiValued="false"/>
    <field name="productQualityDegradation" type="string" indexed="true" stored="true" multiValued="false"/>
    <field name="productQualityDegradationTag" type="string" indexed="true" stored="true" multiValued="false"/>
    <field name="processorName" type="string" indexed="true" stored="true" multiValued="false"/>
@@ -158,30 +156,31 @@
         is added to the index.  It's used either to index the same field differently,
         or to add multiple fields to the same field for easier/faster searching.  -->
 
-   <copyField source="beginPosition" dest="text"/>
-   <copyField source="endPosition" dest="text"/>
-   <copyField source="parentIdentifier" dest="text"/>
-   <copyField source="imageQualityDegradation" dest="text"/>
-   <copyField source="acquisitionType" dest="text"/>
-   <copyField source="acquisitionSubType" dest="text"/>
-   <copyField source="orbitDirection" dest="text"/>
-   <copyField source="orbitNumber" dest="text"/>
    <copyField source="productType" dest="text"/>
-   <copyField source="acquisitionStation" dest="text"/>
-   <copyField source="lastOrbitNumber" dest="text"/>
-   <copyField source="archivingCenter" dest="text"/>
-   <copyField source="instrumentShortName" dest="text"/>
+   <copyField source="platformShortName" dest="text"/>
    <copyField source="platformSerialIdentifier" dest="text"/>
+   <copyField source="instrument" dest="text"/>
    <copyField source="sensorType" dest="text"/>
-   <copyField source="sensorOperationalMode" dest="text"/>
-   <copyField source="sensorResolution" dest="text"/>
+   <copyField source="compositeType" dest="text"/>
+   <copyField source="processingLevel" dest="text"/>
+   <copyField source="orbitType" dest="text"/>   
+   <copyField source="spectralRange" dest="text"/>
+   <copyField source="organisationName" dest="text"/>
+   <copyField source="dissemination" dest="text"/>
+   <copyField source="parentIdentifier" dest="text"/>
+   <copyField source="productionStatus" dest="text"/>
+   <copyField source="acquisitionType" dest="text"/>
+   <copyField source="orbitDirection" dest="text"/>
    <copyField source="swathIdentifier" dest="text"/>
-   <copyField source="cloudCoverPercentage" dest="text"/>
-   <copyField source="snowCoverPercentage" dest="text"/>
-   <copyField source="polarisationMode" dest="text"/>
-   <copyField source="polarizationChannels" dest="text"/>
-   <copyField source="minimumIncidenceAngle" dest="text"/>
-   <copyField source="maximumIncidenceAngle" dest="text"/>
+   <copyField source="productQualityDegradation" dest="text"/>
+   <copyField source="productQualityDegradationTag" dest="text"/>
+   <copyField source="processorName" dest="text"/>
+   <copyField source="processingCenter" dest="text"/>
+   <copyField source="sensorMode" dest="text"/>
+   <copyField source="archivingCenter" dest="text"/>
+   <copyField source="processingMode" dest="text"/>
+   <copyField source="acquisitionStation" dest="text"/>
+   <copyField source="acquisitionSubType" dest="text"/>
  
   <types>
     <!-- field type definitions. The "name" attribute is

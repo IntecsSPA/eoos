@@ -104,7 +104,7 @@
                   $e.getName() == 'illuminationElevationAngle' ||
                   $e.getName() == 'antennaLookDirection' ||
                   $e.getName() == 'dopplerFrequency' ||
-                  $e.getName() == 'incidenceAngleVariation'
+                  $e.getName() == 'incidenceAngleVariation' ||
                   $e.getName() == '')
     <field name="$e.getName()">$e.getTextTrim()</field>
 #end

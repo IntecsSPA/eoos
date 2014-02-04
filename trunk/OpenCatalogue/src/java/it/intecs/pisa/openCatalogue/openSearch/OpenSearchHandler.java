@@ -137,14 +137,16 @@ public class OpenSearchHandler {
     }
 
     public Document handleDescription(String requestURL) throws URISyntaxException, IOException, SaxonApiException, SAXException, Exception {
-        Document description = IOUtil.getDocumentFromDirectory(ServletVars.appFolder + "/WEB-INF/openSearch/description.xml");
+        //TODO select the OSDD for the collection extracted from the URL
+        SaxonDocument descriptionSource = this.solr.getStatsForCollection("");        
+        //Document descriptionSource = IOUtil.getDocumentFromDirectory(ServletVars.appFolder + "/WEB-INF/openSearch/description.xml");
         DOMUtil domUtil = new DOMUtil();
         SaxonXSLT saxonUtil;
         PipedInputStream pipeInput;
         SaxonURIResolver uriResolver;
         ArrayList<SaxonXSLTParameter> parameters = new ArrayList();
         parameters.add(new SaxonXSLTParameter("url", requestURL.substring(0,requestURL.indexOf("service"))));
-        SAXSource docSource = new SAXSource(new InputSource(DOMUtil.getDocumentAsInputStream(description)));
+        SAXSource docSource = new SAXSource(new InputSource(new ByteArrayInputStream(descriptionSource.getXMLDocumentString().getBytes())));
         String xsltRef = ServletVars.appFolder + "/WEB-INF/openSearch/description.xslt";
         SAXSource xsltDoc = new SAXSource(new InputSource(xsltRef));
         String xsltPath = xsltRef.substring(0, xsltRef.lastIndexOf('/'));
