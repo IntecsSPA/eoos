@@ -143,7 +143,7 @@ public class OpenSearchHandler {
         PipedInputStream pipeInput;
         SaxonURIResolver uriResolver;
         ArrayList<SaxonXSLTParameter> parameters = new ArrayList();
-        parameters.add(new SaxonXSLTParameter("url", requestURL));
+        parameters.add(new SaxonXSLTParameter("url", requestURL.substring(0,requestURL.indexOf("service"))));
         SAXSource docSource = new SAXSource(new InputSource(DOMUtil.getDocumentAsInputStream(description)));
         String xsltRef = ServletVars.appFolder + "/WEB-INF/openSearch/description.xslt";
         SAXSource xsltDoc = new SAXSource(new InputSource(xsltRef));
