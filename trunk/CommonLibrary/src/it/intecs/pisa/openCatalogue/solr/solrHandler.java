@@ -6,7 +6,10 @@ package it.intecs.pisa.openCatalogue.solr;
 
 import it.intecs.pisa.log.Log;
 import it.intecs.pisa.openCatalogue.saxon.SaxonDocument;
+import it.intecs.pisa.util.xml.XMLUtils;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -17,12 +20,15 @@ import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.methods.ByteArrayRequestEntity;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.InputStreamRequestEntity;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.httpclient.params.HttpMethodParams;
-import org.w3c.dom.Document;
+import org.jdom2.Document;
+import org.jdom2.output.DOMOutputter;
 
 /**
  *
@@ -59,30 +65,6 @@ public class solrHandler {
         }
 
         return solrResponse;
-    }
-
-    public int postDocument(String body) throws IOException, SaxonApiException, Exception {
-        HttpClient client = new HttpClient();
-        HttpMethod method;
-        String urlStr = solrHost + "/update?commit=true";
-        Log.debug("Ingesting a new document to: " + urlStr);
-        Log.debug(body);
-        method = new PostMethod(urlStr);
-        RequestEntity entity = new StringRequestEntity(body);
-        ((PostMethod) method).setRequestEntity(entity);
-        method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(3, false));
-        method.setRequestHeader("Content-Type", "text/xml");
-        method.setRequestHeader("charset", "utf-8");
-
-        // Execute the method.
-        int statusCode = client.executeMethod(method);
-        SaxonDocument solrResponse = new SaxonDocument(method.getResponseBodyAsStream());
-
-        if (statusCode != HttpStatus.SC_OK) {
-            Log.error("Method failed: " + method.getStatusLine());
-            Log.error(solrResponse.getXMLDocumentString());
-        }
-        return statusCode;
     }
 
     /*
@@ -484,5 +466,47 @@ public class solrHandler {
         return " AND " + tag + ":" + queryElement;
 
 
+    }
+
+    public int postDocument(String body) throws IOException, SaxonApiException, Exception {
+        return postDocument(body.getBytes());
+    }
+    
+    
+    public int postDocument(Document metadata) throws Exception {
+        DOMOutputter outputter=new DOMOutputter();
+        
+        org.w3c.dom.Document doc = outputter.output(metadata);
+        return postDocument(XMLUtils.dumpToByteArray(doc));
+    }
+    
+    public int postDocument(InputStream stream) throws IOException, Exception
+    {
+        HttpClient client = new HttpClient();
+        HttpMethod method;
+        String urlStr = solrHost + "/update?commit=true";
+        Log.debug("Ingesting a new document to: " + urlStr);
+        method = new PostMethod(urlStr);
+        RequestEntity entity = new InputStreamRequestEntity(stream);
+        ((PostMethod) method).setRequestEntity(entity);
+        method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(3, false));
+        method.setRequestHeader("Content-Type", "text/xml");
+        method.setRequestHeader("charset", "utf-8");
+
+        // Execute the method.
+        int statusCode = client.executeMethod(method);
+        SaxonDocument solrResponse = new SaxonDocument(method.getResponseBodyAsStream());
+
+        Log.debug(solrResponse.getXMLDocumentString());
+        if (statusCode != HttpStatus.SC_OK) {
+            Log.error("Method failed: " + method.getStatusLine());
+           // Log.error(solrResponse.getXMLDocumentString());
+        }
+        return statusCode;
+    }
+    
+    public int postDocument(byte[] document) throws IOException, Exception
+    {
+        return postDocument(new ByteArrayInputStream(document));
     }
 }

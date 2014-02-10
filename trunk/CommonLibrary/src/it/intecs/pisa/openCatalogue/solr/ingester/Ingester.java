@@ -8,13 +8,9 @@ package it.intecs.pisa.openCatalogue.solr.ingester;
 import it.intecs.pisa.gis.util.CoordinatesUtil;
 import it.intecs.pisa.log.Log;
 import it.intecs.pisa.metadata.filesystem.AbstractFilesystem;
-import it.intecs.pisa.metadata.filesystem.FileFilesystem;
 import it.intecs.pisa.openCatalogue.saxon.SaxonDocument;
-import it.intecs.pisa.openCatalogue.solr.solrHandler;
-import it.intecs.pisa.util.schemas.SchemaCache;
-import it.intecs.pisa.util.schemas.SchemasUtil;
-import it.intecs.pisa.util.schematron.Schematron;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -23,74 +19,44 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactoryConfigurationException;
 import net.sf.saxon.s9api.SaxonApiException;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.tools.generic.DateTool;
-import org.apache.velocity.tools.generic.MathTool;
 import org.dom4j.io.SAXReader;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
-import org.jdom2.filter.Filters;
 import org.jdom2.input.SAXBuilder;
-import org.jdom2.output.XMLOutputter;
-import org.jdom2.xpath.XPathExpression;
-import org.jdom2.xpath.XPathFactory;
 import org.xml.sax.SAXException;
 
 /**
  *
  * @author Massimiliano Fanciulli
  */
-public class Ingester {
+public class Ingester extends BaseIngester {
 
-    private final String XPATH_SEPARATOR = "//separator";
-    private final String XPATH_DATE_TIME_FORMAT = "//dateTimeFormat";
-    private final String XPATH_SENSOR_TYPE = "//attribute[@id='sensorType']";
-    private static final String DOLLAR = "$";
-    public static final String FILENAME = "filename";
-    private final String DEFAULT_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-    public static final String HARVEST_FILE_NAME = "*.index";
-    public static final String METADATA_REPORT_TEMPLATE = "metadataReportsType.vm";
-    public static final String SLASH = "/";
-    public static final String STRING_PERIOD = "##PERIOD##";
-    public static final String TAG_DEFAULT_VALUE = "defaultValue";
-    public static final String TAG_INDEX_FIELD_NAME = "indexFieldName";
-    public static final String VELOCITY_DATE = "date";
-    public static final String VELOCITY_MATH = "math";
-    public static final String VELOCITY_METADATA_LIST = "metadata";
-    public static final String VELOCITY_PERIOD_END = "PERIOD_END";
-    public static final String VELOCITY_PERIOD_START = "PERIOD_START";
-    public static final String VELOCITY_PLATFORM_SHORT_NAME = "PLATFORM_SHORT_NAME";
-    public static final String VELOCITY_INSTRUMENT_SHORT_NAME = "INSTRUMENT_SHORT_NAME";
-    public static final String VELOCITY_OPERATIONAL_MODE = "OPERATIONAL_MODE";
-    public static final String VELOCITY_PRODUCT_TYPE = "PRODUCT_TYPE";
-    public static final String BROWSE_FROM_HARVEST = "browse_from_harvest";
-    protected AbstractFilesystem metadataRepository;
-    protected VelocityEngine ve;
-    protected SaxonDocument configuration;
-    protected String sensorType;
-    protected String dateTimeFormat;
-    protected String elements_separator;
-    private solrHandler solr = null;
-    private Map defaultMap = null;
-    private Schematron schematron = null;
-    private AbstractFilesystem schemaRoot = null;
-    private AbstractFilesystem schemaFile = null;
-    private static SchemaCache schemaCache = null;
+    protected final String XPATH_SEPARATOR = "//separator";
+    protected final String XPATH_DATE_TIME_FORMAT = "//dateTimeFormat";
+    protected final String XPATH_SENSOR_TYPE = "//attribute[@id='sensorType']";
+    protected static final String DOLLAR = "$";
+    protected final String DEFAULT_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+
+    protected Map defaultMap = null;
     private String period_start;
     private String period_end;
 
-    public void setConfiguration(AbstractFilesystem configDirectory, String configFileName) throws SAXException, IOException, SaxonApiException, Exception {
-        ve = new VelocityEngine();
-        ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "file");
-        ve.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, configDirectory.getAbsolutePath());
+    @Override
+    public void setConfiguration(AbstractFilesystem configDirectory) throws SAXException, IOException, SaxonApiException, Exception {
+        super.setConfiguration(configDirectory);
 
+        String configFileName = "configuration.xml";
         configuration = new SaxonDocument(configDirectory.get(configFileName).getInputStream());
 
         sensorType = (!"".equals((String) configuration.evaluatePath(XPATH_SENSOR_TYPE + SLASH + TAG_INDEX_FIELD_NAME, XPathConstants.STRING))
@@ -111,135 +77,32 @@ public class Ingester {
         generateDefaultMap(rootElement, defaultMap);
     }
 
-    public void ingestDataFromDir(AbstractFilesystem dir) throws Exception {
-        AbstractFilesystem[] files = dir.list(false, null);
-        Log.info("Going to ingest " + files.length + " metadata");
-        int fileNo= files.length;
-        for (AbstractFilesystem file : files) {
-            try {
-                fileNo--;
-                ingestData(file);
-                Log.info("["+ fileNo +"] files remaining");
-            } catch (Exception e) {
-                Log.error("Failaed to ingest " + file.getName());
-                Log.error(e.getMessage());
-            }
+    @Override
+    protected Document[] parse(AbstractFilesystem indexFile) {
+        try {
+            Document metadata;
+            InputStream stream = indexFile.getInputStream();
 
+            SAXReader reader = new SAXReader();
+            org.dom4j.Document doc = reader.read(stream);
+
+            String key = "";
+            org.dom4j.Element rootElement = doc.getRootElement();
+
+            Map map = new HashMap(defaultMap);
+            map.put(FILENAME, indexFile.getName().replaceAll(".xml", ""));
+
+            generateMap2(rootElement, map);
+            key = UUID.randomUUID().toString();
+            metadata = generateMetadata(map, key);
+
+            return new Document[]{metadata};
+        } catch (Exception e) {
+            return new Document[0];
         }
     }
 
-    public void ingestData(AbstractFilesystem file) throws Exception {
-        if (file.isFile()) {
-            Log.info("Trying to ingest file " + file.getName());
-            String fileName = file.getName();
-
-            Document[] metadata = parse(file);
-            int toBeIngested=metadata.length;
-            Log.info("Metadata to be ingested "+"["+toBeIngested+"]");
-            for (Document doc : metadata) {
-                boolean isValid = true;
-                isValid = validateMetadata(doc);
-
-                if (isValid) {
-                    isValid = validateThroughSchematron();
-
-                    if (isValid) {
-
-                        uploadMetadataToSolr(doc);
-                    } else {
-                        Log.info("Metadata is not schematron valid.");
-                    }
-                } else {
-                    Log.info("Metadata file " + fileName + " (or part of it) is not valid. Ingestion is skipped.");
-                }
-                Log.info("Metadata to be ingested "+"["+toBeIngested--+"]");
-                storeMetadata(doc, isValid);
-            }
-        }
-    }
-
-    protected Document[] parse(AbstractFilesystem indexFile) throws Exception {
-        Document metadata;
-        InputStream stream = indexFile.getInputStream();
-
-        SAXReader reader = new SAXReader();
-        org.dom4j.Document doc = reader.read(stream);
-
-        String key = "";
-        org.dom4j.Element rootElement = doc.getRootElement();
-
-        Map map = new HashMap(defaultMap);
-        map.put(FILENAME, indexFile.getName().replaceAll(".xml", ""));
-
-        generateMap2(rootElement, map);
-        key = UUID.randomUUID().toString();
-        metadata = generateMetadata(map, key);
-
-        return new Document[]{metadata};
-    }
-
-    private void uploadMetadataToSolr(org.jdom2.Document metadata) throws IOException, SaxonApiException, Exception {
-        if (solr != null) {
-            VelocityContext context = new VelocityContext();
-            context.put(VELOCITY_DATE, new DateTool());
-            context.put(VELOCITY_MATH, new MathTool());
-            context.put("coordinates", new CoordinatesUtil());
-            context.put("metadataDocument", metadata);
-            StringWriter swOut = new StringWriter();
-
-            ve.getTemplate("generateSolrAddRequest.vm").merge(context, swOut);
-            solr.postDocument(swOut.toString());
-            // only for debug .... TODO - remove it
-            XPathExpression<Element> xpath = XPathFactory.instance().compile("//*[local-name() = 'identifier']", Filters.element());
-            String key = xpath.evaluateFirst(metadata.getRootElement()).getTextTrim();
-            saveSolrfile(swOut.toString(), key);
-            // only for debug .... TODO - remove it
-            swOut.close();
-        }
-    }
-
-    private void saveSolrfile(String swOut, String key) throws IOException {
-        FileFilesystem fs = new FileFilesystem(metadataRepository.getAbsolutePath() + "/" + key + ".slr");
-        fs.getOutputStream().write(swOut.getBytes());
-    }
-
-    private FileFilesystem storeMetadata(org.jdom2.Document metadata, boolean isValid) throws IOException {
-        if (metadataRepository != null) {
-            XPathExpression<Element> xpath = XPathFactory.instance().compile("//*[local-name() = 'identifier']", Filters.element());
-
-            String key = xpath.evaluateFirst(metadata.getRootElement()).getTextTrim();
-            FileFilesystem fs = null;
-            if (isValid) {
-                fs = new FileFilesystem(metadataRepository.getAbsolutePath() + "/" + key + ".xml");
-            } else {
-                fs = new FileFilesystem(metadataRepository.getAbsolutePath() + "/" + key + ".notValid.xml");
-            }
-            XMLOutputter outputter = new XMLOutputter();
-            String metadataString = outputter.outputString(metadata);
-            byte[] b = metadataString.getBytes();
-            fs.getOutputStream().write(b);
-            return fs;
-        } else {
-            return null;
-        }
-    }
-
-    private boolean validateMetadata(Document metadata) {
-        if (schemaRoot != null && schemaFile != null) {
-            try {
-                XMLOutputter outputter = new XMLOutputter();
-                String metadataString = outputter.outputString(metadata);
-                byte[] b = metadataString.getBytes();
-                return SchemasUtil.SAXvalidate(new ByteArrayInputStream(b), schemaFile, schemaRoot, schemaCache);
-            } catch (Exception e) {
-                return false;
-            }
-        } else {
-            return true;
-        }
-    }
-
-    public org.jdom2.Document generateMetadata(Map metadataMap, String key) throws IOException, SaxonApiException, XPathFactoryConfigurationException, JDOMException {
+    protected org.jdom2.Document generateMetadata(Map metadataMap, String key) throws IOException, SaxonApiException, XPathFactoryConfigurationException, JDOMException {
         VelocityContext context = new VelocityContext();
         context.put(VELOCITY_DATE, new DateTool());
         context.put(VELOCITY_METADATA_LIST, metadataMap);
@@ -298,40 +161,6 @@ public class Ingester {
         return path.substring(1);
     }
 
-    public void setSchema(AbstractFilesystem schemaFolder, AbstractFilesystem schema) {
-        schemaRoot = schemaFolder;
-        schemaFile = schema;
-
-        if (schemaRoot != null && schemaFile != null) {
-            schemaCache = new SchemaCache(schemaRoot);
-        }
-    }
-
-    public void setSolrURL(String solrURL) {
-        if (solrURL != null && !solrURL.equals("")) {
-            solr = new solrHandler(solrURL);
-        }
-    }
-
-    public void setSchematronURI(String schematronURI) {
-        if (schematronURI != null && !schematronURI.equals("")) {
-            schematron = new Schematron(schematronURI);
-        }
-    }
-
-    public void setRunsOnTomcat() {
-        if (ve != null) {
-            ve.setProperty("runtime.log.logsystem.class", "org.apache.velocity.runtime.log.NullLogSystem");
-        }
-    }
-
-    public void setMetedateRepository(AbstractFilesystem repo) {
-        if (repo != null) {
-            this.metadataRepository = repo;
-            this.metadataRepository.mkdirs();
-        }
-    }
-
     protected static void generateDefaultMap(Element el, Map map) {
         String key = "";
         List<Element> listEmpElement = el.getChildren();
@@ -346,16 +175,33 @@ public class Ingester {
         }
     }
 
-    private boolean validateThroughSchematron() {
-        //temporarily disabled
-        /*
-         * if (metadataRepository != null) { AbstractFilesystem metadataFile =
-         * storeMetadata(metadata, isValid); if (schematron != null) {
-         * schematron.Validate(metadataFile); }
+    @Override
+    public void install(AbstractFilesystem folder) {
+       try {
+            createTemplate("RADAR", folder);
+            createTemplate("LIMB", folder);
+            createTemplate("ATMOSPHERIC", folder);
+            createTemplate("ALTIMETRIC", folder);
+            createTemplate("OPTICAL", folder);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-         */
-
-        return true;
-
     }
+    
+    protected static void createTemplate(String type, AbstractFilesystem pluginFolder) throws Exception {
+        Log.debug("Creating template "+type+" in plugin folder "+pluginFolder.getAbsolutePath());
+        AbstractFilesystem stylesheet=pluginFolder.get("generateVelocityTemple_oem.xsl");
+        
+        TransformerFactory tFactory = TransformerFactory.newInstance();
+        try {
+            Transformer transformer = tFactory.newTransformer(new StreamSource(new File(stylesheet.getAbsolutePath())));
+            AbstractFilesystem outFile = pluginFolder.get("metadataReport" + type + ".vm");
+            outFile.delete();
+            transformer.setParameter("sType", type);
+            transformer.transform(new StreamSource(new File(pluginFolder.get("configuration.xml").getAbsolutePath())), new StreamResult(new File(outFile.getAbsolutePath())));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

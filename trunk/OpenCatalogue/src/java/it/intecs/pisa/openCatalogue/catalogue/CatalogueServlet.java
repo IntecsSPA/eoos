@@ -11,12 +11,15 @@ import it.intecs.pisa.metadata.filesystem.AbstractFilesystem;
 import it.intecs.pisa.metadata.filesystem.FileFilesystem;
 import it.intecs.pisa.openCatalogue.openSearch.OpenSearchHandler;
 import it.intecs.pisa.openCatalogue.prefs.Prefs;
-import it.intecs.pisa.openCatalogue.solr.ingester.Ingester;
+import it.intecs.pisa.openCatalogue.solr.ingester.BaseIngester;
 import it.intecs.pisa.openCatalogue.solr.ingester.IngesterFactory;
 import it.intecs.pisa.util.DOMUtil;
+import it.intecs.pisa.util.IOUtil;
 import it.intecs.pisa.util.json.JsonUtil;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 import javax.servlet.ServletException;
@@ -183,10 +186,23 @@ public class CatalogueServlet extends HttpServlet {
                 format+="/"+tokenizer.nextToken();
             }
 
-            Ingester ingester=IngesterFactory.fromInputType(format);
+            BaseIngester ingester=IngesterFactory.fromInputType(format);
 
-            AbstractFilesystem workspace = Prefs.getWorkspaceFolderAsAbstractFS();
-            ingester.setConfiguration(workspace.get("ingester/"+format), "configuration.xml");
+            AbstractFilesystem workspace = new FileFilesystem(rootDir);
+            AbstractFilesystem pluginFolder=workspace.get("WEB-INF/ingester/"+format);
+            
+            ingester.setConfiguration(pluginFolder);
+            ingester.setRunsOnTomcat();
+            ingester.setSolrURL(Prefs.getSolrUrl());
+            
+            File temp=IOUtil.getTemporaryFile();
+            OutputStream os=new FileOutputStream(temp);
+            IOUtil.copy(request.getInputStream(), os);
+            os.flush();
+            os.close();
+            
+            JsonObject resp = ingester.ingestData(new FileFilesystem(temp));
+            JsonUtil.writeJsonToStream(resp, response.getOutputStream());
         }
         catch(Exception e)
         {
@@ -245,7 +261,14 @@ public class CatalogueServlet extends HttpServlet {
         workspaceDir = ServletVars.workspace;
         ServletVars.appFolder=rootDir;
         super.init();
-        Prefs.install();  
+        Prefs.install(); 
+        
+        try {
+            IngesterFactory.init(new FileFilesystem(new File(rootDir,"WEB-INF/ingester")));
+        } catch (Exception ex) {
+           throw new ServletException("Could not init IngesterFactory");
+        }
+        
         Log.info("EOpenCatalogue started");
 }    
     

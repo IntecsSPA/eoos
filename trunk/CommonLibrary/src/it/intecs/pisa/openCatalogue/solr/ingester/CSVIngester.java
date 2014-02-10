@@ -24,7 +24,10 @@ public class CSVIngester extends Ingester{
   
     
     @Override
-    protected Document[] parse(AbstractFilesystem indexFile) throws Exception {
+    protected Document[] parse(AbstractFilesystem indexFile) {
+        try
+        {
+        
         BufferedReader br = new BufferedReader(new InputStreamReader(indexFile.getInputStream()));
         String strLine;
         
@@ -55,6 +58,11 @@ public class CSVIngester extends Ingester{
         }
         
         return docarray.toArray(new Document[0]);
+        }
+        catch(Exception e)
+        {
+            return new Document[0];
+        }
     }
     
 }
