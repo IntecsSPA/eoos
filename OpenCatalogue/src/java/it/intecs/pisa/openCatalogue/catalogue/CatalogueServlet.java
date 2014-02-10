@@ -328,7 +328,7 @@ public class CatalogueServlet extends HttpServlet {
         
         tmpJson = new JsonObject();
         tmpJson.addProperty("title", "More complex search on RADAR products over a specific time window. The results are returned in ATOM format.");
-        tmpJson.addProperty("value", request.getRequestURL()+"/opensearch/atom/?q=*.*&amp;startIndex=1&amp;count=10&amp;st=RADAR&amp;startdate=2009-04-06T00:00:00.077Z&amp;stopdate=2009-04-06T23:00:00.077Z");
+        tmpJson.addProperty("value", request.getRequestURL()+"/opensearch/atom/?q=*.*&amp;startIndex=1&amp;count=10&amp;sensorType=OPTICAL&amp;startdate=2009-04-06T00:00:00.077Z&amp;stopdate=2009-04-06T23:00:00.077Z");
         rows.add(tmpJson);        
 
         tmpJson = new JsonObject();

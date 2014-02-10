@@ -71,12 +71,16 @@ xmlns:swe="http://www.opengis.net/swe/1.0" version="4.0">
 			</gml:TimePeriod>
 		</om:phenomenonTime>
 		<om:resultTime>
-			<gml:TimeInstant gml:id="archivingdate_$KEY">
-				<gml:timePosition>
-					<xsl:apply-templates select="attribute[@id='availabilityTime']"/>
-				</gml:timePosition>
-			</gml:TimeInstant>
-		</om:resultTime>
+                        <xsl:if test="attribute[@id='availabilityTime'] != ''">
+                            <xsl:if test="attribute[@id='availabilityTime']/indexFieldName != ''">#if( $metadata.<xsl:value-of select="attribute[@id='availabilityTime']/indexFieldName"/> != '' )</xsl:if>
+                            <gml:TimeInstant gml:id="archivingdate_$KEY">
+                                    <gml:timePosition>
+                                            <xsl:apply-templates select="attribute[@id='availabilityTime']"/>
+                                    </gml:timePosition>
+                            </gml:TimeInstant>
+                            <xsl:if test="attribute[@id='availabilityTime']/indexFieldName != ''">#end</xsl:if>	                        
+                        </xsl:if>
+                </om:resultTime>
 		<om:procedure>
 			<xsl:choose>
 				<xsl:when test="$sType  = 'ALTIMETRIC'">

@@ -137,8 +137,9 @@ public class OpenSearchHandler {
     }
 
     public Document handleDescription(String requestURL) throws URISyntaxException, IOException, SaxonApiException, SAXException, Exception {
+        String collection = requestURL.substring(requestURL.indexOf("opensearch")+11).replace("description.xml", "").replace("/", "");
         //TODO select the OSDD for the collection extracted from the URL
-        SaxonDocument descriptionSource = this.solr.getStatsForCollection("");        
+        SaxonDocument descriptionSource = this.solr.getStatsForCollection(collection);        
         //Document descriptionSource = IOUtil.getDocumentFromDirectory(ServletVars.appFolder + "/WEB-INF/openSearch/description.xml");
         DOMUtil domUtil = new DOMUtil();
         SaxonXSLT saxonUtil;
