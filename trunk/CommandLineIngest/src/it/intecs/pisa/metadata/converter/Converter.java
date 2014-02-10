@@ -133,7 +133,7 @@ public class Converter {
         createVelocityTemplates(transformer, configuration, configuration.get(model));
 
         Ingester harv = IngesterFactory.fromInputType(inputType);
-        harv.setConfiguration(configuration,model);
+        harv.setConfiguration(configuration);
         harv.setSolrURL(url);
         harv.setMetedateRepository(repository);
         harv.ingestDataFromDir(toBeHarvested);
@@ -141,28 +141,5 @@ public class Converter {
 
     
 
-    public static void createVelocityTemplates(AbstractFilesystem transformer, AbstractFilesystem outputFolder, AbstractFilesystem model) {
-        try {
-            createTemplate("RADAR", transformer, outputFolder, model);
-            createTemplate("LIMB", transformer, outputFolder, model);
-            createTemplate("ATMOSPHERIC", transformer, outputFolder, model);
-            createTemplate("ALTIMETRIC", transformer, outputFolder, model);
-            createTemplate("OPTICAL", transformer, outputFolder, model);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    protected static void createTemplate(String type, AbstractFilesystem stylesheet, AbstractFilesystem processing, AbstractFilesystem modelFile) throws Exception {
-        TransformerFactory tFactory = TransformerFactory.newInstance();
-        try {
-            Transformer transformer = tFactory.newTransformer(new StreamSource(new File(stylesheet.getAbsolutePath())));
-            AbstractFilesystem outFile = processing.get("metadataReport" + type + ".vm");
-            outFile.delete();
-            transformer.setParameter("sType", type);
-            transformer.transform(new StreamSource(new File(modelFile.getAbsolutePath())), new StreamResult(new File(outFile.getAbsolutePath())));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    
 }
