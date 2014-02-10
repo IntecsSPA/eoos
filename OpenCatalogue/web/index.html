@@ -258,7 +258,7 @@ The entry point to a search engine is its description document. This document co
                 <div class="info-block">
                 	<div class="info-text">
                 		<h3>Upload <span class="color-text">Standard </span>Metadata</h3>
-                                <p>Metadata can be uploaded to the catalogue by simply posting a single <a href="#" data-toggle="tooltip" title="A single metadata in any supported domain: O&M, altimetric, optical, radar, limb, atmospheric">metadata</a> or a <a href="#" data-toggle="tooltip" title="A set of metadata in any supported domain (O&M, altimetric, optical, radar, limb, atmospheric) as child of a main metadata tag. Note, the name of the main metadata is not fixed. The important thing is that the element to be harvested are direct child of the main element." >group of metadata</a> to the following url </p>
+                                <p>Metadata can be uploaded to the catalogue by simply posting (PUT method) a single <a href="#" data-toggle="tooltip" title="A single metadata in any supported domain: O&M, altimetric, optical, radar, limb, atmospheric">metadata</a> to the following url <script type='text/javascript'>document.write(document.URL+"xml/oem");</script> </p>
                         </div>
                 </div>	
                 </div>        
@@ -277,6 +277,8 @@ The entry point to a search engine is its description document. This document co
                 		<h3>Ingest <span class="color-text"> Custom </span> Metadata</h3>
                         <p>Data can be ingesed in the system via a converter. The converter accept a csv or an XML file as input and generate O&M compliant metadata according to a configuration file (to be generated offline and configured in the system).
                             The configuration file defines the mapping between the columns of the csv file or the XPATH of the source file and the elements of the O&amp;M metadata file. </p>
+                        <p>Every ingester can be invoked by posting the file (PUT method) to the following url <script type='text/javascript'>document.write(document.URL+"&lt;format&gt;/&lt;model&gt;");</script></p>
+                        <p>Format stands for a file format, like xml or csv</p><p>Model is the data model, like oem or dimap</p>
                 	</div>
                 </div>
             </div>	
