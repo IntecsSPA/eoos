@@ -92,5 +92,18 @@ public class XMLUtils {
         }
     }
     
+    public static byte[] dumpToByteArray(Document document) throws TransformerConfigurationException, TransformerException
+    {
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+
+        ByteArrayOutputStream bos=new ByteArrayOutputStream();
+        StreamResult result=new StreamResult(bos);
+        transformer.transform(new DOMSource(document), result);
+        byte []array=bos.toByteArray();
+        
+        return array;
+    }
+    
     
 }
