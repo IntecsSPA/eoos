@@ -134,7 +134,8 @@ public class Ingester {
             String fileName = file.getName();
 
             Document[] metadata = parse(file);
-
+            int toBeIngested=metadata.length;
+            Log.info("Metadata to be ingested "+"["+toBeIngested+"]");
             for (Document doc : metadata) {
                 boolean isValid = true;
                 isValid = validateMetadata(doc);
@@ -151,7 +152,7 @@ public class Ingester {
                 } else {
                     Log.info("Metadata file " + fileName + " (or part of it) is not valid. Ingestion is skipped.");
                 }
-
+                Log.info("Metadata to be ingested "+"["+toBeIngested--+"]");
                 storeMetadata(doc, isValid);
             }
         }

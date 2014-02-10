@@ -112,7 +112,7 @@
    <field name="illuminationZenithAngle" type="double" indexed="true" stored="true" multiValued="false"/>
    <field name="illuminationElevationAngle" type="double" indexed="true" stored="true" multiValued="false"/>
    <field name="polarisationMode" type="string" indexed="true" stored="true" multiValued="false"/>
-   <field name="polarizationChannels" type="string" indexed="true" stored="true" multiValued="false"/>
+   <field name="polarisationChannels" type="string" indexed="true" stored="true" multiValued="false"/>
    <field name="antennaLookDirection" type="string" indexed="true" stored="true" multiValued="false"/>
    <field name="minimumIncidenceAngle" type="double" indexed="true" stored="true" multiValued="false"/>
    <field name="maximumIncidenceAngle" type="double" indexed="true" stored="true" multiValued="false"/>
