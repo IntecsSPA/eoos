@@ -45,6 +45,7 @@ public class CatalogueServlet extends HttpServlet {
     protected static final String RESOURCE_XML = "xml";
     protected static final String OS_ATOM = "atom";
     protected static final String OS_WKT = "wkt";
+    protected static final String OS_KML = "kml";
     protected static final String OS_CZML = "czml";
     protected static final String OS_JSON = "json";
     protected static final String OS_PRODUCT = "eoproduct";    
@@ -280,6 +281,8 @@ public class CatalogueServlet extends HttpServlet {
         OpenSearchHandler osh = new OpenSearchHandler(config,repo,solrEndPoint);
         if (requestURI.contains(OS_ATOM)) {
             osh.processAtomRequest(request, response);
+        } else if (requestURI.contains(OS_KML)) {
+            osh.processKmlRequest(request, response);
         } else if (requestURI.contains(OS_WKT)) {
             osh.processWktRequest(request, response);
         } else if (requestURI.contains(OS_CZML)) {

@@ -15,10 +15,12 @@ import it.intecs.pisa.openCatalogue.saxon.SaxonXSLT;
 import it.intecs.pisa.openCatalogue.saxon.SaxonXSLTParameter;
 import it.intecs.pisa.openCatalogue.solr.solrHandler;
 import it.intecs.pisa.util.DOMUtil;
-import it.intecs.pisa.util.IOUtil;
 import java.io.*;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.sax.SAXSource;
@@ -51,6 +53,7 @@ public class OpenSearchHandler {
     private static final String CONTENT_TYPE_APPLICATION_JSON = "application/json";
     private final static String CZML_TEMPLATE = "czmlResponse.vm";
     private final static String JSON_TEMPLATE = "jsonResponse.vm";
+    private final static String KML_TEMPLATE = "kmlResponse.vm";
     private static final String VELOCITY_TOOL_CUSTOM_COORDINATES = "coordinates";
     private static final String VELOCITY_TOOL_DATE = "date";
     private static final String VELOCITY_TOOL_COORDINATES = "coordinates";
@@ -100,16 +103,19 @@ public class OpenSearchHandler {
         solr = new solrHandler(solrEndPoint);
     }
 
-    public void getDescription() {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
     public void processAtomRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
         Log.info("New ATOM request received");
         SaxonDocument solrResponse = sendRequestToSolr(request);
         sendBackAtomResponse(solrResponse, request, response);
     }
 
+    public void processKmlRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
+        Log.info("New KML request received");
+        SaxonDocument solrResponse = sendRequestToSolr(request);
+        sendBackKmlResponse(solrResponse, request, response);
+    }
+    
+    
     public void processCZMLRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
         Log.info("New CZML request received");
         SaxonDocument solrResponse = sendRequestToSolr(request);
@@ -137,9 +143,12 @@ public class OpenSearchHandler {
     }
 
     public Document handleDescription(String requestURL) throws URISyntaxException, IOException, SaxonApiException, SAXException, Exception {
+        //Select the OSDD for a specific collection. The collection name ie extracted from the URL
+        //pattern http://localhost/opencat/service/opensearch/COLLECTION_ID/description.xml
+        // or http://localhost/opencat/service/opensearch/COLLECTION_ID
+        // if the collection is not provided it returns the template for the whole database
         String collection = requestURL.substring(requestURL.indexOf("opensearch")+11).replace("description.xml", "").replace("/", "");
-        //TODO select the OSDD for the collection extracted from the URL
-        SaxonDocument descriptionSource = this.solr.getStatsForCollection(collection);        
+        SaxonDocument descriptionSource = this.solr.getStats(collection);        
         //Document descriptionSource = IOUtil.getDocumentFromDirectory(ServletVars.appFolder + "/WEB-INF/openSearch/description.xml");
         DOMUtil domUtil = new DOMUtil();
         SaxonXSLT saxonUtil;
@@ -211,6 +220,22 @@ public class OpenSearchHandler {
         swOut.close();
     }
 
+    private void sendBackKmlResponse(SaxonDocument solrResponse, HttpServletRequest request, HttpServletResponse response) throws IOException, XPathFactoryConfigurationException, XPathException, XPathExpressionException, SAXException, JDOMException, DocumentException {
+        ArrayList metadataList = prepareDataForVelocity(solrResponse);
+        VelocityContext context = new VelocityContext();
+        context.put(VELOCITY_TOOL_DATE, new DateTool());
+        context.put(VELOCITY_METADATA_LIST, metadataList);
+        context.put("coordinates", new CoordinatesUtil());
+        
+
+//        response.setContentType("application/kml");
+        response.setContentType("application/vnd.google-earth.kml+xml");
+        Writer swOut = response.getWriter();
+        ve.getTemplate(KML_TEMPLATE).merge(context, swOut);
+        swOut.close();
+    }
+    
+    
     private void sendBackCZMLResponse(SaxonDocument solrResponse, HttpServletRequest request, HttpServletResponse response) throws IOException, XPathFactoryConfigurationException, XPathException, XPathExpressionException, SAXException, JDOMException, DocumentException {
         ArrayList metadataList = prepareDataForVelocity(solrResponse);
         VelocityContext context = new VelocityContext();
