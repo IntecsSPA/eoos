@@ -30,43 +30,6 @@ public class CoordinatesUtil {
             CA[4] + " " + CA[5];
     }
 
-/*    
-    public String adjustCoordinatesForSolr(final String coordinates) {
-        String[] CA = stringtoArray(coordinates, " ");
-        String solr="";
-        for (int i = 0; i< CA.length/2; i++){
-            solr += CA[2*i] + " " + CA[2*i+1] + ",";
-        }
-
-        if(!CA[0].equals(CA[CA.length-2])|| !CA[1].equals(CA[CA.length-1])){
-            solr += CA[0] + " " + CA[1];        
-        }else{
-            // remove the ","
-            solr = solr.substring(0, solr.length()-1);
-        }
-        
-        return solr;
-    }
-  */  
-    
-// swap lat/lon
-    public String adjustCoordinatesForSolr(final String coordinates) {
-        String[] CA = stringtoArray(coordinates, " ");
-        String solr="";
-        for (int i = 0; i< CA.length/2; i++){
-            solr += CA[2*i+1] + " " + CA[2*i] + ",";
-        }
-
-        if(!CA[0].equals(CA[CA.length-2])|| !CA[1].equals(CA[CA.length-1])){
-            solr += CA[1] + " " + CA[0];        
-        }else{
-            // remove the ","
-            solr = solr.substring(0, solr.length()-1);
-        }
-        
-        return solr;
-    }    
-    
     
     public String wkt2oem(final String coordinates) {
         //MULTIPOLYGON(((25.1663 53.0465,20.7661 53.5979,19.9131 50.6252,24.0371 50.0855,25.1663 53.0465)))
@@ -85,6 +48,24 @@ public class CoordinatesUtil {
         
         return solr;
     }
+    
+    
+    public String adjustCoordinatesForSolr(final String coordinates) {
+        String[] CA = stringtoArray(coordinates, " ");
+        String solr="";
+        for (int i = 0; i< CA.length/2; i++){
+            solr += CA[2*i] + " " + CA[2*i+1] + ",";
+        }
+
+        if(!CA[0].equals(CA[CA.length-2])|| !CA[1].equals(CA[CA.length-1])){
+            solr += CA[0] + " " + CA[1];        
+        }else{
+            // remove the ","
+            solr = solr.substring(0, solr.length()-1);
+        }
+        
+        return solr;
+    }
 
     public String adjustCoordinatesFromKML(final String coordinates) {
         String[] CA = stringtoArray(coordinates, " ");
@@ -99,6 +80,19 @@ public class CoordinatesUtil {
         return out;
     }        
 
+    
+        public String adjustCoordinatesForKML(final String coordinates) {
+        String[] CA = stringtoArray(coordinates, " ");
+        String out="";
+        String[] point;
+        for (int i = 0; i< CA.length/2; i++){
+            point = stringtoArray(CA[i], ",");
+            out += CA[2*i+1] + "," + CA[2*i] + ",0 ";
+        }
+        return out;
+    }        
+
+    
     
     public String adjustCoordinatesForCzml(final String coordinates) {
         String[] CA = stringtoArray(coordinates, " ");
@@ -122,34 +116,6 @@ public class CoordinatesUtil {
         }
         return out.substring(1);
     }        
-
-    
-    public String getContainingBBOXFromPolygon(final String coordinates) {
-        String[] CA = stringtoArray(coordinates, " ");
-        float minLat=180;
-        float minLon=180;
-        float maxLat=-180;
-        float maxLon=-180;
-        float lon;
-        float lat;
-        
-        for (int i = 0; i< CA.length/2; i++){
-            lon = Float.parseFloat(CA[2*i]);
-            if ( lon < minLon )
-                minLon = lon; 
-            if ( lon > maxLon )
-                maxLon = lon; 
-            lat = Float.parseFloat(CA[2*i+1]);
-            if ( lat < minLat )
-                minLat = lat; 
-            if ( lat > maxLat )
-                maxLat = lat;         
-        }
-
-        
-        return ""+minLon+","+minLat+","+maxLon+","+maxLat;
-    }    
-    
     
     /**
      * This function convert a string s into an array of strings using sep as

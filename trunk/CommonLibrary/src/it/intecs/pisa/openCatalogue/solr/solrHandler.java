@@ -328,36 +328,9 @@ public class solrHandler {
             url += "&fq=" + URLEncoder.encode(fq.substring(5), "ISO-8859-1");
         }
         return url;
-    }
-    
-     public SaxonDocument getStats() throws UnsupportedEncodingException, IOException, SaxonApiException, Exception {
-        HttpClient client = new HttpClient();
-        HttpMethod method;
-        String urlStr = this.solrHost + "/select?q=*%3A*&fq=parentIdentifier%3DSENTINEL2_L1C_N2A&wt=xml&indent=true&stats=true&stats.field=beginPosition&stats.field=endPosition&stats.field=orbitNumber&stats.field=acquisitionStation&rows=0&indent=true";
+    }    
 
-        Log.debug("The following search is goint to be executed:" + urlStr);
-        // Create a method instance.
-        method = new GetMethod(urlStr);
-
-        // Provide custom retry handler is necessary
-        method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(3, false));
-
-        // Execute the method.
-        int statusCode = client.executeMethod(method);
-        SaxonDocument solrResponse = new SaxonDocument(method.getResponseBodyAsString());
-        Log.debug(solrResponse.getXMLDocumentString());
-
-        if (statusCode != HttpStatus.SC_OK) {
-            Log.error("Method failed: " + method.getStatusLine());
-            String errorMessage = (String) solrResponse.evaluatePath("//lst[@name='error']/str[@name='msg']/text()", XPathConstants.STRING);
-            Log.error(solrResponse.getXMLDocumentString());
-            throw new Exception(errorMessage);
-        }
-        
-        return solrResponse;
-    }
-
-    public SaxonDocument getStatsForCollection(String collectionId) throws UnsupportedEncodingException, IOException, SaxonApiException, Exception {
+    public SaxonDocument getStats(String collectionId) throws UnsupportedEncodingException, IOException, SaxonApiException, Exception {
         HttpClient client = new HttpClient();
         HttpMethod method;
         String fq = !collectionId.isEmpty()?"fq=parentIdentifier%3D"+collectionId+"&":"";
@@ -462,7 +435,6 @@ public class solrHandler {
             queryElement = value;
         }
 
-
         return " AND " + tag + ":" + queryElement;
 
 
@@ -475,7 +447,6 @@ public class solrHandler {
     
     public int postDocument(Document metadata) throws Exception {
         DOMOutputter outputter=new DOMOutputter();
-        
         org.w3c.dom.Document doc = outputter.output(metadata);
         return postDocument(XMLUtils.dumpToByteArray(doc));
     }
