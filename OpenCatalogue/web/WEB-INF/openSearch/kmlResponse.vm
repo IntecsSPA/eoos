@@ -1,0 +1,58 @@
+#macro ( getPlacemark $x )
+                   <Placemark>
+			<name>$x.find("//*[local-name() = 'identifier']").getText()</name>
+			<styleUrl>searchResultStyle</styleUrl>
+			<ExtendedData>
+#if ($x.find("//*[local-name() = 'Platform']")) 
+<Data name="PlatformShortName"><value>$x.find("//*[local-name() = 'Platform']//*[local-name() = 'shortName']").getText()</value></Data>
+#end
+#if ($x.find("//*[local-name() = 'Instrument']")) 
+<Data name="InstrumentShortName"><value>$x.find("//*[local-name() = 'Instrument']//*[local-name() = 'shortName']").getText()</value></Data>
+#end
+#set( $leafNodes = $x.find("*[not(*)]").iterator() )                        
+#foreach( $leaf in $leafNodes )
+#if ($leaf.getName()!="shortName" && $leaf.getName()!="type") 
+#if ($leaf.getText()) 
+<Data name="$leaf.getName()"><value>$leaf.getText()</value></Data>
+#end
+#end
+#end
+#if ($x.find("//*[local-name() = 'BrowseInformation']//*[local-name() = 'ServiceReference']/@*[local-name() = 'href']").getText())
+<Data name="BrowseInformation"><value>$x.find("//*[local-name() = 'BrowseInformation']//*[local-name() = 'ServiceReference']/@*[local-name() = 'href']").getText().replace("&", "&amp;")</value></Data>
+#end
+#set($links = $x.find("//*[local-name() = 'ProductInformation']//*[local-name() = 'ServiceReference']/@*[local-name() = 'href']").iterator())
+#foreach( $link in $links )
+<Data name="ProductInformation"><value>$link.getText().replace("&", "&amp;")</value></Data>
+#end    
+			</ExtendedData>
+			<Polygon>
+				<tessellate>1</tessellate>
+				<outerBoundaryIs>
+					<LinearRing>
+						<coordinates>$coordinates.adjustCoordinatesForKML($x.find("//*[local-name() = 'posList']").getText())</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+#end
+<?xml version="1.0" encoding="UTF-8"?> 
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>searchResult.kml</name>
+	<description>opencatalogue</description>
+	<Style id="searchResultStyle">
+		<LineStyle>
+			<width>2</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>3c0000ff</color>
+		</PolyStyle>
+	</Style>
+	<Folder>
+        	<name>searchResults</name>
+#foreach( $metadata in $metadataList )
+                #getPlacemark($metadata.xmlTOOL)
+#end
+	</Folder>
+</Document>
+</kml>

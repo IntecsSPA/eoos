@@ -75,52 +75,52 @@
     #set( $psn = "" )
     #set( $psn = $x.find("//*[local-name() = 'Platform']/*[local-name() = 'shortName']/text()").getText() )
     #if ( $psn != "")
-"PlatformShortName:"$psn",
+"PlatformShortName":"$psn",
     #end
     #set( $sid = "" )
     #set( $sid = $x.find("//*[local-name() = 'serialIdentifier']/text()") )
     #if ($sid != "") 
-"PlatformSerialIdentifier:"$sid",
+"PlatformSerialIdentifier":"$sid",
     #end
     #set( $isn = "" )
     #set( $isn = $x.find("//*[local-name() = 'Instrument']/*[local-name() = 'shortName']/text()").getText() )
     #if ( "$isn" != "" )
-"InstrumentShortName:"$isn",
+"InstrumentShortName":"$isn",
     #end
     #set( $ot = "" )
     #set( $ot = $x.find("//*[local-name() = 'orbitaType']/text()") )
     #if ($ot != "") 
-"OrbitType:"$ot",
+"OrbitType":"$ot",
     #end
     #set( $st = "" )
     #set( $st = $x.find("//*[local-name() = 'sensorType']/text()") )
     #if ($!st != "")
-"SensorType:"$st",
+"SensorType":"$st",
     #end
     #set( $om = "" )
     #set( $om = $x.find("//*[local-name() = 'operationalMode']/text()") )
     #if ($om != "") 
-"SensorOperationalMode:"$om",
+"SensorOperationalMode":"$om",
     #end
     #set( $res = "" )
     #set( $res = $x.find("//*[local-name() = 'resolution']/text()") )
     #if ($res != "") 
-"SensorResolution:"$res",
+"SensorResolution":"$res",
     #end
     #set( $swi = "" )
     #set( $swi = $x.find("//*[local-name() = 'swathIdentifier']/text()") )
     #if ($swi != "") 
-"SwathIdentifier:"$swi",
+"SwathIdentifier":"$swi",
     #end
     #set( $on = "" )
     #set( $on = $x.find("//*[local-name() = 'orbitNumber']/text()") )
     #if ($on != "") 
-"OrbitNumber:"$on",
+"OrbitNumber":"$on",
     #end
     #set( $od = "" )
     #set( $od = $x.find("//*[local-name() = 'orbitDirection']/text()") )
     #if ($od != "") 
-"OrbitDirection:"$od",
+"OrbitDirection":"$od",
     #end
     #set( $pm = "" )
     #set( $pm = $x.find("//*[local-name() = 'polarisationMode']/text()") )
@@ -130,19 +130,19 @@
     #set( $pc = "" )
     #set( $pc = $x.find("//*[local-name() = 'polarisationChannels']/text()") )
     #if ($pc != "") 
-"PolarizationChannel:"$pc",
+"PolarizationChannel":"$pc",
     #end
     #set( $bp = "" )
     #set( $bp = $x.find("//*[local-name() = 'beginPosition']/text()") )
     #if ($bp != "") 
-"StartDate:"$bp",
+"StartDate":"$bp",
     #end
     #set( $ep = "" )
     #set( $ep = $x.find("//*[local-name() = 'endPosition']/text()") )
     #if ($ep != "") 
-"EndDate:"$ep",
+"EndDate":"$ep",
     #end
-"AtomUrl:"${BASE_URL}/service/opensearch/atom?id=$metadata.identifier",
+"AtomUrl":"${BASE_URL}/service/opensearch/atom?id=$metadata.identifier",
 "Metadata":"${BASE_URL}/service/opensearch/eoproduct?id=$metadata.identifier"
 }
 #end
@@ -209,8 +209,6 @@ xmlns:media="http://search.yahoo.com/mrss/">
 #end
 #if ($OPEN_SEARCH_RECORD_SCHEMA == 'om')
 $metadata.metadataString
-##alternative method to have the doc pretty print
-##set($i = " ")#recursive( $metadata.metadataDocument.getRootElement() $i ) 
 ##alternative method       
 ##$metadata.xmlTOOL.find("//*[local-name() = 'EarthObservation']").toString()
 #end

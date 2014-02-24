@@ -38,8 +38,10 @@
             <OutputEncoding>UTF-8</OutputEncoding>
             <InputEncoding>UTF-8</InputEncoding>
             <Url type="application/atom+xml" indexOffset="1" pageOffset="1" template="" >
-                <xsl:attribute name="template">
-                    <xsl:value-of select="$url"/>service/opensearch/atom/?q={searchTerm}&amp;count={count}&amp;startIndex={startIndex?}&amp;startPage={startPage?}&amp;<xsl:value-of select="$geo_ext"/><xsl:value-of select="$time_ext"/><xsl:for-each select="//lst[@name='stats_fields']/lst"><xsl:if test="@name = 'beginPosition' and @name = 'endPosition'"><xsl:value-of select="@name"/>={eo:<xsl:value-of select="@name"/>?}&amp;</xsl:if></xsl:for-each><xsl:for-each select="//lst[@name='facet_fields']/lst"><xsl:if test="int[1] != '' "><xsl:value-of select="@name"/>={eo:<xsl:value-of select="@name"/>?}&amp;</xsl:if></xsl:for-each>&amp;recordSchema={sru:recordSchema?}</xsl:attribute>
+                <xsl:attribute name="template"><xsl:value-of select="$url"/>service/opensearch/atom/?q={searchTerm}&amp;count={count}&amp;startIndex={startIndex?}&amp;startPage={startPage?}&amp;<xsl:value-of select="$geo_ext"/><xsl:value-of select="$time_ext"/><xsl:for-each select="//lst[@name='stats_fields']/lst"><xsl:if test="@name = 'beginPosition' and @name = 'endPosition'"><xsl:value-of select="@name"/>={eo:<xsl:value-of select="@name"/>?}&amp;</xsl:if></xsl:for-each><xsl:for-each select="//lst[@name='facet_fields']/lst"><xsl:if test="int[1] != '' "><xsl:value-of select="@name"/>={eo:<xsl:value-of select="@name"/>?}&amp;</xsl:if></xsl:for-each>&amp;recordSchema={sru:recordSchema?}</xsl:attribute>
+            </Url>
+            <Url type="application/vnd.google-earth.kml+xml" indexOffset="1" pageOffset="1" template="" >
+                <xsl:attribute name="template"><xsl:value-of select="$url"/>service/opensearch/kml/?q={searchTerm}&amp;count={count}&amp;startIndex={startIndex?}&amp;startPage={startPage?}&amp;<xsl:value-of select="$geo_ext"/><xsl:value-of select="$time_ext"/><xsl:for-each select="//lst[@name='stats_fields']/lst"><xsl:if test="@name = 'beginPosition' and @name = 'endPosition'"><xsl:value-of select="@name"/>={eo:<xsl:value-of select="@name"/>?}&amp;</xsl:if></xsl:for-each><xsl:for-each select="//lst[@name='facet_fields']/lst"><xsl:if test="int[1] != '' "><xsl:value-of select="@name"/>={eo:<xsl:value-of select="@name"/>?}&amp;</xsl:if></xsl:for-each>&amp;recordSchema={sru:recordSchema?}</xsl:attribute>
             </Url>
 			<xsl:for-each select="//lst[@name='stats_fields']/lst">
 				<xsl:choose>
