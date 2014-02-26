@@ -4,53 +4,14 @@
  */
 package it.intecs.pisa.metadata.converter;
 
+import it.intecs.pisa.log.Log;
 import it.intecs.pisa.metadata.filesystem.AbstractFilesystem;
 import it.intecs.pisa.metadata.filesystem.FileFilesystem;
-import it.intecs.pisa.openCatalogue.saxon.SaxonDocument;
-import it.intecs.pisa.openCatalogue.solr.ingester.Ingester;
+import it.intecs.pisa.openCatalogue.solr.ingester.BaseIngester;
 import it.intecs.pisa.openCatalogue.solr.ingester.IngesterFactory;
-import it.intecs.pisa.openCatalogue.solr.solrHandler;
-import it.intecs.pisa.util.schemas.SchemaCache;
-import it.intecs.pisa.util.schematron.Schematron;
 import java.io.*;
-import java.util.*;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-import org.apache.velocity.app.VelocityEngine;
 
 public class Converter {
-    public static final String FILENAME = "filename";
-
-    public static final String HARVEST_FILE_NAME = "*.index";
-    public static final String DOLLAR = "$";
-    public static final String METADATA_REPORT_TEMPLATE = "metadataReportsType.vm";
-    public static final String SLASH = "/";
-    public static final String STRING_PERIOD = "##PERIOD##";
-    public static final String TAG_DEFAULT_VALUE = "defaultValue";
-    public static final String TAG_INDEX_FIELD_NAME = "indexFieldName";
-    public static final String VELOCITY_DATE = "date";
-    public static final String VELOCITY_MATH = "math";
-    public static final String VELOCITY_METADATA_LIST = "metadata";
-    public static final String VELOCITY_PERIOD_END = "PERIOD_END";
-    public static final String VELOCITY_PERIOD_START = "PERIOD_START";
-    public static final String VELOCITY_PLATFORM_SHORT_NAME = "PLATFORM_SHORT_NAME";
-    public static final String VELOCITY_INSTRUMENT_SHORT_NAME = "INSTRUMENT_SHORT_NAME";
-    public static final String VELOCITY_OPERATIONAL_MODE = "OPERATIONAL_MODE";
-    public static final String VELOCITY_PRODUCT_TYPE = "PRODUCT_TYPE";
-    public static final String BROWSE_FROM_HARVEST = "browse_from_harvest";
-   
-    private VelocityEngine ve;
-    private String sensorType;
-    private AbstractFilesystem metadataRepository = null;
-    private String dateTimeFormat;
-    private solrHandler solr = null;
-    private Map defaultMap = null;
-    private File schemaRoot = null;
-    private File schemaFile = null;
-    private Schematron schematron = null;
-   
     /**
      * Displays startup command syntax.
      *
@@ -95,9 +56,7 @@ public class Converter {
             return;
         }
         AbstractFilesystem toBeHarvested = null;
-        AbstractFilesystem transformer = null;
-        String model = null;
-        AbstractFilesystem configuration = null;
+        AbstractFilesystem workspace = null;
         AbstractFilesystem repository = null;
         String url = null;
         String inputType = "";
@@ -108,35 +67,41 @@ public class Converter {
         for (int i = 0; i < args.length; i++) {
             if (args[i].startsWith("-source=")) {
                 toBeHarvested = new FileFilesystem(args[i].substring(8));
-            } else if (args[i].startsWith("-templGen=")) {
-                transformer = new FileFilesystem(args[i].substring(10));
-            } else if (args[i].startsWith("-conf=")) {
-                configuration = new FileFilesystem(args[i].substring(6));
-            } else if (args[i].startsWith("-confFile=")) {
-                model = args[i].substring(10);
-            } else if (args[i].startsWith("-schemaFile=")) {
+            } 
+            else if (args[i].startsWith("-workspace=")) {
+                workspace = new FileFilesystem(args[i].substring(11));
+            }
+            else if (args[i].startsWith("-schemaFile=")) {
                 schFile = new File(args[i].substring(12));
-            } else if (args[i].startsWith("-schemaRoot=")) {
+            } 
+            else if (args[i].startsWith("-schemaRoot=")) {
                 schRoot = new File(args[i].substring(12));
-            } else if (args[i].startsWith("-solr=")) {
+            } 
+            else if (args[i].startsWith("-solr=")) {
                 url = args[i].substring(6);
-            } else if (args[i].startsWith("-repo=")) {
+            } 
+            else if (args[i].startsWith("-repo=")) {
                 repository = new FileFilesystem(args[i].substring(6));
-            } else if (args[i].startsWith("-format=")) {
+            } 
+            else if (args[i].startsWith("-format=")) {
                 inputType = args[i].substring(8);
-            } else if (args[i].startsWith("-schematron=")) {
+            } 
+            else if (args[i].startsWith("-schematron=")) {
                 schematron = args[i].substring(12);
             }
 
         }
-
-        createVelocityTemplates(transformer, configuration, configuration.get(model));
-
-        Ingester harv = IngesterFactory.fromInputType(inputType);
-        harv.setConfiguration(configuration);
+        
+        IngesterFactory.init(workspace);
+        
+        BaseIngester harv = IngesterFactory.fromInputType(inputType);
+        harv.setConfiguration(workspace);
         harv.setSolrURL(url);
         harv.setMetedateRepository(repository);
+        
+        Log.info("Processing data...");
         harv.ingestDataFromDir(toBeHarvested);
+        Log.info("Done.");
     }
 
     
