@@ -1,4 +1,0 @@
-{
-    "className": "it.intecs.pisa.openCatalogue.solr.ingester.OEMIngester",
-    "idXPath":"//*[local-name() = 'identifier']"
-}

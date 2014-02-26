@@ -17,6 +17,7 @@ import it.intecs.pisa.util.DOMUtil;
 import it.intecs.pisa.util.IOUtil;
 import it.intecs.pisa.util.json.JsonUtil;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -52,6 +53,7 @@ public class CatalogueServlet extends HttpServlet {
     protected String rootDirStr;
     protected File rootDir;
     protected File workspaceDir;
+    protected OpenSearchHandler osh=null;
 
     /**
      * Processes requests for both HTTP
@@ -209,17 +211,7 @@ public class CatalogueServlet extends HttpServlet {
         {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
-        /*if (requestURI.contains(RESOURCE_OEM)) {
-            handleIngest(request, response);
-        }else if (requestURI.contains(RESOURCE_CSV)) {
-            handleCSV(request, response);
-        }else if (requestURI.contains(RESOURCE_XML)) {
-            handleXML(request, response);
-        }
-        else
-        {
-            
-        }*/
+        
     }
 
     /**
@@ -259,26 +251,32 @@ public class CatalogueServlet extends HttpServlet {
     public void init() throws ServletException {
         rootDirStr = getServletContext().getRealPath("/");
         rootDir = new File(rootDirStr);
-        workspaceDir = ServletVars.workspace;
         ServletVars.appFolder=rootDir;
         super.init();
         Prefs.install(); 
         
         try {
-            IngesterFactory.init(new FileFilesystem(new File(rootDir,"WEB-INF/ingester")));
+            IngesterFactory.init(new FileFilesystem(ServletVars.workspace));
         } catch (Exception ex) {
            throw new ServletException("Could not init IngesterFactory");
         }
         
+        try
+        {
+            AbstractFilesystem repo = new FileFilesystem(Prefs.getMetadataFolder()); 
+            AbstractFilesystem config = new FileFilesystem(rootDirStr+"/WEB-INF/openSearch/"); 
+            String solrEndPoint = Prefs.getSolrUrl();
+            osh = new OpenSearchHandler(config,repo,solrEndPoint);
+        }
+        catch(Exception e)
+        {
+            throw new ServletException("Cannot initialize OpenSearchHandler");
+        }
         Log.info("EOpenCatalogue started");
 }    
     
     private void handleOpenSearch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, Exception {
         String requestURI = request.getRequestURI();
-        AbstractFilesystem repo = new FileFilesystem(Prefs.getMetadataFolder()); 
-        AbstractFilesystem config = new FileFilesystem(rootDirStr+"/WEB-INF/openSearch/"); 
-        String solrEndPoint = Prefs.getSolrUrl();
-        OpenSearchHandler osh = new OpenSearchHandler(config,repo,solrEndPoint);
         if (requestURI.contains(OS_ATOM)) {
             osh.processAtomRequest(request, response);
         } else if (requestURI.contains(OS_KML)) {
@@ -302,43 +300,8 @@ public class CatalogueServlet extends HttpServlet {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    private void handleIngest(HttpServletRequest request, HttpServletResponse response) throws IOException  {
-    /*    InputStream in;
-        JsonObject inputJson = null;
-        String itemId = null;
-        String errorReason = null;
-        boolean success = false;
-        try {
-            AbstractFilesystem repo = new FileFilesystem(Prefs.getMetadataFolder()); 
-            AbstractFilesystem config = new FileFilesystem(rootDirStr+"/WEB-INF/openSearch/"); 
-            String solrEndPoint = Prefs.getSolrUrl();            
-            Ingester ing = new Ingester(repo,config,solrEndPoint);
-            ing.ingestData(request,response);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
-
-        JsonObject outputJson;
-
-        outputJson = new JsonObject();
-        outputJson.addProperty("success", success);
-
-        if (itemId != null) {
-            outputJson.addProperty("id", itemId);
-        }
-
-        if (errorReason != null) {
-            outputJson.addProperty("errorReason", errorReason);
-        }
-
-        sendJsonBackToClient(outputJson, response);*/
-    }
-
-    
     private void handleGuiRequest(HttpServletRequest request, HttpServletResponse response) throws IOException  {
-        String solrEndPoint = Prefs.getSolrUrl();            
+        
         JsonObject outputJson = new JsonObject();
         JsonArray rows = new JsonArray();
         
@@ -367,81 +330,10 @@ public class CatalogueServlet extends HttpServlet {
         tmpJson.addProperty("value", request.getRequestURL()+"/opensearch/json/?q=*ASAR*&amp;startIndex=0&amp;count=10&amp;lat=54.75152&amp;lon=-25&amp;radius=50");
         rows.add(tmpJson);
 */
-        outputJson.add("rows", rows);
+       outputJson.add("rows", rows);
         
         sendJsonBackToClient(outputJson, response);
     }
-    
-    
-    private void handleCSV(HttpServletRequest request, HttpServletResponse response) throws IOException  {
-      /* InputStream in;
-        String errorReason = null;
-        boolean success = false;
-        boolean isTomcatCall= true;
-
-        InputStream stream = request.getInputStream();
-        String requestURI = request.getRequestURI();
-        
-        
-        AbstractFilesystem configuration = new FileFilesystem(new File (new File (this.workspaceDir,"config"),requestURI.substring(requestURI.indexOf("csv")+4)));
-        AbstractFilesystem toBeIngested = new StreamFileSystem(request.getInputStream());
-        String url = Prefs.getSolrUrl();
-        try{
-        CSVIngester harv = new CSVIngester(configuration, configuration, url, isTomcatCall);
-        harv.harvestDataFromStream(toBeIngested);
-        
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
-
-        JsonObject outputJson;
-
-        outputJson = new JsonObject();
-        outputJson.addProperty("success", success);
-
-        if (errorReason != null) {
-            outputJson.addProperty("errorReason", errorReason);
-        }
-
-        sendJsonBackToClient(outputJson, response);*/
-    }
-
-    private void handleXML(HttpServletRequest request, HttpServletResponse response) throws IOException  {
-     /*   InputStream in;
-        String errorReason = null;
-        boolean success = false;
-        boolean isTomcatCall= true;
-
-        InputStream stream = request.getInputStream();
-        String requestURI = request.getRequestURI();
-        AbstractFilesystem configuration = new FileFilesystem(new File (new File (this.workspaceDir,"config"),requestURI.substring(requestURI.indexOf("csv")+4)));
-        AbstractFilesystem toBeIngested = new StreamFileSystem(request.getInputStream());
-        String url = Prefs.getSolrUrl();
-        try{
-        CSVIngester harv = new CSVIngester(configuration, configuration, url, isTomcatCall);
-        harv.harvestDataFromStream(toBeIngested);
-        
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
-
-        JsonObject outputJson;
-
-        outputJson = new JsonObject();
-        outputJson.addProperty("success", success);
-
-        if (errorReason != null) {
-            outputJson.addProperty("errorReason", errorReason);
-        }
-
-        sendJsonBackToClient(outputJson, response);*/
-    }
-    
-    
     
     private void handleDelete(HttpServletRequest request, HttpServletResponse response) {
         throw new UnsupportedOperationException("Not yet implemented");
