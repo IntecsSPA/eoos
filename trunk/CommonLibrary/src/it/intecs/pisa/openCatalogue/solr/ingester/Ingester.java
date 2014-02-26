@@ -52,25 +52,27 @@ public class Ingester extends BaseIngester {
     private String period_start;
     private String period_end;
 
+    public String configuration = "configuration.xml";
+    public String oemVelocityTemplate="generateVelocityTemple_oem.xsl";
+    
     @Override
     public void setConfiguration(AbstractFilesystem configDirectory) throws SAXException, IOException, SaxonApiException, Exception {
         super.setConfiguration(configDirectory);
 
-        String configFileName = "configuration.xml";
-        configuration = new SaxonDocument(configDirectory.get(configFileName).getInputStream());
+        configDocument = new SaxonDocument(configDirectory.get(configuration).getInputStream());
 
-        sensorType = (!"".equals((String) configuration.evaluatePath(XPATH_SENSOR_TYPE + SLASH + TAG_INDEX_FIELD_NAME, XPathConstants.STRING))
-                ? (DOLLAR + (String) configuration.evaluatePath(XPATH_SENSOR_TYPE + SLASH + TAG_INDEX_FIELD_NAME, XPathConstants.STRING))
-                : (String) configuration.evaluatePath(XPATH_SENSOR_TYPE + SLASH + TAG_DEFAULT_VALUE, XPathConstants.STRING));
+        sensorType = (!"".equals((String) configDocument.evaluatePath(XPATH_SENSOR_TYPE + SLASH + TAG_INDEX_FIELD_NAME, XPathConstants.STRING))
+                ? (DOLLAR + (String) configDocument.evaluatePath(XPATH_SENSOR_TYPE + SLASH + TAG_INDEX_FIELD_NAME, XPathConstants.STRING))
+                : (String) configDocument.evaluatePath(XPATH_SENSOR_TYPE + SLASH + TAG_DEFAULT_VALUE, XPathConstants.STRING));
 
-        dateTimeFormat = !"".equals((String) configuration.evaluatePath(XPATH_DATE_TIME_FORMAT, XPathConstants.STRING))
-                ? ((String) configuration.evaluatePath(XPATH_DATE_TIME_FORMAT, XPathConstants.STRING))
+        dateTimeFormat = !"".equals((String) configDocument.evaluatePath(XPATH_DATE_TIME_FORMAT, XPathConstants.STRING))
+                ? ((String) configDocument.evaluatePath(XPATH_DATE_TIME_FORMAT, XPathConstants.STRING))
                 : DEFAULT_DATE_TIME_FORMAT;
 
-        elements_separator = (String) configuration.evaluatePath(XPATH_SEPARATOR, XPathConstants.STRING);
+        elements_separator = (String) configDocument.evaluatePath(XPATH_SEPARATOR, XPathConstants.STRING);
 
         SAXBuilder saxBuilder = new SAXBuilder();
-        org.jdom2.Document doc = saxBuilder.build(configDirectory.get(configFileName).getInputStream());
+        org.jdom2.Document doc = saxBuilder.build(configDirectory.get(configuration).getInputStream());
 
         Element rootElement = doc.getRootElement();
         defaultMap = new HashMap();
@@ -125,7 +127,7 @@ public class Ingester extends BaseIngester {
     }
 
     public Template getTemplate(String sType) {
-        return ve.getTemplate(METADATA_REPORT_TEMPLATE.replace("sType", sType));
+        return ve.getTemplate("ingester/"+format+"/"+METADATA_REPORT_TEMPLATE.replace("sType", sType));
     }
 
     private static void generateMap2(org.dom4j.Element el, Map map) {
@@ -188,9 +190,10 @@ public class Ingester extends BaseIngester {
         }
     }
     
-    protected static void createTemplate(String type, AbstractFilesystem pluginFolder) throws Exception {
+    protected void createTemplate(String type, AbstractFilesystem workspace) throws Exception {
+        AbstractFilesystem pluginFolder = workspace.get("ingester").get(format);
         Log.debug("Creating template "+type+" in plugin folder "+pluginFolder.getAbsolutePath());
-        AbstractFilesystem stylesheet=pluginFolder.get("generateVelocityTemple_oem.xsl");
+        AbstractFilesystem stylesheet=workspace.get(oemVelocityTemplate);
         
         TransformerFactory tFactory = TransformerFactory.newInstance();
         try {
@@ -198,7 +201,7 @@ public class Ingester extends BaseIngester {
             AbstractFilesystem outFile = pluginFolder.get("metadataReport" + type + ".vm");
             outFile.delete();
             transformer.setParameter("sType", type);
-            transformer.transform(new StreamSource(new File(pluginFolder.get("configuration.xml").getAbsolutePath())), new StreamResult(new File(outFile.getAbsolutePath())));
+            transformer.transform(new StreamSource(new File(workspace.get(configuration).getAbsolutePath())), new StreamResult(new File(outFile.getAbsolutePath())));
         } catch (Exception e) {
             e.printStackTrace();
         }

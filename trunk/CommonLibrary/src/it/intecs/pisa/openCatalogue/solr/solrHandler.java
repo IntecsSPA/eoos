@@ -328,9 +328,36 @@ public class solrHandler {
             url += "&fq=" + URLEncoder.encode(fq.substring(5), "ISO-8859-1");
         }
         return url;
-    }    
+    }
+    
+     public SaxonDocument getStats() throws UnsupportedEncodingException, IOException, SaxonApiException, Exception {
+        HttpClient client = new HttpClient();
+        HttpMethod method;
+        String urlStr = this.solrHost + "/select?q=*%3A*&fq=parentIdentifier%3DSENTINEL2_L1C_N2A&wt=xml&indent=true&stats=true&stats.field=beginPosition&stats.field=endPosition&stats.field=orbitNumber&stats.field=acquisitionStation&rows=0&indent=true";
 
-    public SaxonDocument getStats(String collectionId) throws UnsupportedEncodingException, IOException, SaxonApiException, Exception {
+        Log.debug("The following search is goint to be executed:" + urlStr);
+        // Create a method instance.
+        method = new GetMethod(urlStr);
+
+        // Provide custom retry handler is necessary
+        method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(3, false));
+
+        // Execute the method.
+        int statusCode = client.executeMethod(method);
+        SaxonDocument solrResponse = new SaxonDocument(method.getResponseBodyAsString());
+        Log.debug(solrResponse.getXMLDocumentString());
+
+        if (statusCode != HttpStatus.SC_OK) {
+            Log.error("Method failed: " + method.getStatusLine());
+            String errorMessage = (String) solrResponse.evaluatePath("//lst[@name='error']/str[@name='msg']/text()", XPathConstants.STRING);
+            Log.error(solrResponse.getXMLDocumentString());
+            throw new Exception(errorMessage);
+        }
+        
+        return solrResponse;
+    }
+
+    public SaxonDocument getStatsForCollection(String collectionId) throws UnsupportedEncodingException, IOException, SaxonApiException, Exception {
         HttpClient client = new HttpClient();
         HttpMethod method;
         String fq = !collectionId.isEmpty()?"fq=parentIdentifier%3D"+collectionId+"&":"";
@@ -419,7 +446,13 @@ public class solrHandler {
          * field <= n2 n2[ equals to field < n2.
          */
         String queryElement = "";
-        // in the current implementation we consider only the >= and <=
+        if (value.startsWith("[") || value.startsWith("]") ||
+            value.endsWith("]") || value.endsWith("[")) {
+            queryElement=getLeftOperand(value)+" "+getLeftValue(value)+" TO "+getRightValue(value)+" "+getRightOperand(value);
+            
+        }
+        
+        
         if (value.startsWith("[") && value.endsWith("]")) {
             //[n1,n2] equal to n1 <= field <= n2
             queryElement = value.replace(","," TO ");
@@ -435,11 +468,12 @@ public class solrHandler {
             queryElement = value;
         }
 
+
         return " AND " + tag + ":" + queryElement;
 
 
     }
-
+    
     public int postDocument(String body) throws IOException, SaxonApiException, Exception {
         return postDocument(body.getBytes());
     }
@@ -447,6 +481,7 @@ public class solrHandler {
     
     public int postDocument(Document metadata) throws Exception {
         DOMOutputter outputter=new DOMOutputter();
+        
         org.w3c.dom.Document doc = outputter.output(metadata);
         return postDocument(XMLUtils.dumpToByteArray(doc));
     }
@@ -471,13 +506,48 @@ public class solrHandler {
         Log.debug(solrResponse.getXMLDocumentString());
         if (statusCode != HttpStatus.SC_OK) {
             Log.error("Method failed: " + method.getStatusLine());
-           // Log.error(solrResponse.getXMLDocumentString());
+            Log.error(solrResponse.getXMLDocumentString());
         }
+        else Log.debug(solrResponse.getXMLDocumentString());
         return statusCode;
     }
     
     public int postDocument(byte[] document) throws IOException, Exception
     {
         return postDocument(new ByteArrayInputStream(document));
+    }
+
+    
+    /*
+         * n1 equal to field = n1, {n1,n2} equals to field=n1 OR field = n2
+         * [n1,n2] equal to n1 <= field <= n2, [n1,n2[ equals to n1 <= field <
+         * n2 ]n1,n2[ equals to n1 < field < n2 ]n1,n2] equal to n1 < field <=
+         * n2. [n1 equals to n1<= field ]n1 equals to n1 < field n2] equals to
+         * field <= n2 n2[ equals to field < n2.
+         */
+    private String getLeftOperand(String value) {
+        if( value.startsWith("]"))
+            return "{";
+        else return "[";
+    }
+
+    private String getLeftValue(String value) {
+        int index=value.indexOf(",");
+        
+        if(index>-1)
+        {
+            return value.substring(1,index);
+        }
+        else if(value.startsWith("]") || value.startsWith("["))
+            return value.substring(1);
+        else return "*";
+    }
+
+    private String getRightValue(String value) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private String getRightOperand(String value) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
