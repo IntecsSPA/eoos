@@ -1,4 +1,8 @@
 {
     "className": "it.intecs.pisa.openCatalogue.solr.ingester.Ingester",
-    "idXPath":"//*[local-name() = 'identifier']"
+    "solrRequestTemplate":"ingester_common/generateSolrAddRequest.vm",
+    "oemVelocityTemplate":"ingester_common/generateVelocityTemple_oem.xsl",
+    "configuration":"ingester/xml/dimap/configuration.xml",
+    "idXPath":"//*[local-name() = 'identifier']",
+    "format":"xml/dimap"
 }

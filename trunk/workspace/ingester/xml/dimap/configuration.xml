@@ -41,11 +41,11 @@
 		<indexFieldName>RDF_DataSet_acquisitionStation</indexFieldName>
 	</attribute-->
 	<attribute id="parentIdentifier">
-		<defaultValue>SENTINEL2_L1C</defaultValue>
+		<defaultValue>SENTINEL2_L1C_TEST</defaultValue>
 		<!--formula>$metadata.Dimap_Document_Dataset_Id_DATASET_NAME.replaceAll(" ", ":").replaceAll("/", ":")</formula-->
 	</attribute>	
 	<attribute id="availabilityTime">
-		<indexFieldName>Dimap_Document_Production_DATASET_PRODUCTION_DATE</indexFieldName>
+		<formula>${metadata.Dimap_Document_Production_DATASET_PRODUCTION_DATE.replace(".000000",".000Z")}</formula>
 	</attribute>
 <!-- Product footprint-->
 	<attribute id="footprint">
@@ -69,7 +69,7 @@
 		<defaultValue>NOMINAL</defaultValue>
 	</attribute>
 	<attribute id="processingDate">
-		<indexFieldName>Dimap_Document_Production_DATASET_PRODUCTION_DATE</indexFieldName>
+		<indexFieldName>${Dimap_Document_Production_DATASET_PRODUCTION_DATE.replace(".000000",".000Z")}</indexFieldName>
 	</attribute>
 	<attribute id="processingCenter">
 		<indexFieldName>Dimap_Document_Production_Production_Facility_PROCESSING_CENTER</indexFieldName>
