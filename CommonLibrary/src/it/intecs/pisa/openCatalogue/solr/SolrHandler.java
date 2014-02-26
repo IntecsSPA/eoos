@@ -34,11 +34,11 @@ import org.jdom2.output.DOMOutputter;
  *
  * @author simone
  */
-public class solrHandler {
+public class SolrHandler {
 
     String solrHost;
 
-    public solrHandler(String solrEndPoint) {
+    public SolrHandler(String solrEndPoint) {
         this.solrHost = solrEndPoint;
     }
 

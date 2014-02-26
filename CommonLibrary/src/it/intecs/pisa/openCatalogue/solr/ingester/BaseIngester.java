@@ -12,7 +12,7 @@ import it.intecs.pisa.log.Log;
 import it.intecs.pisa.metadata.filesystem.AbstractFilesystem;
 import it.intecs.pisa.metadata.filesystem.FileFilesystem;
 import it.intecs.pisa.openCatalogue.saxon.SaxonDocument;
-import it.intecs.pisa.openCatalogue.solr.solrHandler;
+import it.intecs.pisa.openCatalogue.solr.SolrHandler;
 import it.intecs.pisa.util.schemas.SchemaCache;
 import it.intecs.pisa.util.schemas.SchemasUtil;
 import it.intecs.pisa.util.schematron.Schematron;
@@ -68,7 +68,7 @@ public abstract class BaseIngester {
     protected String sensorType;
     protected String dateTimeFormat;
     protected String elements_separator;
-    protected solrHandler solr = null;
+    protected SolrHandler solr = null;
     private Schematron schematron = null;
     private AbstractFilesystem schemaRoot = null;
     private AbstractFilesystem schemaFile = null;
@@ -104,6 +104,8 @@ public abstract class BaseIngester {
                 if (isValid) {
                     isValid = validateThroughSchematron();
 
+                    storeMetadata(doc, isValid);
+                    
                     if (isValid) {
                         status = uploadMetadataToSolr(doc);
                     } else {
@@ -117,7 +119,6 @@ public abstract class BaseIngester {
                 String itemId = getItemId(doc);
                 ingestionStatuses.put(itemId, status);
 
-                storeMetadata(doc, isValid);
             }
 
             return createIngestionResponse(ingestionStatuses);
@@ -133,7 +134,7 @@ public abstract class BaseIngester {
             try {
                 fileNo--;
                 ingestData(file);
-                Log.debug("[" + fileNo + "] files remaining");
+                Log.info("[" + fileNo + "] files remaining");
             } catch (Exception e) {
                 Log.error("Failed to ingest " + file.getName());
                 Log.error(e.getMessage());
@@ -267,7 +268,7 @@ public abstract class BaseIngester {
 
     public void setSolrURL(String solrURL) {
         if (solrURL != null && !solrURL.equals("")) {
-            solr = new solrHandler(solrURL);
+            solr = new SolrHandler(solrURL);
         }
     }
 
