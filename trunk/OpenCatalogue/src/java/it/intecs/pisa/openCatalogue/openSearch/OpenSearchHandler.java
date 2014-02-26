@@ -13,7 +13,7 @@ import it.intecs.pisa.openCatalogue.saxon.SaxonDocument;
 import it.intecs.pisa.openCatalogue.saxon.SaxonURIResolver;
 import it.intecs.pisa.openCatalogue.saxon.SaxonXSLT;
 import it.intecs.pisa.openCatalogue.saxon.SaxonXSLTParameter;
-import it.intecs.pisa.openCatalogue.solr.solrHandler;
+import it.intecs.pisa.openCatalogue.solr.SolrHandler;
 import it.intecs.pisa.util.DOMUtil;
 import java.io.*;
 import java.net.URISyntaxException;
@@ -90,7 +90,7 @@ public class OpenSearchHandler {
     VelocityEngine ve;
     HashMap metadatas;
     AbstractFilesystem repository;
-    solrHandler solr;
+    SolrHandler solr;
 
     public OpenSearchHandler(AbstractFilesystem configDirectory, AbstractFilesystem repo, String solrEndPoint) {
         this.ve = new VelocityEngine();
@@ -100,7 +100,7 @@ public class OpenSearchHandler {
 
         this.repository = repo;
         this.metadatas = new HashMap();
-        solr = new solrHandler(solrEndPoint);
+        solr = new SolrHandler(solrEndPoint);
     }
 
     public void processAtomRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
