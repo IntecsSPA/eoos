@@ -100,7 +100,7 @@ public class solrHandler {
         if (request.containsKey("q") && (request.get("q").equals("*.*") == false)) {
             String newQ = request.get("q");
             if (null == newQ || newQ.isEmpty())
-                newQ = "*.*";
+                newQ = "*%3A*";
             q = this.solrHost + "/select?q=" + URLDecoder.decode(newQ, "ISO-8859-1") + "&wt=xml&indent=true";
         }
 
@@ -329,35 +329,8 @@ public class solrHandler {
         }
         return url;
     }
-    
-     public SaxonDocument getStats() throws UnsupportedEncodingException, IOException, SaxonApiException, Exception {
-        HttpClient client = new HttpClient();
-        HttpMethod method;
-        String urlStr = this.solrHost + "/select?q=*%3A*&fq=parentIdentifier%3DSENTINEL2_L1C_N2A&wt=xml&indent=true&stats=true&stats.field=beginPosition&stats.field=endPosition&stats.field=orbitNumber&stats.field=acquisitionStation&rows=0&indent=true";
 
-        Log.debug("The following search is goint to be executed:" + urlStr);
-        // Create a method instance.
-        method = new GetMethod(urlStr);
-
-        // Provide custom retry handler is necessary
-        method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(3, false));
-
-        // Execute the method.
-        int statusCode = client.executeMethod(method);
-        SaxonDocument solrResponse = new SaxonDocument(method.getResponseBodyAsString());
-        Log.debug(solrResponse.getXMLDocumentString());
-
-        if (statusCode != HttpStatus.SC_OK) {
-            Log.error("Method failed: " + method.getStatusLine());
-            String errorMessage = (String) solrResponse.evaluatePath("//lst[@name='error']/str[@name='msg']/text()", XPathConstants.STRING);
-            Log.error(solrResponse.getXMLDocumentString());
-            throw new Exception(errorMessage);
-        }
-        
-        return solrResponse;
-    }
-
-    public SaxonDocument getStatsForCollection(String collectionId) throws UnsupportedEncodingException, IOException, SaxonApiException, Exception {
+    public SaxonDocument getStats(String collectionId) throws UnsupportedEncodingException, IOException, SaxonApiException, Exception {
         HttpClient client = new HttpClient();
         HttpMethod method;
         String fq = !collectionId.isEmpty()?"fq=parentIdentifier%3D"+collectionId+"&":"";

@@ -71,7 +71,7 @@ public class IngesterFactory {
             AbstractFilesystem ingester=workspaceRoot.get("ingester");
             for(AbstractFilesystem folder: ingester.list())
             {
-                if(folder.isFile()==false)
+                if(folder.isFile()==false && folder.getName().startsWith(".")==false)
                 {
                    initFirstLevel(folder);
                 }
@@ -87,7 +87,7 @@ public class IngesterFactory {
         
         for(AbstractFilesystem folder:level.list())
         {
-            if(folder.isFile()==false)
+            if(folder.isFile()==false && folder.getName().startsWith(".")==false)
             {
                 initSecondLevel(folder,firstLevel);
             }
