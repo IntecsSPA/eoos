@@ -20,7 +20,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
-import java.util.Map;
 import net.sf.saxon.s9api.SaxonApiException;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -65,7 +64,7 @@ public abstract class BaseIngester {
 
     protected AbstractFilesystem metadataRepository;
     protected VelocityEngine ve;
-    protected SaxonDocument configuration;
+    protected SaxonDocument configDocument;
     protected String sensorType;
     protected String dateTimeFormat;
     protected String elements_separator;
@@ -74,12 +73,13 @@ public abstract class BaseIngester {
     private AbstractFilesystem schemaRoot = null;
     private AbstractFilesystem schemaFile = null;
     private static SchemaCache schemaCache = null;
+    
 
-    private String identifierXPath = "";
-
-    public void setIdentifierXPath(String identifierXPath) {
-        this.identifierXPath = identifierXPath;
-    }
+    /* These field are being set during initialization through reflection */
+    public String idXPath ;
+    public String solrRequestTemplate;
+    public String format;
+    
 
     public void setConfiguration(AbstractFilesystem configDirectory) throws SAXException, IOException, SaxonApiException, Exception {
         ve = new VelocityEngine();
@@ -153,7 +153,7 @@ public abstract class BaseIngester {
             context.put("metadataDocument", metadata);
             StringWriter swOut = new StringWriter();
 
-            ve.getTemplate("generateSolrAddRequest.vm").merge(context, swOut);
+            ve.getTemplate(solrRequestTemplate).merge(context, swOut);
             retValue = solr.postDocument(swOut.toString());
             // only for debug .... TODO - remove it
             String key = getItemId(metadata);
@@ -222,7 +222,7 @@ public abstract class BaseIngester {
 
     private FileFilesystem storeMetadata(org.jdom2.Document metadata, boolean isValid) throws IOException {
         if (metadataRepository != null) {
-            XPathExpression<Element> xpath = XPathFactory.instance().compile("//*[local-name() = 'identifier']", Filters.element());
+            XPathExpression<Element> xpath = XPathFactory.instance().compile(idXPath, Filters.element());
 
             String key = xpath.evaluateFirst(metadata.getRootElement()).getTextTrim();
             FileFilesystem fs = null;
@@ -291,7 +291,7 @@ public abstract class BaseIngester {
     }
 
     protected String getItemId(Document doc) {
-        XPathExpression<Element> xpath = XPathFactory.instance().compile("//*[local-name() = 'identifier']", Filters.element());
+        XPathExpression<Element> xpath = XPathFactory.instance().compile(idXPath, Filters.element());
         String key = xpath.evaluateFirst(doc.getRootElement()).getTextTrim();
         return key;
     }

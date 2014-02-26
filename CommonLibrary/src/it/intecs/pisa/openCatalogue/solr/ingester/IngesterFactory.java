@@ -6,11 +6,14 @@
 
 package it.intecs.pisa.openCatalogue.solr.ingester;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.intecs.pisa.log.Log;
 import it.intecs.pisa.metadata.filesystem.AbstractFilesystem;
 import it.intecs.pisa.util.json.JsonUtil;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * This class matches input format with ingesters
@@ -31,7 +34,12 @@ public class IngesterFactory {
             BaseIngester instance=(BaseIngester) clazz.newInstance();
             
             JsonObject info=pluginInfo.get(type);
-            instance.setIdentifierXPath(info.get("idXPath").getAsString());
+            
+            Iterator<Map.Entry<String, JsonElement>> entryset = info.entrySet().iterator();
+            while(entryset.hasNext())
+            {
+                setField(instance,entryset.next());
+            }
             
             return instance; 
         }
@@ -40,11 +48,28 @@ public class IngesterFactory {
             return null;
         }
     }
-
-    public static void init(AbstractFilesystem ingestersRoot) throws Exception {
+    
+    private static void setField(BaseIngester instance, Map.Entry<String, JsonElement> entry) {
+        String fieldName="Unknown";
+        String fieldValue="";
+        try
+        {
+            fieldName=entry.getKey();
+            fieldValue=entry.getValue().getAsString();
+            
+            instance.getClass().getField(fieldName).set(instance, fieldValue);
+        }
+        catch(Exception e)
+        {
+            Log.debug("Error while setting field "+fieldName);
+        }
+    }
+    
+    public static void init(AbstractFilesystem workspaceRoot) throws Exception {
         if(initPerformed==false)
         {
-            for(AbstractFilesystem folder:ingestersRoot.list())
+            AbstractFilesystem ingester=workspaceRoot.get("ingester");
+            for(AbstractFilesystem folder: ingester.list())
             {
                 if(folder.isFile()==false)
                 {
@@ -72,15 +97,17 @@ public class IngesterFactory {
     private static void initSecondLevel(AbstractFilesystem folder, String firstLevel) throws Exception {
         String format=firstLevel+"/"+folder.getName();
         
+        Log.debug("Ingester for format "+format+" initialization.");
         JsonObject obj = JsonUtil.getInputAsJson(folder.get("plugin.json").getInputStream());
         pluginInfo.put(format, obj);
         
         Class clazz=Class.forName(obj.get("className").getAsString());
         matches.put(format, clazz);
         
-        
-        BaseIngester ingester=(BaseIngester) clazz.newInstance();
-        ingester.install(folder);
-        Log.debug("Ingester for format "+format+" has been initialized.");
+        BaseIngester ingester=fromInputType(format);
+        ingester.install(folder.getParent().getParent().getParent());
+        Log.debug("Initialization done.");
     }
+
+    
 }

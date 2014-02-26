@@ -4,6 +4,7 @@
 */
 package it.intecs.pisa.log;
 
+import it.intecs.pisa.util.IOUtil;
 import java.io.File;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
@@ -25,17 +26,21 @@ public class Log {
                     log = Logger.getLogger("it.intecs.pisa.openCatalogue");
                     log.setLevel(Level.ALL);
                     
-                    String folderStr="/var/log";
-                    File folder=new File(folderStr);
+                    String folderStr=System.getProperty("eoos.workspace");
+                    File folder=null;
+                    
+                    if(folderStr!=null && folderStr.equals("")==false)
+                            folder=new File(folderStr,"log");
+                    else folder=IOUtil.getTemporaryDirectory();
                     folder.mkdirs();
                     
-                    folderStr=folderStr.endsWith(File.pathSeparator)?folderStr:folderStr+File.separator;
-                    Handler handler = new FileHandler(folderStr+"OpenCatalogue.log");
+                    File logFile=new File(folder,"OpenCatalogue.log");
+                    Handler handler = new FileHandler(logFile.getAbsolutePath());
                     handler.setFormatter(new LogFormatter());
                     handler.setLevel(Level.ALL);
                     log.addHandler(handler);
             } catch (Exception ex) {
-                
+                ex.printStackTrace();
             }
         }
     }

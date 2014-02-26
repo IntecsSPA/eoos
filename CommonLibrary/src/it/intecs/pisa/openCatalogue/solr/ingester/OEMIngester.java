@@ -7,11 +7,8 @@
 package it.intecs.pisa.openCatalogue.solr.ingester;
 
 import it.intecs.pisa.metadata.filesystem.AbstractFilesystem;
-import java.io.IOException;
-import net.sf.saxon.s9api.SaxonApiException;
 import org.jdom2.Document;
 import org.jdom2.input.SAXBuilder;
-import org.xml.sax.SAXException;
 
 /**
  *
