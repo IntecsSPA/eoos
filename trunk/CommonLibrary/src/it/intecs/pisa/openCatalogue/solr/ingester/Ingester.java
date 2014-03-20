@@ -80,7 +80,7 @@ public class Ingester extends BaseIngester {
     }
 
     @Override
-    protected Document[] parse(AbstractFilesystem indexFile) {
+    protected Document[] parse(AbstractFilesystem indexFile,HashMap<String,String> queryHeaders) {
         try {
             Document metadata;
             InputStream stream = indexFile.getInputStream();
@@ -96,15 +96,16 @@ public class Ingester extends BaseIngester {
 
             generateMap2(rootElement, map);
             key = UUID.randomUUID().toString();
-            metadata = generateMetadata(map, key);
+            metadata = generateMetadata(map, key,queryHeaders);
 
             return new Document[]{metadata};
         } catch (Exception e) {
+            e.printStackTrace();
             return new Document[0];
         }
     }
 
-    protected org.jdom2.Document generateMetadata(Map metadataMap, String key) throws IOException, SaxonApiException, XPathFactoryConfigurationException, JDOMException {
+    protected org.jdom2.Document generateMetadata(Map metadataMap, String key,HashMap<String,String> queryHeaders) throws IOException, SaxonApiException, XPathFactoryConfigurationException, JDOMException {
         VelocityContext context = new VelocityContext();
         context.put(VELOCITY_DATE, new DateTool());
         context.put(VELOCITY_METADATA_LIST, metadataMap);
@@ -112,7 +113,11 @@ public class Ingester extends BaseIngester {
         context.put(VELOCITY_PERIOD_START, this.period_start);
         context.put(VELOCITY_PERIOD_END, this.period_end);
         context.put("KEY", key);
-
+        
+        if(queryHeaders!=null)
+        {
+            context.put("queryValues",queryHeaders);
+        }
         StringWriter swOut = new StringWriter();
         String sType = sensorType.startsWith(DOLLAR) ? ((String) metadataMap.get(sensorType.substring(1))) : sensorType;
         getTemplate(sType).merge(context, swOut);

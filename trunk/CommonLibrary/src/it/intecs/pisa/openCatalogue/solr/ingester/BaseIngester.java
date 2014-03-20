@@ -87,12 +87,12 @@ public abstract class BaseIngester {
         ve.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, configDirectory.getAbsolutePath());
     }
 
-    public JsonObject ingestData(AbstractFilesystem file) throws Exception {
+    public JsonObject ingestData(AbstractFilesystem file,HashMap<String,String> queryHeaders) throws Exception {
         if (file.isFile()) {
             Log.debug("Trying to ingest file " + file.getName());
             String fileName = file.getName();
 
-            Document[] metadata = parse(file);
+            Document[] metadata = parse(file,queryHeaders);
             HashMap<String, String> ingestionStatuses = new HashMap<String, String>();
 
             for (Document doc : metadata) {
@@ -126,14 +126,14 @@ public abstract class BaseIngester {
         return null;
     }
 
-    public void ingestDataFromDir(AbstractFilesystem dir) throws Exception {
+    public void ingestDataFromDir(AbstractFilesystem dir,HashMap<String,String> queryHeaders) throws Exception {
         AbstractFilesystem[] files = dir.list(false, null);
         Log.debug("Going to ingest " + files.length + " metadata");
         int fileNo = files.length;
         for (AbstractFilesystem file : files) {
             try {
                 fileNo--;
-                ingestData(file);
+                ingestData(file,queryHeaders);
                 Log.info("[" + fileNo + "] files remaining");
             } catch (Exception e) {
                 Log.error("Failed to ingest " + file.getName());
@@ -157,6 +157,7 @@ public abstract class BaseIngester {
             ve.getTemplate(solrRequestTemplate).merge(context, swOut);
             retValue = solr.postDocument(swOut.toString());
             // only for debug .... TODO - remove it
+            
             String key = getItemId(metadata);
             saveSolrfile(swOut.toString(), key);
             // only for debug .... TODO - remove it
@@ -303,7 +304,7 @@ public abstract class BaseIngester {
      * @param file
      * @return
      */
-    protected abstract Document[] parse(AbstractFilesystem file);
+    protected abstract Document[] parse(AbstractFilesystem file,HashMap<String,String> httpQueryData);
 
     public void install(AbstractFilesystem folder) {}
 

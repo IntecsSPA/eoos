@@ -7,6 +7,7 @@
 package it.intecs.pisa.openCatalogue.solr.ingester;
 
 import it.intecs.pisa.metadata.filesystem.AbstractFilesystem;
+import java.util.HashMap;
 import org.jdom2.Document;
 import org.jdom2.input.SAXBuilder;
 
@@ -17,7 +18,7 @@ import org.jdom2.input.SAXBuilder;
 public class OEMIngester extends BaseIngester{
 
     @Override
-    protected Document[] parse(AbstractFilesystem indexFile) {
+    protected Document[] parse(AbstractFilesystem indexFile,HashMap<String,String> queryHeaders) {
         try
         {
             SAXBuilder builder=new SAXBuilder();
