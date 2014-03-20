@@ -24,7 +24,7 @@ public class CSVIngester extends Ingester{
   
     
     @Override
-    protected Document[] parse(AbstractFilesystem indexFile) {
+    protected Document[] parse(AbstractFilesystem indexFile,HashMap<String,String> queryHeaders) {
         try
         {
         
@@ -50,7 +50,7 @@ public class CSVIngester extends Ingester{
                     map.put(keys[i], values[i]);
                 }
                 key = UUID.randomUUID().toString();
-                docarray.add(generateMetadata(map, key));
+                docarray.add(generateMetadata(map, key,queryHeaders));
             } else {
                 System.out.println("Line " + lineCounter + " is corrupted we skip it : (expected=" + keys.length + " read=" + values.length + ") TEXT = " + strLine);
             }
