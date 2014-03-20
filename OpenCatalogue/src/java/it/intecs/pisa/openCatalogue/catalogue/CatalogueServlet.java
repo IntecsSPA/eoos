@@ -4,6 +4,7 @@
 */
 package it.intecs.pisa.openCatalogue.catalogue;
 
+import com.google.common.base.Splitter;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import it.intecs.pisa.log.Log;
@@ -22,6 +23,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.URLDecoder;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.StringTokenizer;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -178,7 +182,7 @@ public class CatalogueServlet extends HttpServlet {
         try
         {
             requestURI = request.getRequestURI();
-
+            
             StringTokenizer tokenizer=new StringTokenizer(requestURI,"/");
             tokenizer.nextToken();
             tokenizer.nextToken();
@@ -191,10 +195,9 @@ public class CatalogueServlet extends HttpServlet {
 
             BaseIngester ingester=IngesterFactory.fromInputType(format);
 
-            AbstractFilesystem workspace = new FileFilesystem(rootDir);
-            AbstractFilesystem pluginFolder=workspace.get("WEB-INF/ingester/"+format);
+            AbstractFilesystem workspace = new FileFilesystem(ServletVars.workspace);
             
-            ingester.setConfiguration(pluginFolder);
+            ingester.setConfiguration(workspace);
             ingester.setRunsOnTomcat();
             ingester.setSolrURL(Prefs.getSolrUrl());
             
@@ -204,7 +207,23 @@ public class CatalogueServlet extends HttpServlet {
             os.flush();
             os.close();
             
-            JsonObject resp = ingester.ingestData(new FileFilesystem(temp));
+            String query=request.getQueryString();
+            HashMap<String,String> queryHeaders=null;
+            
+            if(query!=null)
+            {
+                queryHeaders=new HashMap<String,String>();
+                Iterable<String> split = Splitter.on("&").trimResults().omitEmptyStrings().split(query);
+                
+                Iterator<String> iter=split.iterator();
+                while(iter.hasNext())
+                {
+                    String item=iter.next();
+                    String[] values=item.split("=");
+                    queryHeaders.put(URLDecoder.decode(values[0],"UTF-8"), URLDecoder.decode(values[1],"UTF-8"));
+                }
+            }
+            JsonObject resp = ingester.ingestData(new FileFilesystem(temp),queryHeaders);
             JsonUtil.writeJsonToStream(resp, response.getOutputStream());
         }
         catch(Exception e)
