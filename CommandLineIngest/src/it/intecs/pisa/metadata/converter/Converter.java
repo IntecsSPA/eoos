@@ -100,7 +100,7 @@ public class Converter {
         harv.setMetedateRepository(repository);
         
         Log.info("Processing data...");
-        harv.ingestDataFromDir(toBeHarvested);
+        harv.ingestDataFromDir(toBeHarvested,null);
         Log.info("Done.");
     }
 
