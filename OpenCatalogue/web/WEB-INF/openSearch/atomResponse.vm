@@ -125,7 +125,7 @@
     #set( $pm = "" )
     #set( $pm = $x.find("//*[local-name() = 'polarisationMode']/text()") )
     #if ($pm != "") 
-"PolarizationMode:"$pm",
+"PolarizationMode":"$pm",
     #end
     #set( $pc = "" )
     #set( $pc = $x.find("//*[local-name() = 'polarisationChannels']/text()") )
