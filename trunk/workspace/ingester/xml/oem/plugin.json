@@ -1,5 +1,6 @@
 {
     "className": "it.intecs.pisa.openCatalogue.solr.ingester.OEMIngester",
+    "solrRequestTemplate":"ingester_common/generateSolrAddRequest.vm",
     "idXPath":"//*[local-name() = 'identifier']",
-"format":"xml/oem"
+    "format":"xml/oem"
 }

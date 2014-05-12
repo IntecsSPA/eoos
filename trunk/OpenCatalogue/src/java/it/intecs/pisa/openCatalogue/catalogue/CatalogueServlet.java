@@ -228,7 +228,7 @@ public class CatalogueServlet extends HttpServlet {
         }
         catch(Exception e)
         {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,e.getMessage());
         }
         
     }
