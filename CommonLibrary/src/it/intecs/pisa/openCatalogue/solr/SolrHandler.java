@@ -67,6 +67,35 @@ public class SolrHandler {
         return solrResponse;
     }
 
+    public SaxonDocument delete(String id) throws UnsupportedEncodingException, IOException, SaxonApiException, Exception {
+        HttpClient client = new HttpClient();
+        HttpMethod method;
+
+        String urlStr = this.solrHost + "/update?stream.body="+URLEncoder.encode("<delete><query>id:"+id+"</query></delete>")+"&commit=true";
+         
+        Log.debug("The "+ id +" item is going to be deleted");
+        // Create a method instance.
+        method = new GetMethod(urlStr);
+
+        // Provide custom retry handler is necessary
+        method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(3, false));
+
+        // Execute the method.
+        int statusCode = client.executeMethod(method);
+        SaxonDocument solrResponse = new SaxonDocument(method.getResponseBodyAsString());
+        //Log.debug(solrResponse.getXMLDocumentString());
+
+        if (statusCode != HttpStatus.SC_OK) {
+            Log.error("Method failed: " + method.getStatusLine());
+            String errorMessage = (String) solrResponse.evaluatePath("//lst[@name='error']/str[@name='msg']/text()", XPathConstants.STRING);
+            throw new Exception(errorMessage);
+        }
+
+        return solrResponse;
+    }
+    
+    
+    
     /*
      * Esempio query data:
      *
@@ -268,7 +297,7 @@ public class SolrHandler {
         if (request.containsKey("q") && (request.get("q").equals("*.*") == false)) {
             String newQ = request.get("q");
             if (null == newQ || newQ.isEmpty())
-                newQ = "*.*";
+                newQ = "*:*";
             q = this.solrHost + "/select?q=" + URLDecoder.decode(newQ, "ISO-8859-1") + "&wt=xml&indent=true";
         }
 
@@ -419,12 +448,12 @@ public class SolrHandler {
          * field <= n2 n2[ equals to field < n2.
          */
         String queryElement = "";
-        if (value.startsWith("[") || value.startsWith("]") ||
+/*        if (value.startsWith("[") || value.startsWith("]") ||
             value.endsWith("]") || value.endsWith("[")) {
             queryElement=getLeftOperand(value)+" "+getLeftValue(value)+" TO "+getRightValue(value)+" "+getRightOperand(value);
             
         }
-        
+ */       
         
         if (value.startsWith("[") && value.endsWith("]")) {
             //[n1,n2] equal to n1 <= field <= n2
