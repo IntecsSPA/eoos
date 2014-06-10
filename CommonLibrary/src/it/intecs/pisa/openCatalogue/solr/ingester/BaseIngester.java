@@ -128,19 +128,27 @@ public abstract class BaseIngester {
 
     public void ingestDataFromDir(AbstractFilesystem dir,HashMap<String,String> queryHeaders) throws Exception {
         AbstractFilesystem[] files = dir.list(false, null);
+
         Log.debug("Going to ingest " + files.length + " metadata");
         int fileNo = files.length;
+        int totalingested = 0;
+        int failed = 0;
         for (AbstractFilesystem file : files) {
             try {
                 fileNo--;
                 ingestData(file,queryHeaders);
                 Log.info("[" + fileNo + "] files remaining");
+                totalingested++;
             } catch (Exception e) {
+                failed++;
                 Log.error("Failed to ingest " + file.getName());
                 Log.error(e.getMessage());
             }
-
         }
+         Log.info(" ************************************************************************");
+         Log.info(" * Total ingested" + totalingested);
+         Log.info(" * No of failure" + failed);
+         Log.info(" ************************************************************************");
     }
 
     protected String uploadMetadataToSolr(org.jdom2.Document metadata) throws IOException, SaxonApiException, Exception {
@@ -191,26 +199,27 @@ public abstract class BaseIngester {
         
         for (String key : ingestionStatuses.keySet()) {
             String itemStatus=ingestionStatuses.get(key);
+            JsonObject item = new JsonObject();
+            item.addProperty("id", key);
+            item.addProperty("status", ingestionStatuses.get(key));
+
+            array.add(item);
             
             if(itemStatus.equals("success")==false)
-            {
-                JsonObject item = new JsonObject();
-                item.addProperty("id", key);
-                item.addProperty("status", ingestionStatuses.get(key));
-
-                array.add(item);
-                
+            {                
                 failure++;
             }
             else success++;
         }
         
-        if(array.size()>0)
-            response.add("report", array);
         
         response.addProperty("total", total);
         response.addProperty("success", success);
         response.addProperty("failure",failure);
+
+        if(array.size()>0)
+            response.add("report", array);
+                
         return response;
     }
 
