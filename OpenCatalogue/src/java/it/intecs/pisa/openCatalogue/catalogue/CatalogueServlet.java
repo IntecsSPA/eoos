@@ -12,26 +12,25 @@ import it.intecs.pisa.metadata.filesystem.AbstractFilesystem;
 import it.intecs.pisa.metadata.filesystem.FileFilesystem;
 import it.intecs.pisa.openCatalogue.openSearch.OpenSearchHandler;
 import it.intecs.pisa.openCatalogue.prefs.Prefs;
+import it.intecs.pisa.openCatalogue.solr.SolrHandler;
 import it.intecs.pisa.openCatalogue.solr.ingester.BaseIngester;
 import it.intecs.pisa.openCatalogue.solr.ingester.IngesterFactory;
 import it.intecs.pisa.util.DOMUtil;
 import it.intecs.pisa.util.IOUtil;
 import it.intecs.pisa.util.json.JsonUtil;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.sf.saxon.s9api.SaxonApiException;
 import org.w3c.dom.Document;
 
 /**
@@ -46,6 +45,7 @@ public class CatalogueServlet extends HttpServlet {
     protected static final String METHOD_CSW = "csw";
     protected static final String METHOD_GUI = "gui";    
     protected static final String RESOURCE_OEM = "oem";
+    protected static final String RESOURCE_METADATA = "metadata";
     protected static final String RESOURCE_CSV = "csv";
     protected static final String RESOURCE_XML = "xml";
     protected static final String OS_ATOM = "atom";
@@ -244,16 +244,35 @@ public class CatalogueServlet extends HttpServlet {
      */
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, UnsupportedEncodingException, UnsupportedEncodingException, UnsupportedEncodingException, IOException {
         String requestURI;
 
         requestURI = request.getRequestURI();
-        if (requestURI.contains(RESOURCE_OEM)) {
-            handleDelete(request, response);
+        if (requestURI.contains(RESOURCE_METADATA)) {
+            
+            SolrHandler slr = new SolrHandler(Prefs.getSolrUrl());
+            String id = requestURI.substring(requestURI.indexOf(RESOURCE_METADATA)+9);         
+            JsonObject responseJ = new JsonObject();
+
+            response.setContentType("application/xml");
+            try {
+                slr.delete(id);
+                responseJ.addProperty("status", "success");
+                JsonUtil.writeJsonToStream(responseJ, response.getOutputStream());
+//                response.getWriter().print(slr.delete(id).getXMLDocumentString());
+
+            } catch (Exception ex) {
+                Logger.getLogger(CatalogueServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                responseJ.addProperty("status", "error");
+//                responseJ.addProperty("reason", ex.getMessage());
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST,ex.getMessage());
+
+            }       
         } else {
             response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
         }
     }
+    
     
     
     /**
@@ -354,10 +373,6 @@ public class CatalogueServlet extends HttpServlet {
         sendJsonBackToClient(outputJson, response);
     }
     
-    private void handleDelete(HttpServletRequest request, HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
     private void handleUpdate(HttpServletRequest request, HttpServletResponse response) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
