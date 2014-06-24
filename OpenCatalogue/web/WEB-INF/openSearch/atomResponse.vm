@@ -161,8 +161,9 @@ xmlns:media="http://search.yahoo.com/mrss/">
     <atom:author><atom:name>openCatalogue Server</atom:name></atom:author> 
     <atom:generator>openCatalogue Server</atom:generator> 
     <atom:id>$OPEN_SEARCH_REQUEST</atom:id> 
+    <dc:identifier>$OPEN_SEARCH_REQUEST</dc:identifier> 
     <atom:title>openCatalogue Server - EO Product Search Response</atom:title> 
-    <atom:updated>$date.get('yyyy-M-d')T$date.get('H:m:s')Z</atom:updated> 
+    <atom:updated>$date.get('yyyy-MM-dd')T$date.get('HH:mm:ss').000Z</atom:updated> 
     <atom:link href="${BASE_URL}/service/opensearch/atom/?${OPEN_SEARCH_QUERY}startIndex=$OPEN_SEARCH_START_INDEX&amp;count=$OPEN_SEARCH_ITEMS_PER_PAGE" rel="self" type="application/atom+xml"/>
     <atom:link href="${BASE_URL}/service/opensearch/atom/?${OPEN_SEARCH_QUERY}startIndex=1&amp;count=$OPEN_SEARCH_ITEMS_PER_PAGE" rel="first" type="application/atom+xml"/>
     <atom:link href="${BASE_URL}/service/opensearch/atom/?${OPEN_SEARCH_QUERY}startIndex=$OPEN_SEARCH_NEXT_RESULTS&amp;count=$OPEN_SEARCH_ITEMS_PER_PAGE" rel="next" type="application/atom+xml"/>
@@ -173,15 +174,15 @@ xmlns:media="http://search.yahoo.com/mrss/">
         <atom:id>$metadata.identifier</atom:id>
         <atom:title>$metadata.identifier</atom:title> 
 	<dc:identifier>$metadata.identifier</dc:identifier>
-        <atom:published>$date.get('yyyy-M-d')T$date.get('H:m:s')Z</atom:published> 
+        <atom:published>$date.get('yyyy-MM-dd')T$date.get('HH:mm:ss').000Z</atom:published> 
 #if ($OPEN_SEARCH_RECORD_SCHEMA == 'j')
         <atom:content type="text">#getJson($metadata.xmlTOOL)</atom:content>
 #else
         <atom:content type="html"><![CDATA[<table><tr><td valign="top"><table>#getHTML($metadata.xmlTOOL)<tr><td><b>Media Type</b></td><td><a href="${BASE_URL}/service/opensearch/atom?id=$metadata.identifier" title="Atom format">ATOM</a></td></tr><tr>
 	<td><b>Metadata</b></td><td><a href="${BASE_URL}/service/opensearch/eoproduct?id=$metadata.identifier" title="O&amp;M format">O&amp;M</a></td></tr></table></td></tr></table>]]></atom:content>
 #end
-        <atom:updated>$date.get('yyyy-M-d')T$date.get('H:m:s')Z</atom:updated> 
-##	<dc:date>$date.get('yyyy-M-d')T$date.get('H:m:s')Z</dc:date>
+        <atom:updated>$date.get('yyyy-MM-dd')T$date.get('HH:mm:ss').000Z</atom:updated> 
+##	<dc:date>$date.get('yyyy-MM-dd')T$date.get('HH:mm:ss')Z</dc:date>
         <atom:link href="${BASE_URL}/service/opensearch/atom?id=$metadata.identifier" rel="alternate" type="application/atom+xml" title="URL for retrieving the ATOM of the product: $metadata.identifier"/> 	
         <georss:where>
 		<gml:Polygon>
