@@ -13,6 +13,9 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import javax.xml.xpath.XPathConstants;
 import net.sf.saxon.s9api.SaxonApiException;
@@ -334,11 +337,11 @@ public class SolrHandler {
                 } else if (name.equals("radius")) {
                     radius = URLDecoder.decode(value, "ISO-8859-1");
                 } else if (name.equals("startdate")) {
-                    value = value.endsWith("Z") ? value : value + "Z";
-                    fq += " AND beginPosition:[" + URLDecoder.decode(value, "ISO-8859-1") + " TO *]";
+                    //value = value.endsWith("Z") ? value : value.indexOf("T") == -1 ? value : value + "Z";
+                    fq += " AND beginPosition:[" + URLDecoder.decode(getDate(value), "ISO-8859-1") + " TO *]";
                 } else if (name.equals("stopdate")) {
-                    value = value.endsWith("Z") ? value : value + "Z";
-                    fq += " AND endPosition:[* TO " + URLDecoder.decode(value, "ISO-8859-1") + "]";
+//                    value = value.endsWith("Z") ? value : value.indexOf("T") == -1 ? value : value + "Z";
+                    fq += " AND endPosition:[* TO " + URLDecoder.decode(getDate(value), "ISO-8859-1") + "]";
                 } else if (name.equals("q") || name.equals("recordSchema")) {
                 }
                 //Table 3 - OpenSearch Parameters for Collection Search
@@ -551,5 +554,24 @@ public class SolrHandler {
 
     private String getRightOperand(String value) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private String getDate(String value) throws ParseException {
+    Date date = null;                    
+    SimpleDateFormat formatter = null ;
+    
+        if (value.length()== 10)
+         formatter = new SimpleDateFormat("yyyy-MM-dd");//spec for RFC3339 (with fractional seconds)
+        else if (value.length()== 19)
+         formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");//spec for RFC3339 (with fractional seconds)
+        else if (value.length()== 23)
+         formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");//spec for RFC3339 (with fractional seconds)
+        else
+         formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");//spec for RFC3339 (with fractional seconds)
+
+     date = formatter.parse(value);                    
+            
+//    return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(date)+".000Z";
+         return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(date);
     }
 }
