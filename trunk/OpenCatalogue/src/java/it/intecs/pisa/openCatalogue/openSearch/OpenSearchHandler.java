@@ -114,8 +114,7 @@ public class OpenSearchHandler {
         SaxonDocument solrResponse = sendRequestToSolr(request);
         sendBackKmlResponse(solrResponse, request, response);
     }
-    
-    
+
     public void processCZMLRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
         Log.info("New CZML request received");
         SaxonDocument solrResponse = sendRequestToSolr(request);
@@ -147,15 +146,15 @@ public class OpenSearchHandler {
         //pattern http://localhost/opencat/service/opensearch/COLLECTION_ID/description.xml
         // or http://localhost/opencat/service/opensearch/COLLECTION_ID
         // if the collection is not provided it returns the template for the whole database
-        String collection = requestURL.substring(requestURL.indexOf("opensearch")+11).replace("description.xml", "").replace("/", "");
-        SaxonDocument descriptionSource = this.solr.getStats(collection);        
+        String collection = requestURL.substring(requestURL.indexOf("opensearch") + 11).replace("description.xml", "").replace("/", "");
+        SaxonDocument descriptionSource = this.solr.getStats(collection);
         //Document descriptionSource = IOUtil.getDocumentFromDirectory(ServletVars.appFolder + "/WEB-INF/openSearch/description.xml");
         DOMUtil domUtil = new DOMUtil();
         SaxonXSLT saxonUtil;
         PipedInputStream pipeInput;
         SaxonURIResolver uriResolver;
         ArrayList<SaxonXSLTParameter> parameters = new ArrayList();
-        parameters.add(new SaxonXSLTParameter("url", requestURL.substring(0,requestURL.indexOf("service"))));
+        parameters.add(new SaxonXSLTParameter("url", requestURL.substring(0, requestURL.indexOf("service"))));
         SAXSource docSource = new SAXSource(new InputSource(new ByteArrayInputStream(descriptionSource.getXMLDocumentString().getBytes())));
         String xsltRef = ServletVars.appFolder + "/WEB-INF/openSearch/description.xslt";
         SAXSource xsltDoc = new SAXSource(new InputSource(xsltRef));
@@ -169,6 +168,7 @@ public class OpenSearchHandler {
     private SaxonDocument sendRequestToSolr(HttpServletRequest request) throws SaxonApiException, IOException, Exception {
         // this is a simutation for the moment
         HashMap<String, String> params = getParametersHashMap(request);
+
         return solr.search(params);
     }
 
@@ -194,7 +194,7 @@ public class OpenSearchHandler {
         if (startIndex != null && !startIndex.equals("")) {
             context.put(OPEN_SEARCH_START_INDEX, startIndex);
             next = Integer.parseInt(startIndex) + Integer.parseInt(count);
-        } else if (request.getParameter("count") != null && request.getParameter("startPage") != null) {
+        } else if (request.getParameter("count") != null && request.getParameter("startPage") != null && !request.getParameter("startPage").equals("")) {
             int itemsPerPage = Integer.parseInt(request.getParameter("count"));
             int pageNumber = Integer.parseInt(request.getParameter("startPage"));
             int startAt = itemsPerPage * pageNumber;
@@ -226,7 +226,7 @@ public class OpenSearchHandler {
         context.put(VELOCITY_TOOL_DATE, new DateTool());
         context.put(VELOCITY_METADATA_LIST, metadataList);
         context.put("coordinates", new CoordinatesUtil());
-        
+
 
 //        response.setContentType("application/kml");
         response.setContentType("application/vnd.google-earth.kml+xml");
@@ -234,8 +234,7 @@ public class OpenSearchHandler {
         ve.getTemplate(KML_TEMPLATE).merge(context, swOut);
         swOut.close();
     }
-    
-    
+
     private void sendBackCZMLResponse(SaxonDocument solrResponse, HttpServletRequest request, HttpServletResponse response) throws IOException, XPathFactoryConfigurationException, XPathException, XPathExpressionException, SAXException, JDOMException, DocumentException {
         ArrayList metadataList = prepareDataForVelocity(solrResponse);
         VelocityContext context = new VelocityContext();
@@ -291,20 +290,19 @@ public class OpenSearchHandler {
 
     private void sendBackProductResponse(SaxonDocument solrResponse, HttpServletRequest request, HttpServletResponse response) throws IOException, XPathFactoryConfigurationException, XPathException, XPathExpressionException, SAXException, JDOMException {
         String originalMetadata = this.getOriginalMetadata(solrResponse);
-        
 
-            HashMap<String, String> urls = Prefs.getURLBase();
-            if (null != urls && !urls.isEmpty()) {
-                for (String stringKey : urls.keySet()) {
+
+        HashMap<String, String> urls = Prefs.getURLBase();
+        if (null != urls && !urls.isEmpty()) {
+            for (String stringKey : urls.keySet()) {
                 originalMetadata = originalMetadata.replace(stringKey, (String) urls.get(stringKey));
-                }
             }
+        }
 
         /*
          * String urls = Prefs.getBrowseURLBase(); if (null != urls &&
          * !urls.equals("")) { // replace the string in the metadata
-         * originalMetadata = originalMetadata.replace(BROWSE_URL_KEY,
-         * urls); }
+         * originalMetadata = originalMetadata.replace(BROWSE_URL_KEY, urls); }
          *
          */
         response.setContentType("application/xml");
@@ -341,10 +339,9 @@ public class OpenSearchHandler {
                 }
             }
             /*
-             * String urls = Prefs.getBrowseURLBase(); if (null !=
-             * urls && !urls.equals("")) { // replace the string in
-             * the metadata cdata_field = cdata_field.replace(BROWSE_URL_KEY,
-             * urls); }
+             * String urls = Prefs.getBrowseURLBase(); if (null != urls &&
+             * !urls.equals("")) { // replace the string in the metadata
+             * cdata_field = cdata_field.replace(BROWSE_URL_KEY, urls); }
              */
             SAXReader reader = new SAXReader();
             org.dom4j.Document root = reader.read(new StringReader(cdata_field));

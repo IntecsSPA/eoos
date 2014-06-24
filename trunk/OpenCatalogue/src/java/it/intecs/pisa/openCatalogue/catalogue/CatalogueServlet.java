@@ -129,7 +129,7 @@ public class CatalogueServlet extends HttpServlet {
             } catch (Exception ex) {
                 ex.printStackTrace();
                 Log.error(ex.getMessage());
-                response.sendError(400, ex.getMessage());
+                response.sendError(501, ex.getMessage());
             }
         } else if (requestURI.contains(METHOD_HARVEST)) {
             handleHarvest(request, response);
