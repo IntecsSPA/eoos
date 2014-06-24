@@ -9,7 +9,7 @@ import it.intecs.pisa.metadata.filesystem.AbstractFilesystem;
 import it.intecs.pisa.metadata.filesystem.FileFilesystem;
 import it.intecs.pisa.openCatalogue.solr.ingester.BaseIngester;
 import it.intecs.pisa.openCatalogue.solr.ingester.IngesterFactory;
-import java.io.*;
+import java.io.File;
 
 public class Converter {
     /**
@@ -31,7 +31,8 @@ public class Converter {
         System.out.println("  -format=input file format. possible values are XML(default),CSV.  ");
         System.out.println("  -schematron=schematron_file optional parameter. Path to the schematron file to be used to validate the generated metadata");
         System.out.println("              NOTE to activate the schematron validation you have to provide a valid repo.");
-
+        System.out.println("  -navigateSubdirs=true if true the ingester navigate the subdirectories and select the files according to the file filter (dafault value set to false)");
+        System.out.println("  -fileExtension=.index file extension to be used to filter the files to be ingested");
     }
 
     /**
@@ -63,6 +64,8 @@ public class Converter {
         File schRoot = null;
         File schFile = null;
         String schematron = "";
+        Boolean navigateSubdirs = false;
+        String fileFilter = null; 
 
         for (int i = 0; i < args.length; i++) {
             if (args[i].startsWith("-source=")) {
@@ -89,6 +92,12 @@ public class Converter {
             else if (args[i].startsWith("-schematron=")) {
                 schematron = args[i].substring(12);
             }
+            else if (args[i].startsWith("-navigateSubdirs=")) {
+                navigateSubdirs = Boolean.parseBoolean(args[i].substring(17));
+            }
+            else if (args[i].startsWith("-fileExtension=")) {
+                fileFilter = args[i].substring(15);
+            }
 
         }
         
@@ -99,8 +108,12 @@ public class Converter {
         harv.setSolrURL(url);
         harv.setMetedateRepository(repository);
         
-        Log.info("Processing data...");
-        harv.ingestDataFromDir(toBeHarvested,null);
+        if (null!= fileFilter)
+        Log.info("Processing *"+fileFilter+" in " + toBeHarvested.getAbsolutePath() + " (navigateSubdirs =" +navigateSubdirs.booleanValue()+")");
+        else
+        Log.info("Processing all files in " + toBeHarvested.getAbsolutePath() + " (navigateSubdirs =" +navigateSubdirs.booleanValue()+")");
+
+        harv.ingestDataFromDir(toBeHarvested,null,navigateSubdirs,fileFilter);
         Log.info("Done.");
     }
 
