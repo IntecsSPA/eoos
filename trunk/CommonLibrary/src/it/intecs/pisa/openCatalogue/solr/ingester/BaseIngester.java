@@ -11,6 +11,9 @@ import it.intecs.pisa.gis.util.CoordinatesUtil;
 import it.intecs.pisa.log.Log;
 import it.intecs.pisa.metadata.filesystem.AbstractFilesystem;
 import it.intecs.pisa.metadata.filesystem.FileFilesystem;
+import it.intecs.pisa.metadata.filters.EndsWith;
+import it.intecs.pisa.metadata.filters.NotEndsWith;
+import it.intecs.pisa.metadata.filters.RegExpression;
 import it.intecs.pisa.openCatalogue.saxon.SaxonDocument;
 import it.intecs.pisa.openCatalogue.solr.SolrHandler;
 import it.intecs.pisa.util.schemas.SchemaCache;
@@ -126,19 +129,28 @@ public abstract class BaseIngester {
         return null;
     }
 
-    public void ingestDataFromDir(AbstractFilesystem dir,HashMap<String,String> queryHeaders) throws Exception {
-        AbstractFilesystem[] files = dir.list(false, null);
+    public void ingestDataFromDir(AbstractFilesystem dir,HashMap<String,String> queryHeaders, Boolean includeSubdirs, String fileFilter) throws Exception {
+        //AbstractFilesystem[] files = dir.list(false, null);
+        AbstractFilesystem[] files = null;
 
-        Log.debug("Going to ingest " + files.length + " metadata");
-        int fileNo = files.length;
+        if (null != fileFilter ){
+            NotEndsWith filters = new NotEndsWith(fileFilter);
+            files = dir.list(includeSubdirs, filters);            
+        } else files = dir.list(includeSubdirs, null);
+        
+        
+        int fileNo = getFilesNumber(files);
+        Log.info("Going to process " + fileNo + " file(s)");
         int totalingested = 0;
         int failed = 0;
         for (AbstractFilesystem file : files) {
             try {
-                fileNo--;
-                ingestData(file,queryHeaders);
-                Log.info("[" + fileNo + "] files remaining");
-                totalingested++;
+                if (file.isFile()){
+                    fileNo--;
+                    ingestData(file,queryHeaders);
+                    Log.info("[" + fileNo + "] files remaining");
+                    totalingested++;
+                }                
             } catch (Exception e) {
                 failed++;
                 Log.error("Failed to ingest " + file.getName());
@@ -146,8 +158,8 @@ public abstract class BaseIngester {
             }
         }
          Log.info(" ************************************************************************");
-         Log.info(" * Total ingested" + totalingested);
-         Log.info(" * No of failure" + failed);
+         Log.info(" * Total processed " + totalingested);
+         Log.info(" * No of failure " + failed);
          Log.info(" ************************************************************************");
     }
 
@@ -317,4 +329,11 @@ public abstract class BaseIngester {
 
     public void install(AbstractFilesystem folder) {}
 
+    private Integer getFilesNumber(AbstractFilesystem[] files) {
+        Integer fn = 0;
+        for (AbstractFilesystem file : files) {
+            if (file.isFile()) fn++;            
+        }
+        return fn;
+        }        
 }

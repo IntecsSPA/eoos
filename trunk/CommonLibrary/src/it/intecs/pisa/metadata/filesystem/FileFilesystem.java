@@ -214,6 +214,9 @@ public  class FileFilesystem implements AbstractFilesystem{
                     listing.addAll(Arrays.asList(((FileFilesystem)file).getFolderList(deep,filter)));
                 }
             }
+            if(file.isFile()==false && deep) {
+                    listing.addAll(Arrays.asList(((FileFilesystem)file).getFolderList(deep,filter)));
+                }
         }
         
         return listing.toArray(new AbstractFilesystem[0]);
