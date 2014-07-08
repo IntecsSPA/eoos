@@ -14,11 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
@@ -29,6 +25,7 @@ import net.sf.saxon.s9api.SaxonApiException;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.tools.generic.DateTool;
+import org.dom4j.Attribute;
 import org.dom4j.io.SAXReader;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -42,19 +39,20 @@ import org.xml.sax.SAXException;
  */
 public class Ingester extends BaseIngester {
 
+    private static void addAttributesToTheMap(Attribute attribute, org.dom4j.Element el, Map map) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
     protected final String XPATH_SEPARATOR = "//separator";
     protected final String XPATH_DATE_TIME_FORMAT = "//dateTimeFormat";
     protected final String XPATH_SENSOR_TYPE = "//attribute[@id='sensorType']";
     protected static final String DOLLAR = "$";
     protected final String DEFAULT_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-
     protected Map defaultMap = null;
     private String period_start;
     private String period_end;
-
     public String configuration = "configuration.xml";
-    public String oemVelocityTemplate="generateVelocityTemple_oem.xsl";
-    
+    public String oemVelocityTemplate = "generateVelocityTemple_oem.xsl";
+
     @Override
     public void setConfiguration(AbstractFilesystem configDirectory) throws SAXException, IOException, SaxonApiException, Exception {
         super.setConfiguration(configDirectory);
@@ -80,7 +78,7 @@ public class Ingester extends BaseIngester {
     }
 
     @Override
-    protected Document[] parse(AbstractFilesystem indexFile,HashMap<String,String> queryHeaders) {
+    protected Document[] parse(AbstractFilesystem indexFile, HashMap<String, String> queryHeaders) {
         try {
             Document metadata;
             InputStream stream = indexFile.getInputStream();
@@ -96,7 +94,7 @@ public class Ingester extends BaseIngester {
 
             generateMap2(rootElement, map);
             key = UUID.randomUUID().toString();
-            metadata = generateMetadata(map, key,queryHeaders);
+            metadata = generateMetadata(map, key, queryHeaders);
 
             return new Document[]{metadata};
         } catch (Exception e) {
@@ -105,7 +103,15 @@ public class Ingester extends BaseIngester {
         }
     }
 
-    protected org.jdom2.Document generateMetadata(Map metadataMap, String key,HashMap<String,String> queryHeaders) throws IOException, SaxonApiException, XPathFactoryConfigurationException, JDOMException {
+    protected org.jdom2.Document generateMetadata(Map metadataMap, String key, HashMap<String, String> queryHeaders) throws IOException, SaxonApiException, XPathFactoryConfigurationException, JDOMException {
+//debug
+/*        List<String> keys = new ArrayList<String>(metadataMap.keySet());
+        Collections.sort(keys);
+        for (String keyString: keys) {
+            System.out.println(keyString + ": " + metadataMap.get(keyString));
+        }*/        
+//debug
+        
         VelocityContext context = new VelocityContext();
         context.put(VELOCITY_DATE, new DateTool());
         context.put(VELOCITY_METADATA_LIST, metadataMap);
@@ -113,10 +119,9 @@ public class Ingester extends BaseIngester {
         context.put(VELOCITY_PERIOD_START, this.period_start);
         context.put(VELOCITY_PERIOD_END, this.period_end);
         context.put("KEY", key);
-        
-        if(queryHeaders!=null)
-        {
-            context.put("queryValues",queryHeaders);
+
+        if (queryHeaders != null) {
+            context.put("queryValues", queryHeaders);
         }
         StringWriter swOut = new StringWriter();
         String sType = sensorType.startsWith(DOLLAR) ? ((String) metadataMap.get(sensorType.substring(1))) : sensorType;
@@ -132,16 +137,26 @@ public class Ingester extends BaseIngester {
     }
 
     public Template getTemplate(String sType) {
-        return ve.getTemplate("ingester/"+format+"/"+METADATA_REPORT_TEMPLATE.replace("sType", sType));
+        return ve.getTemplate("ingester/" + format + "/" + METADATA_REPORT_TEMPLATE.replace("sType", sType));
     }
 
     private static void generateMap2(org.dom4j.Element el, Map map) {
         String value = el.getTextTrim();
-
+        String currentPath = getXPath(el);
+        Iterator a = null;
         Iterator i = el.elementIterator();
+        a = el.attributeIterator();
+        while (a.hasNext()) {
+            org.dom4j.Attribute attr = (org.dom4j.Attribute) a.next();
+            String aval = attr.getValue();
+            String apath = currentPath + "_" + attr.getName();
+            //System.out.println("PATH:" + apath + "   ---   " + aval);
+            map.put(apath, aval);
+        }
+
         if (!i.hasNext() && value != null) {
-            //System.out.println("PATH:" + getXPath(el));
-            map.put(getXPath(el), value);
+//            System.out.println("PATH:" + currentPath);
+            map.put(currentPath, value);
         } else {
             while (i.hasNext()) {
                 generateMap2((org.dom4j.Element) i.next(), map);
@@ -151,6 +166,7 @@ public class Ingester extends BaseIngester {
 
     private static String getXPath(org.dom4j.Element el) {
         String path = el.getUniquePath();
+
         if (path.contains(":")) {
             String[] elements = path.split("/");
             path = "";
@@ -165,7 +181,7 @@ public class Ingester extends BaseIngester {
             path = path.replace("/", "_").replace("[", "_").replace("]", "");
         }
 
-        return path.substring(1);
+        return path.substring(1).replace("[", "_").replace("]", "");
     }
 
     protected static void generateDefaultMap(Element el, Map map) {
@@ -184,7 +200,7 @@ public class Ingester extends BaseIngester {
 
     @Override
     public void install(AbstractFilesystem folder) {
-       try {
+        try {
             createTemplate("RADAR", folder);
             createTemplate("LIMB", folder);
             createTemplate("ATMOSPHERIC", folder);
@@ -194,12 +210,12 @@ public class Ingester extends BaseIngester {
             e.printStackTrace();
         }
     }
-    
+
     protected void createTemplate(String type, AbstractFilesystem workspace) throws Exception {
         AbstractFilesystem pluginFolder = workspace.get("ingester").get(format);
-        Log.debug("Creating template "+type+" in plugin folder "+pluginFolder.getAbsolutePath());
-        AbstractFilesystem stylesheet=workspace.get(oemVelocityTemplate);
-        
+        Log.debug("Creating template " + type + " in plugin folder " + pluginFolder.getAbsolutePath());
+        AbstractFilesystem stylesheet = workspace.get(oemVelocityTemplate);
+
         TransformerFactory tFactory = TransformerFactory.newInstance();
         try {
             Transformer transformer = tFactory.newTransformer(new StreamSource(new File(stylesheet.getAbsolutePath())));
@@ -211,5 +227,4 @@ public class Ingester extends BaseIngester {
             e.printStackTrace();
         }
     }
-
 }
