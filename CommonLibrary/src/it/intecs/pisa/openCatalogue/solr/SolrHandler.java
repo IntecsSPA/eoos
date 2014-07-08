@@ -563,11 +563,21 @@ public class SolrHandler {
         if (value.length()== 10)
          formatter = new SimpleDateFormat("yyyy-MM-dd");//spec for RFC3339 (with fractional seconds)
         else if (value.length()== 19)
-         formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");//spec for RFC3339 (with fractional seconds)
+         formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        else if (value.length()== 20 && value.endsWith("Z"))
+         formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        else if (value.length()== 21)
+         formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S");
+        else if (value.length()== 22 && value.endsWith("Z"))
+         formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'");
+        else if (value.length()== 22)
+         formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SS");
+        else if (value.length()== 23 && value.endsWith("Z"))
+         formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SS'Z'");
         else if (value.length()== 23)
-         formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");//spec for RFC3339 (with fractional seconds)
+         formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         else
-         formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");//spec for RFC3339 (with fractional seconds)
+         formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
      date = formatter.parse(value);                    
             
