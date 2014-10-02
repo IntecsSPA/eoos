@@ -182,7 +182,7 @@ xmlns:media="http://search.yahoo.com/mrss/">
 	<td><b>Metadata</b></td><td><a href="${BASE_URL}/service/opensearch/eoproduct?id=$metadata.identifier" title="O&amp;M format">O&amp;M</a></td></tr></table></td></tr></table>]]></atom:content>
 #end
         <atom:updated>$date.get('yyyy-MM-dd')T$date.get('HH:mm:ss').000Z</atom:updated> 
-##	<dc:date>$date.get('yyyy-MM-dd')T$date.get('HH:mm:ss')Z</dc:date>
+	<dc:date>$metadata.xmlTOOL.find("//*[local-name() = 'beginPosition']/text()")/$metadata.xmlTOOL.find("//*[local-name() = 'endPosition']/text()")</dc:date>
         <atom:link href="${BASE_URL}/service/opensearch/atom?id=$metadata.identifier" rel="alternate" type="application/atom+xml" title="URL for retrieving the ATOM of the product: $metadata.identifier"/> 	
         <georss:where>
 		<gml:Polygon>
