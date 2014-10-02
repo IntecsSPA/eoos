@@ -44,7 +44,7 @@
     #end
 #else
 #if ($e.getName() == 'posList')
-    <field name="$e.getName()">POLYGON(($coordinates.adjustCoordinatesForSolr($e.getTextTrim())))</field>
+    <field name="$e.getName()">POLYGON(($coordinates.adjustCoordinatesForSolrAdd($e.getTextTrim())))</field>
     <field name="posListOrig">$e.getTextTrim()</field>
 #elseif ( $e.getName() == 'operationalMode')
     <field name="sensorMode">$e.getTextTrim()</field>
