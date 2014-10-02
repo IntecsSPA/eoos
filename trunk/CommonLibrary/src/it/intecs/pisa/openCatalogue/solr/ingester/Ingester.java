@@ -9,11 +9,7 @@ import it.intecs.pisa.gis.util.CoordinatesUtil;
 import it.intecs.pisa.log.Log;
 import it.intecs.pisa.metadata.filesystem.AbstractFilesystem;
 import it.intecs.pisa.openCatalogue.saxon.SaxonDocument;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
+import java.io.*;
 import java.util.*;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -38,10 +34,6 @@ import org.xml.sax.SAXException;
  * @author Massimiliano Fanciulli
  */
 public class Ingester extends BaseIngester {
-
-    private static void addAttributesToTheMap(Attribute attribute, org.dom4j.Element el, Map map) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
     protected final String XPATH_SEPARATOR = "//separator";
     protected final String XPATH_DATE_TIME_FORMAT = "//dateTimeFormat";
     protected final String XPATH_SENSOR_TYPE = "//attribute[@id='sensorType']";
