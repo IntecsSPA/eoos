@@ -67,6 +67,24 @@ public class CoordinatesUtil {
         return solr;
     }
 
+    public String adjustCoordinatesForSolrAdd(final String coordinates) {
+        String[] CA = stringtoArray(coordinates, " ");
+        String solr="";
+        for (int i = 0; i< CA.length/2; i++){
+            solr += CA[2*i+1] + " " + CA[2*i] + ",";
+        }
+
+        if(!CA[0].equals(CA[CA.length-2])|| !CA[1].equals(CA[CA.length-1])){
+            solr += CA[0] + " " + CA[1];        
+        }else{
+            // remove the ","
+            solr = solr.substring(0, solr.length()-1);
+        }
+        
+        return solr;
+    }
+    
+    
     public String adjustCoordinatesFromKML(final String coordinates) {
         String[] CA = stringtoArray(coordinates, " ");
 
