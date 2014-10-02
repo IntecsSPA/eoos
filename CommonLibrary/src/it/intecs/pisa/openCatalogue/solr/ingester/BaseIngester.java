@@ -247,7 +247,7 @@ public abstract class BaseIngester {
         if (metadataRepository != null) {
             XPathExpression<Element> xpath = XPathFactory.instance().compile(idXPath, Filters.element());
 
-            String key = xpath.evaluateFirst(metadata.getRootElement()).getTextTrim();
+            String key = xpath.evaluateFirst(metadata.getRootElement()).getTextTrim().replace(":","_").replace(".","_");
             FileFilesystem fs = null;
             if (isValid) {
                 fs = new FileFilesystem(metadataRepository.getAbsolutePath() + "/" + key + ".xml");
