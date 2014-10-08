@@ -49,6 +49,18 @@ public class CoordinatesUtil {
         return solr;
     }
     
+    public String csv2oem(final String coordinates) {
+        
+        String[] CA = stringtoArray(coordinates, " ");
+        String solr="";
+        for (int i = 0; i< CA.length/2; i++){
+            solr += CA[2*i+1] + " " + CA[2*i] + " ";
+        }
+
+        solr = solr.substring(0, solr.length()-1);
+        
+        return solr;
+    }
     
     public String adjustCoordinatesForSolr(final String coordinates) {
         String[] CA = stringtoArray(coordinates, " ");
